@@ -8,15 +8,16 @@
 class ModuleRender;
 class ModuleWindow;
 class ModuleTextures;
+class ModuleFontManager;
 class ModuleInput;
 class ModuleAudio;
 class ModuleFadeToBlack;
 class ModuleCollision;
 class ModuleParticles;
-class ModuleSceneMain;
 
 // Game modules ---
 class ModulePlayer;
+class ModuleSceneMain;
 
 class Application
 {
@@ -33,6 +34,7 @@ public:
 	ModuleRender* renderer;
 	ModuleWindow* window;
 	ModuleTextures* textures;
+	ModuleFontManager* fonts;
 	ModuleInput* input;
 	ModuleAudio* audio;
 	ModuleFadeToBlack* fade;

@@ -9,6 +9,7 @@
 #include "ModuleParticles.h"
 #include "ModulePlayer.h"
 #include "ModuleSceneMain.h"
+#include "ModuleFontManager.h"
 
 using namespace std;
 
@@ -20,6 +21,7 @@ Application::Application()
 
 	modules.push_back(renderer = new ModuleRender());
 	modules.push_back(textures = new ModuleTextures());
+	modules.push_back(fonts = new ModuleFontManager());
 	modules.push_back(audio = new ModuleAudio());
 
 	// Game Modules
