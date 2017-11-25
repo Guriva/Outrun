@@ -57,7 +57,7 @@ void ModuleFontManager::print(const char* text, const int posx, const int posy, 
 		int index = f.indexTable[text[i]];
 		rectFont.x = (f.w + 1)*index + 1;	//Each symbol is separated by one pixel
 		x = posx + f.w*i;
-		App->renderer->Blit(f.font, x, y, &rectFont, 1.0f, 1.0f, pivot);
+		App->renderer->Blit(f.font, x, y, &rectFont, 1.0f, { 1.f, 1.f }, pivot);
 		//SDL_BlitSurface(f.font, &rectFont, App->window->screen_surface, &rectWindow);
 	}
 }

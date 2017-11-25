@@ -90,7 +90,7 @@ bool ModuleRender::CleanUp()
 }
 
 // Blit to screen
-bool ModuleRender::Blit(SDL_Texture* texture, int x, int y, SDL_Rect* section, float speed, float scale, fPoint pivot)
+bool ModuleRender::Blit(SDL_Texture* texture, int x, int y, SDL_Rect* section, float speed, fPoint scale, fPoint pivot)
 {
 	//Pivot (0,0) to (1,1)
 	//(0,0) -> up left, (1,1) -> down right
@@ -111,14 +111,14 @@ bool ModuleRender::Blit(SDL_Texture* texture, int x, int y, SDL_Rect* section, f
 		h = rect.h;
 	}
 
-	int xValue = (int)(w - (w * scale));
-	int yValue = (int)(h - (h * scale));
+	int xValue = (int)(w - (w * scale.x));
+	int yValue = (int)(h - (h * scale.y));
 
 	rect.x = (int)(camera.x * speed) + (int)(x - (w * pivot.x) + (int)(xValue * pivot.x)) * SCREEN_SIZE;
 	rect.y = (int)(camera.y * speed) + (int)(y - (h * pivot.y) + (int)(yValue * pivot.y)) * SCREEN_SIZE;
 
-	rect.w = (int)(w * scale) * SCREEN_SIZE;
-	rect.h = (int)(h * scale) * SCREEN_SIZE;
+	rect.w = (int)(w * scale.x) * SCREEN_SIZE;
+	rect.h = (int)(h * scale.y) * SCREEN_SIZE;
 
 	if (SDL_RenderCopy(renderer, texture, section, &rect) != 0)
 	{

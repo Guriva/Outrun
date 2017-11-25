@@ -9,6 +9,7 @@
 #include "ModuleParticles.h"
 #include "ModulePlayer.h"
 #include "ModuleSceneMain.h"
+#include "ModuleSceneLevel.h"
 #include "ModuleFontManager.h"
 
 using namespace std;
@@ -26,6 +27,7 @@ Application::Application()
 
 	// Game Modules
 	modules.push_back(scene_main = new ModuleSceneMain(false));
+	modules.push_back(scene_level = new ModuleSceneLevel(false));
 	modules.push_back(player = new ModulePlayer(false));
 
 	// Modules to draw on top of game logic

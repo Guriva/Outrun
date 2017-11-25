@@ -6,6 +6,7 @@
 #include "ModuleRender.h"
 #include "ModuleFadeToBlack.h"
 #include "ModuleSceneMain.h"
+#include "ModuleSceneLevel.h"
 #include "ModuleFontManager.h"
 #include "SDL_timer.h"
 #include <string>
@@ -125,11 +126,11 @@ update_status ModuleSceneMain::Update()
 	}
 	if (credit == 0)
 	{
-		App->renderer->Blit(background, (int)(SCREEN_WIDTH / 2), (int)(SCREEN_HEIGHT / 2), nullptr, 1.f, 1.f, { 0.5f, 0.5f });
-		App->renderer->Blit(logoTexture, (int)(SCREEN_WIDTH / 2), (int)(SCREEN_HEIGHT / 2), &(logo.GetCurrentFrame()), 1.f, 1.f, { 0.5f, 0.5f });
-		App->renderer->Blit(logoTexture, (int)(SCREEN_WIDTH / 2) - 2, (int)(SCREEN_HEIGHT / 2) + 24, &(car.GetCurrentFrame()), 1.f, 1.f, { 0.5f, 0.5f });
-		App->renderer->Blit(logoTexture, (int)(SCREEN_WIDTH / 2) - 58, (int)(SCREEN_HEIGHT / 2) - 17, &(palm.GetCurrentFrame()), 1.f, 1.f, { 0.5f, 0.5f });
-		App->renderer->Blit(letters, (int)(SCREEN_WIDTH / 2) - 4, (int)(SCREEN_HEIGHT / 2) + 60, &(insertCoins.GetCurrentFrame()), 1.f, 1.f, { 0.5f, 0.5f });
+		App->renderer->Blit(background, (int)(SCREEN_WIDTH / 2), (int)(SCREEN_HEIGHT / 2), nullptr, 1.f, { 1.f, 1.f }, { 0.5f, 0.5f });
+		App->renderer->Blit(logoTexture, (int)(SCREEN_WIDTH / 2), (int)(SCREEN_HEIGHT / 2), &(logo.GetCurrentFrame()), 1.f, { 1.f, 1.f }, { 0.5f, 0.5f });
+		App->renderer->Blit(logoTexture, (int)(SCREEN_WIDTH / 2) - 2, (int)(SCREEN_HEIGHT / 2) + 24, &(car.GetCurrentFrame()), 1.f, { 1.f, 1.f }, { 0.5f, 0.5f });
+		App->renderer->Blit(logoTexture, (int)(SCREEN_WIDTH / 2) - 58, (int)(SCREEN_HEIGHT / 2) - 17, &(palm.GetCurrentFrame()), 1.f, { 1.f, 1.f }, { 0.5f, 0.5f });
+		App->renderer->Blit(letters, (int)(SCREEN_WIDTH / 2) - 4, (int)(SCREEN_HEIGHT / 2) + 60, &(insertCoins.GetCurrentFrame()), 1.f, { 1.f, 1.f }, { 0.5f, 0.5f });
 		App->fonts->print("1986 @sega", 232, 208, "blue");
 	}
 	else
@@ -153,13 +154,15 @@ update_status ModuleSceneMain::Update()
 				music = 1;
 			break;
 		}
-		App->renderer->Blit(background2, (int)(SCREEN_WIDTH / 2), (int)(SCREEN_HEIGHT / 2), nullptr, 1.f, 1.f, { 0.5f, 0.5f });
-		App->renderer->Blit(radioTexture, (int)(SCREEN_WIDTH / 2) - 8, (int)(SCREEN_HEIGHT / 2) - 16, &(radioMusic[music]), 1.f, 1.f, { 0.5f, 0.5f });
-		App->renderer->Blit(radioTexture, (int)(SCREEN_WIDTH / 2) + 31, (int)(SCREEN_HEIGHT / 2) + 69, &(radioNum[music]), 1.f, 1.f, { 0.5f, 0.5f });
-		App->renderer->Blit(radioTexture, (int)(SCREEN_WIDTH / 2) + 1, (int)(SCREEN_HEIGHT / 2) + 78, &(radioLeds.GetCurrentFrame()), 1.f, 1.f, { 0.5f, 0.5f });
-		App->renderer->Blit(radioTexture, (int)(SCREEN_WIDTH / 2) + 26, (int)(SCREEN_HEIGHT / 2) + 83, &(radioHand[music]), 1.f, 1.f, { 0.5f, 0.5f });
-		App->renderer->Blit(letters, (int)(SCREEN_WIDTH / 2), (int)(SCREEN_HEIGHT / 2) + 44, &(pressStart.GetCurrentFrame()), 1.f, 1.f, { 0.5f, 0.5f });
+		App->renderer->Blit(background2, (int)(SCREEN_WIDTH / 2), (int)(SCREEN_HEIGHT / 2), nullptr, 1.f, { 1.f, 1.f }, { 0.5f, 0.5f });
+		App->renderer->Blit(radioTexture, (int)(SCREEN_WIDTH / 2) - 8, (int)(SCREEN_HEIGHT / 2) - 16, &(radioMusic[music]), 1.f, { 1.f, 1.f }, { 0.5f, 0.5f });
+		App->renderer->Blit(radioTexture, (int)(SCREEN_WIDTH / 2) + 31, (int)(SCREEN_HEIGHT / 2) + 69, &(radioNum[music]), 1.f, { 1.f, 1.f }, { 0.5f, 0.5f });
+		App->renderer->Blit(radioTexture, (int)(SCREEN_WIDTH / 2) + 1, (int)(SCREEN_HEIGHT / 2) + 78, &(radioLeds.GetCurrentFrame()), 1.f, { 1.f, 1.f }, { 0.5f, 0.5f });
+		App->renderer->Blit(radioTexture, (int)(SCREEN_WIDTH / 2) + 26, (int)(SCREEN_HEIGHT / 2) + 83, &(radioHand[music]), 1.f, { 1.f, 1.f }, { 0.5f, 0.5f });
+		App->renderer->Blit(letters, (int)(SCREEN_WIDTH / 2), (int)(SCREEN_HEIGHT / 2) + 44, &(pressStart.GetCurrentFrame()), 1.f, { 1.f, 1.f }, { 0.5f, 0.5f });
 		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
+			App->audio->StopFx();
+			App->fade->FadeToBlack(App->scene_level, this, 0.f);
 			//***Change scene***//
 			//Pass music value
 		}
