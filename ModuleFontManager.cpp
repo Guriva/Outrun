@@ -42,7 +42,7 @@ bool ModuleFontManager::loadFont(const char* fontName, const char* path, const c
 	return ret;
 }
 
-void ModuleFontManager::print(const char* text, const int posx, const int posy, const char* fontName, fPoint pivot)
+void ModuleFontManager::print(const char* text, const int posx, const int posy, const char* fontName, fPoint scale, fPoint pivot)
 {
 	Font f = fontTable[fontName];
 
@@ -56,8 +56,8 @@ void ModuleFontManager::print(const char* text, const int posx, const int posy, 
 	for (int i = 0; text[i] != '\0'; ++i) {
 		int index = f.indexTable[text[i]];
 		rectFont.x = (f.w + 1)*index + 1;	//Each symbol is separated by one pixel
-		x = posx + f.w*i;
-		App->renderer->Blit(f.font, x, y, &rectFont, 1.0f, { 1.f, 1.f }, pivot);
+		x = posx + (int)(f.w*i*scale.x);
+		App->renderer->Blit(f.font, x, y, &rectFont, 1.0f, scale, pivot);
 		//SDL_BlitSurface(f.font, &rectFont, App->window->screen_surface, &rectWindow);
 	}
 }
