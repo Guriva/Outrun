@@ -3,6 +3,7 @@
 #include "ModuleSceneLevel.h"
 #include "ModuleRender.h"
 #include "Line.h"
+#include "ModulePlayer.h"
 
 using namespace std;
 
@@ -25,6 +26,8 @@ bool ModuleSceneLevel::Start()
 		lines.push_back(l);
 	}
 
+	App->player->Enable();
+
 	return true;
 }
 
@@ -39,8 +42,12 @@ bool ModuleSceneLevel::CleanUp()
 // Update: draw background
 update_status ModuleSceneLevel::Update()
 {
-	/*for (int i = 0; i < SCREEN_HEIGHT / 2; ++i)
-		App->renderer->DrawQuad({ i,SCREEN_HEIGHT - i + 1,SCREEN_WIDTH - i*2,1 }, 255, 0, 0, 255);*/
+	//Render sky background
+	App->renderer->DrawQuad({ 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT }, 0, 148, 255, 255);
+	//Render second background
+
+	//Render third background
+
 
 	//Render road
 	for (int i = 0; i < DRAW_DISTANCE; ++i) {

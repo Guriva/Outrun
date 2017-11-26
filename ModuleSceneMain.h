@@ -17,11 +17,11 @@ public:
 	bool CleanUp();
 
 public:
-	SDL_Texture* logoTexture;
-	SDL_Texture* background;
-	SDL_Texture* letters;
-	SDL_Texture* radioTexture;
-	SDL_Texture* background2;
+	SDL_Texture* logoTexture = nullptr;
+	SDL_Texture* background = nullptr;
+	SDL_Texture* letters = nullptr;
+	SDL_Texture* radioTexture = nullptr;
+	SDL_Texture* background2 = nullptr;
 	Animation logo;
 	Animation car;
 	Animation palm;
