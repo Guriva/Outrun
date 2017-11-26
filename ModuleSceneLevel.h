@@ -22,8 +22,9 @@ public:
 
 private:
 	vector<Line*> lines;
-	float cameraDistance;
+	float cameraDistance, cameraZ;
 	SDL_Color sand, road, rumble, lane;
+	int b = 0;
 };
 
 #endif // __MODULESCENELEVEL_H__

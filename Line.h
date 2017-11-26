@@ -11,7 +11,7 @@ public:
 	void projection(int cameraX, int cameraY, int cameraZ, float cameraD);
 
 public:
-
+	float xCamera, yCamera, zCamera;
 	float xWorld, yWorld, zWorld;
 	float xScreen, yScreen, wScreen, scale;
 };

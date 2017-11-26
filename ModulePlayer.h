@@ -34,7 +34,8 @@ public:
 	void OnCollision(Collider* c1, Collider* c2);
 
 public:
-	float speed, lowAccel, highAccel;
+	float xPos, xSpeed;
+	float speed, maxSpeed, lowAccel, highAccel;
 	float thresholdX, varThresholdX;
 	InclPlayer inclination;
 	DirPlayer direction;

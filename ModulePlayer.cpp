@@ -8,16 +8,20 @@
 #include "ModuleFadeToBlack.h"
 #include "ModulePlayer.h"
 #include "SDL_timer.h"
+#include <math.h>
 
 ModulePlayer::ModulePlayer(bool active) : Module(active)
 {
 	inclination = STRAIGHT;
 	direction = FRONT;
 	speed = 0.f;
-	lowAccel = 5.f;
+	lowAccel = 0.2f;
 	highAccel = 10.f;
 	thresholdX = 1.f;
 	varThresholdX = 0.06f;
+	xPos = 0.f;
+	xSpeed = 0.f;
+	maxSpeed = 10.f;
 
 	straight.frames.push_back({ 165, 91, 81, 44 });
 	straight.frames.push_back({ 165, 136, 81, 44 });
@@ -122,22 +126,57 @@ bool ModulePlayer::CleanUp()
 // Update: draw background
 update_status ModulePlayer::Update()
 {
-	//Check input
-	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT && thresholdX > 0.f)
-		thresholdX -= varThresholdX;
+	//Check input for speed
+	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT && speed < maxSpeed)
+		speed += lowAccel;
+	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_IDLE && speed > 0.f) {
+		speed -= lowAccel;
+		if (speed < 0.f)
+			speed = 0.f;
+	}
 
-	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT && thresholdX < 2.f)
-		thresholdX += varThresholdX;
-
-	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_IDLE && App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_IDLE) {
-		if (thresholdX != 1.f && thresholdX > 0.95f && thresholdX < 1.05f)
-			thresholdX = 1.f;
-		else if (thresholdX < 1.f)
-			thresholdX += varThresholdX;	//Remove hardcode later
-		else if (thresholdX > 1.f)
+	//Check input for side
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+	{
+		if (xSpeed > -0.01f)
+			xSpeed -= 0.001f;
+		if (thresholdX > 0.f)
 			thresholdX -= varThresholdX;
 	}
+
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+	{
+		if (xSpeed < 0.01f)
+			xSpeed += 0.001f;
+		if (thresholdX < 2.f)
+			thresholdX += varThresholdX;
+	}
 		
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_IDLE && App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_IDLE)
+	{
+		if (xSpeed < 0.f)
+		{
+			xSpeed += 0.001f;
+			if (xSpeed > 0.f)
+				xSpeed = 0.f;
+		}
+		else if (xSpeed > 0.f)
+		{
+			xSpeed -= 0.001f;
+			if (xSpeed < 0.f)
+				xSpeed = 0.f;
+		}
+		if (thresholdX < 1.f)
+			thresholdX += varThresholdX;
+		else if (thresholdX > 1.f)
+			thresholdX -= varThresholdX;
+		else if (thresholdX != 1.f && thresholdX > 0.95f && thresholdX < 1.05f)
+			thresholdX = 1.f;
+	}
+	
+	//Change xPos of car
+	xPos += xSpeed;
+
 	if (thresholdX < 0.4f && direction != LEFTMOST)
 		direction = LEFTMOST;
 	if (thresholdX > 0.4f && thresholdX < 0.8f && direction != LEFT)
