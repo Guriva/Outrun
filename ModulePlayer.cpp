@@ -15,13 +15,13 @@ ModulePlayer::ModulePlayer(bool active) : Module(active)
 	inclination = STRAIGHT;
 	direction = FRONT;
 	speed = 0.f;
-	lowAccel = 0.05f;
+	lowAccel = 0.07f;
 	highAccel = 10.f;
 	thresholdX = 1.f;
 	varThresholdX = 0.06f;
 	xPos = 0.f;
 	xSpeed = 0.f;
-	maxSpeed = 10.f;
+	maxSpeed = 40.f;
 
 	straight.frames.push_back({ 165, 91, 81, 44 });
 	straight.frames.push_back({ 165, 136, 81, 44 });
@@ -207,7 +207,7 @@ update_status ModulePlayer::Update()
 
 	current_animation = carStates[inclination][direction];
 
-	App->renderer->Blit(car, (int)(SCREEN_WIDTH / 2), (int)(SCREEN_HEIGHT / 2) + 90, &(current_animation->GetCurrentFrame()), 1.0f, { 1,1 }, {0.5f,0.5f});
+	App->renderer->Blit(car, (int)(SCREEN_WIDTH / 2), (int)(SCREEN_HEIGHT / 2) + 300, &(current_animation->GetCurrentFrame()), 1.0f, { 2,2 }, {0.5f,0.5f});
 
 	return UPDATE_CONTINUE;
 }

@@ -13,7 +13,8 @@ public:
 public:
 	float xCamera, yCamera, zCamera;
 	float xWorld, yWorld, zWorld;
-	float xScreen, yScreen, wScreen, scale;
+	float xScreen, yScreen, wScreen;
+	float scale, curve;
 };
 
 #endif // __LINE_H__

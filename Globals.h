@@ -43,22 +43,23 @@ typedef unsigned int uint;
 	 }
 
 // Configuration -----------
-#define SCREEN_SIZE 3
-#define SCREEN_WIDTH 320
-#define SCREEN_HEIGHT 224
+#define SCREEN_SIZE 1
+#define SCREEN_WIDTH 1024
+#define SCREEN_HEIGHT 768
 #define FULLSCREEN false
 #define VSYNC true
 #define TITLE "OutRun Tribute"
 
 // Road parameters ---------
 #define FOV 160
-#define CAMERA_HEIGHT 700	//200 or higher
-#define ROAD_WIDTH 900
-#define ROAD_LENGTH 50000	//Track length
-#define DRAW_DISTANCE 4000
-#define RUMBLE_LENGTH 40
+#define CAMERA_HEIGHT 3000	//200 or higher
+#define ROAD_WIDTH 4000
+#define ROAD_LENGTH 500000	//Track length
+#define DRAW_DISTANCE 10000
+#define RUMBLE_LENGTH 100
 #define ROAD_LANES 3
 #define LANEMARKER_WIDTH 4
 #define RUMBLE_WIDTH 1.08
+#define SCREEN_Y_OFFSET 100
 
 #endif //__GLOBALS_H__

@@ -6,7 +6,7 @@ using namespace std;
 
 Line::Line()
 {
-	xWorld = yWorld = zWorld = 0;
+	xWorld = yWorld = zWorld = curve = 0;
 }
 
 Line::~Line()
