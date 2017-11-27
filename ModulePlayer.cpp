@@ -15,7 +15,7 @@ ModulePlayer::ModulePlayer(bool active) : Module(active)
 	inclination = STRAIGHT;
 	direction = FRONT;
 	speed = 0.f;
-	lowAccel = 0.2f;
+	lowAccel = 0.05f;
 	highAccel = 10.f;
 	thresholdX = 1.f;
 	varThresholdX = 0.06f;
@@ -151,7 +151,7 @@ update_status ModulePlayer::Update()
 		if (thresholdX < 2.f)
 			thresholdX += varThresholdX;
 	}
-		
+	
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_IDLE && App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_IDLE)
 	{
 		if (xSpeed < 0.f)
@@ -173,19 +173,36 @@ update_status ModulePlayer::Update()
 		else if (thresholdX != 1.f && thresholdX > 0.95f && thresholdX < 1.05f)
 			thresholdX = 1.f;
 	}
+
+	if (speed > 0.f && speed < maxSpeed / 2)
+	{
+		for (int i = 0; i < MAXINCL; ++i)
+		{
+			for (int j = 0; j < MAXDIR; ++j)
+				carStates[i][j]->speed = 0.1f;
+		}
+	}
+	else if (speed > maxSpeed / 2)
+	{
+		for (int i = 0; i < MAXINCL; ++i)
+		{
+			for (int j = 0; j < MAXDIR; ++j)
+				carStates[i][j]->speed = 0.25f;
+		}
+	}
 	
 	//Change xPos of car
 	xPos += xSpeed;
 
-	if (thresholdX < 0.4f && direction != LEFTMOST)
+	if (thresholdX < 0.4f && speed > 1.0f && direction != LEFTMOST)
 		direction = LEFTMOST;
-	if (thresholdX > 0.4f && thresholdX < 0.8f && direction != LEFT)
+	if (thresholdX > 0.4f && speed > 1.0f && thresholdX < 0.8f && direction != LEFT)
 		direction = LEFT;
-	if (thresholdX > 0.8f && thresholdX < 1.2f && direction != FRONT)
+	if ((thresholdX > 0.8f && thresholdX < 1.2f && direction != FRONT) || speed <= 1.0f)
 		direction = FRONT;
-	if (thresholdX > 1.2f && thresholdX < 1.6f && direction != RIGHT)
+	if (thresholdX > 1.2f && speed > 1.0f && thresholdX < 1.6f && direction != RIGHT)
 		direction = RIGHT;
-	if (thresholdX > 1.6f && direction != RIGHTMOST)
+	if (thresholdX > 1.6f && speed > 1.0f && direction != RIGHTMOST)
 		direction = RIGHTMOST;
 
 	current_animation = carStates[inclination][direction];
