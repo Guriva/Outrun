@@ -126,12 +126,12 @@ update_status ModuleSceneMain::Update(float time)
 	}
 	if (credit == 0)
 	{
-		App->renderer->Blit(background, (int)(SCREEN_WIDTH / 2), (int)(SCREEN_HEIGHT / 2), nullptr, 1.f, { 1.f, 1.f }, { 0.5f, 0.5f });
-		App->renderer->Blit(logoTexture, (int)(SCREEN_WIDTH / 2), (int)(SCREEN_HEIGHT / 2), &(logo.GetCurrentFrame()), 1.f, { 1.f, 1.f }, { 0.5f, 0.5f });
-		App->renderer->Blit(logoTexture, (int)(SCREEN_WIDTH / 2) - 2, (int)(SCREEN_HEIGHT / 2) + 24, &(car.GetCurrentFrame()), 1.f, { 1.f, 1.f }, { 0.5f, 0.5f });
-		App->renderer->Blit(logoTexture, (int)(SCREEN_WIDTH / 2) - 58, (int)(SCREEN_HEIGHT / 2) - 17, &(palm.GetCurrentFrame()), 1.f, { 1.f, 1.f }, { 0.5f, 0.5f });
-		App->renderer->Blit(letters, (int)(SCREEN_WIDTH / 2) - 4, (int)(SCREEN_HEIGHT / 2) + 60, &(insertCoins.GetCurrentFrame()), 1.f, { 1.f, 1.f }, { 0.5f, 0.5f });
-		App->fonts->print("1986 @sega", 232, 208, "blue");
+		App->renderer->Blit(background, (int)(SCREEN_WIDTH / 2), (int)(SCREEN_HEIGHT / 2), nullptr, 1.f, { 3.2f, 3.43f }, { 0.5f, 0.5f });
+		App->renderer->Blit(logoTexture, (int)(SCREEN_WIDTH / 2), (int)(SCREEN_HEIGHT / 2), &(logo.GetCurrentFrame()), 1.f, { 3.2f, 3.43f }, { 0.5f, 0.5f });
+		App->renderer->Blit(logoTexture, (int)(SCREEN_WIDTH / 2) - 19, (int)(SCREEN_HEIGHT / 2) + 81, &(car.GetCurrentFrame()), 1.f, { 3.2f, 3.43f }, { 0.5f, 0.5f });
+		App->renderer->Blit(logoTexture, (int)(SCREEN_WIDTH / 2) - 186, (int)(SCREEN_HEIGHT / 2) - 58, &(palm.GetCurrentFrame()), 1.f, { 3.2f, 3.43f }, { 0.5f, 0.5f });
+		App->renderer->Blit(letters, (int)(SCREEN_WIDTH / 2) - 4, (int)(SCREEN_HEIGHT / 2) + 206, &(insertCoins.GetCurrentFrame()), 1.f, { 3.2f, 3.43f }, { 0.5f, 0.5f });
+		App->fonts->print("1986 @sega", 742, 713, "blue", { 3.2f, 3.43f });
 	}
 	else
 	{
@@ -154,21 +154,20 @@ update_status ModuleSceneMain::Update(float time)
 				music = 1;
 			break;
 		}
-		App->renderer->Blit(background2, (int)(SCREEN_WIDTH / 2), (int)(SCREEN_HEIGHT / 2), nullptr, 1.f, { 1.f, 1.f }, { 0.5f, 0.5f });
-		App->renderer->Blit(radioTexture, (int)(SCREEN_WIDTH / 2) - 8, (int)(SCREEN_HEIGHT / 2) - 16, &(radioMusic[music]), 1.f, { 1.f, 1.f }, { 0.5f, 0.5f });
-		App->renderer->Blit(radioTexture, (int)(SCREEN_WIDTH / 2) + 31, (int)(SCREEN_HEIGHT / 2) + 69, &(radioNum[music]), 1.f, { 1.f, 1.f }, { 0.5f, 0.5f });
-		App->renderer->Blit(radioTexture, (int)(SCREEN_WIDTH / 2) + 1, (int)(SCREEN_HEIGHT / 2) + 78, &(radioLeds.GetCurrentFrame()), 1.f, { 1.f, 1.f }, { 0.5f, 0.5f });
-		App->renderer->Blit(radioTexture, (int)(SCREEN_WIDTH / 2) + 26, (int)(SCREEN_HEIGHT / 2) + 83, &(radioHand[music]), 1.f, { 1.f, 1.f }, { 0.5f, 0.5f });
-		App->renderer->Blit(letters, (int)(SCREEN_WIDTH / 2), (int)(SCREEN_HEIGHT / 2) + 44, &(pressStart.GetCurrentFrame()), 1.f, { 1.f, 1.f }, { 0.5f, 0.5f });
+		App->renderer->Blit(background2, (int)(SCREEN_WIDTH / 2), (int)(SCREEN_HEIGHT / 2), nullptr, 1.f, { 3.2f, 3.43f }, { 0.5f, 0.5f });
+		App->renderer->Blit(radioTexture, (int)(SCREEN_WIDTH / 2) - 26, (int)(SCREEN_HEIGHT / 2) - 55, &(radioMusic[music]), 1.f, { 3.2f, 3.43f }, { 0.5f, 0.5f });
+		App->renderer->Blit(radioTexture, (int)(SCREEN_WIDTH / 2) + 99, (int)(SCREEN_HEIGHT / 2) + 237, &(radioNum[music]), 1.f, { 3.2f, 3.43f }, { 0.5f, 0.5f });
+		App->renderer->Blit(radioTexture, (int)(SCREEN_WIDTH / 2) + 3, (int)(SCREEN_HEIGHT / 2) + 268, &(radioLeds.GetCurrentFrame()), 1.f, { 3.2f, 3.43f }, { 0.5f, 0.5f });
+		App->renderer->Blit(radioTexture, (int)(SCREEN_WIDTH / 2) + 83, (int)(SCREEN_HEIGHT / 2) + 285, &(radioHand[music]), 1.f, { 3.2f, 3.43f }, { 0.5f, 0.5f });
+		App->renderer->Blit(letters, (int)(SCREEN_WIDTH / 2), (int)(SCREEN_HEIGHT / 2) + 151, &(pressStart.GetCurrentFrame()), 1.f, { 3.2f, 3.43f }, { 0.5f, 0.5f });
 		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
 			App->audio->StopFx();
 			App->fade->FadeToBlack(App->scene_level, this, 0.f);
-			//***Change scene***//
-			//Pass music value
+			//TODO: Pass music value
 		}
 	}
-	App->fonts->print("credit", 18, 208, "pink");
-	App->fonts->print(to_string(credit).c_str(), 80, 208, "pink");
+	App->fonts->print("credit", 58, 713, "pink", { 3.2f, 3.43f });
+	App->fonts->print(to_string(credit).c_str(), 256, 713, "pink", { 3.2f, 3.43f });
 
 	return UPDATE_CONTINUE;
 }

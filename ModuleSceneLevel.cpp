@@ -75,6 +75,7 @@ update_status ModuleSceneLevel::Update(float time)
 	Line* playerLine = lines[((position + playerZ) / SEGMENT_LENGTH) % lines.size()];
 	float playerPerc = (float)(((position + playerZ) % SEGMENT_LENGTH) / SEGMENT_LENGTH);
 	playerY = playerLine->p1.yWorld + (playerLine->p2.yWorld - playerLine->p1.yWorld) * playerPerc;
+	//RenderRoad(*baseLine, x, dx, maxY);
 	Line* l;
 
 	for (int n = 0; n < DRAW_DISTANCE; n++) {
@@ -168,4 +169,58 @@ void ModuleSceneLevel::AddCurve(int num, float curve)
 void ModuleSceneLevel::AddHill(int num, float y)
 {
 	AddRoad(num, num, num, 0, y);
+}
+
+
+/***TODO***/
+//Need for later use to render 2 roads
+void ModuleSceneLevel::RenderRoad(const Line& baseLine, float x, float dx, int maxY)
+{
+	Line* l;
+
+	for (int n = 0; n < DRAW_DISTANCE; n++) {
+		l = lines[(baseLine.index + n) % lines.size()];
+
+		l->projection(l->p1, (int)((App->player->playerX) - x), CAMERA_HEIGHT + playerY, position, cameraDistance);
+		l->projection(l->p2, (int)((App->player->playerX) - x - dx), CAMERA_HEIGHT + playerY, position, cameraDistance);
+
+		x += dx;
+		dx += l->curve;
+
+		if ((l->p1.zCamera <= cameraDistance) || (l->p2.yScreen >= maxY))
+			continue;
+
+		l->light ? sand = { 230, 214, 197, 255 } : sand = { 239, 222, 206, 255 };
+		l->light ? road = { 156, 156, 156, 255 } : road = { 148, 148, 148, 255 };
+		l->light ? rumble = { 247, 247, 247, 255 } : rumble = { 148, 148, 148, 255 };
+		l->light ? lane = { 156, 156, 156, 255 } : lane = { 247, 247, 247, 255 };
+
+
+		short x1 = (short)l->p1.xScreen;
+		short x2 = (short)l->p2.xScreen;
+		short y1 = (short)l->p1.yScreen;
+		short y2 = (short)l->p2.yScreen;
+		short w1 = (short)l->p1.wScreen;
+		short w2 = (short)l->p2.wScreen;
+
+		App->renderer->DrawPoly4(0, y1, SCREEN_WIDTH, y1, SCREEN_WIDTH, y2, 0, y2, sand);
+		App->renderer->DrawPoly4(x1 - w1, y1, x1 + w1, y1, x2 + w2, y2, x2 - w2, y2, road);
+		App->renderer->DrawPoly4(x1 - w1 - (int)(w1 / 6), y1, x1 - w1, y1, x2 - w2, y2, x2 - w2 - (int)(w2 / 6), y2, rumble);
+		App->renderer->DrawPoly4(x1 + w1 + (int)(w1 / 6), y1, x1 + w1, y1, x2 + w2, y2, x2 + w2 + (int)(w2 / 6), y2, rumble);
+		App->renderer->DrawPoly4(x1 - w1, y1, x1 - w1 + (w1 / 24), y1, x2 - w2 + (w2 / 24), y2, x2 - w2, y2, lane);
+		App->renderer->DrawPoly4(x1 + w1, y1, x1 + w1 - (w1 / 24), y1, x2 + w2 - (w2 / 24), y2, x2 + w2, y2, lane);
+
+		if (l->light == false) {
+			short lw1 = w1 * 2 / ROAD_LANES;
+			short lw2 = w2 * 2 / ROAD_LANES;
+			short lx1 = x1 - w1;
+			short lx2 = x2 - w2;
+
+			for (int i = 1; i < ROAD_LANES; ++i) {
+				App->renderer->DrawPoly4(lx1 + (lw1 * i) - (w1 / 36), y1, lx1 + (lw1 * i) + (w1 / 36), y1, lx2 + (lw2 * i) + (w2 / 36), y2, lx2 + (lw2 * i) - (w2 / 36), y2, lane);
+			}
+		}
+
+		maxY = (int)(l->p2.yScreen);
+	}
 }

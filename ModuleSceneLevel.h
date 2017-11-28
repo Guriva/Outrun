@@ -24,6 +24,7 @@ private:
 	void AddStraight(int num);
 	void AddCurve(int num, float curve);
 	void AddHill(int num, float y);
+	void RenderRoad(const Line& baseLine, float x, float dx, int maxY);
 public:
 
 private:
