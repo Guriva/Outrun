@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleSceneLevel.h"
 #include "ModuleRender.h"
+#include "ModuleTextures.h"
 #include "Line.h"
 #include "ModulePlayer.h"
 #include "Util.h"
@@ -24,6 +25,10 @@ bool ModuleSceneLevel::Start()
 {
 	LOG("Loading level scene");
 
+	//Load textures
+	layout = App->textures->Load("Textures/Level/layoutLevel.png");
+
+	//Create Road
 	AddHill(100, 10);
 	AddStraight(100);
 	AddHill(25, 20);
@@ -44,6 +49,7 @@ bool ModuleSceneLevel::Start()
 bool ModuleSceneLevel::CleanUp()
 {
 	LOG("Unloading level scene"); 
+	/*** TODO !!***/
 
 	return true;
 }
@@ -123,6 +129,9 @@ update_status ModuleSceneLevel::Update(float time)
 
 		maxY = (int)(l->p2.yScreen);
 	}
+
+	//Render layout
+	App->renderer->Blit(layout, (int)(SCREEN_WIDTH / 2), (int)(SCREEN_HEIGHT / 2), nullptr, 1.f, { 3.2f, 3.43f }, { 0.5f, 0.5f });
 
 	return UPDATE_CONTINUE;
 }

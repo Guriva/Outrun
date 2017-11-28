@@ -7,6 +7,7 @@
 using namespace std;
 
 class Line;
+struct SDL_Texture;
 
 class ModuleSceneLevel : public Module
 {
@@ -28,6 +29,7 @@ private:
 public:
 
 private:
+	SDL_Texture* layout = nullptr;
 	vector<Line*> lines;
 	float cameraDistance;
 	int position;
