@@ -32,6 +32,7 @@ private:
 	int position;
 	SDL_Color sand, road, rumble, lane;
 	int trackLength;
+	int playerY, playerZ;
 };
 
 #endif // __MODULESCENELEVEL_H__

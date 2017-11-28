@@ -4,6 +4,7 @@
 #include "ModuleRender.h"
 #include "Line.h"
 #include "ModulePlayer.h"
+#include "Util.h"
 #include <math.h>
 
 using namespace std;
@@ -12,6 +13,7 @@ ModuleSceneLevel::ModuleSceneLevel(bool active) : Module(active)
 {
 	cameraDistance = 1 / tan((float)((FOV / 2.f) * M_PI / 180.0f));
 	position = 0;
+	playerZ = CAMERA_HEIGHT * cameraDistance;
 }
 
 ModuleSceneLevel::~ModuleSceneLevel()
@@ -22,7 +24,10 @@ bool ModuleSceneLevel::Start()
 {
 	LOG("Loading level scene");
 
-	AddHill(100, 20);
+	AddHill(100, 10);
+	AddStraight(100);
+	AddHill(25, 20);
+	AddHill(25, -10);
 	AddCurve(100, 2);
 	AddStraight(100);
 	AddStraight(100);
@@ -54,22 +59,29 @@ update_status ModuleSceneLevel::Update(float time)
 
 	//Render sky background
 	App->renderer->DrawQuad({ 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT }, 0, 148, 255, 255);
+
 	//Render second background
 
 	//Render third background
 
+	//Calculate deviation on x for curves
 	Line* baseLine = lines[(position / SEGMENT_LENGTH) % lines.size()];
 	int maxY = SCREEN_HEIGHT;
-	float percent = (position % SEGMENT_LENGTH) / SEGMENT_LENGTH;
+	float percent = (float)((position % SEGMENT_LENGTH) / SEGMENT_LENGTH);
 	float dx = -(baseLine->curve * percent);
 	float x = 0;
+
+	//Calculate playerY for hills
+	Line* playerLine = lines[((position + playerZ) / SEGMENT_LENGTH) % lines.size()];
+	float playerPerc = (float)(((position + playerZ) % SEGMENT_LENGTH) / SEGMENT_LENGTH);
+	playerY = playerLine->p1.yWorld + (playerLine->p2.yWorld - playerLine->p1.yWorld) * playerPerc;
 	Line* l;
 
 	for (int n = 0; n < DRAW_DISTANCE; n++) {
 		l = lines[(baseLine->index + n) % lines.size()];
 
-		l->projection(l->p1, (App->player->playerX) - x, CAMERA_HEIGHT, position, cameraDistance);
-		l->projection(l->p2, (App->player->playerX) - x - dx, CAMERA_HEIGHT, position, cameraDistance);
+		l->projection(l->p1, (int)((App->player->playerX) - x), CAMERA_HEIGHT + playerY, position, cameraDistance);
+		l->projection(l->p2, (int)((App->player->playerX) - x - dx), CAMERA_HEIGHT + playerY, position, cameraDistance);
 
 		x += dx;
 		dx += l->curve;
@@ -134,13 +146,13 @@ void ModuleSceneLevel::AddRoad(int enter, int hold, int leave, float curve, floa
 	float firstY = (lines.size() == 0 ? 0 : lines[lines.size() - 1]->p2.yWorld);
 	float endY = firstY + y * SEGMENT_LENGTH;
 	int n;
-	int total = enter + hold + leave;
+	float total = (float)(enter + hold + leave);
 	for (n = 0; n < enter; ++n)
-		AddSegment(curve * pow(n / enter, 2), firstY + (endY - firstY) * ((-cos((n / total) * M_PI) / 2) + 0.5f));
+		AddSegment(EaseIn(0, curve, (float)n/enter), EaseInOut(firstY, endY, (float)n/total));
 	for (n = 0; n < hold; ++n)
-		AddSegment(curve, firstY + (endY - firstY) * ((-cos(((enter + n) / total) * M_PI) / 2) + 0.5f));
+		AddSegment(curve, EaseInOut(firstY, endY, (float)(enter + n) / total));
 	for (n = 0; n < leave; ++n)
-		AddSegment(curve + (-curve * ((-cos((n / leave) * M_PI) / 2) + 0.5f)), firstY + (endY - firstY) * ((-cos(((enter + hold + n) / total) * M_PI) / 2) + 0.5f));
+		AddSegment(EaseInOut(curve, 0, (float)n/leave), EaseInOut(firstY, endY, (float)(enter + hold + n) / total));
 }
 
 void ModuleSceneLevel::AddStraight(int num)
