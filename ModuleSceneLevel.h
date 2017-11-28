@@ -15,16 +15,23 @@ public:
 	~ModuleSceneLevel();
 
 	bool Start();
-	update_status Update();
+	update_status Update(float time);
 	bool CleanUp();
 
+private:
+	void AddSegment(float curve, float y);
+	void AddRoad(int enter, int hold, int leave, float curve, float y);
+	void AddStraight(int num);
+	void AddCurve(int num, float curve);
+	void AddHill(int num, float y);
 public:
 
 private:
 	vector<Line*> lines;
-	float cameraDistance, cameraZ;
+	float cameraDistance;
+	int position;
 	SDL_Color sand, road, rumble, lane;
-	int b = 0;
+	int trackLength;
 };
 
 #endif // __MODULESCENELEVEL_H__

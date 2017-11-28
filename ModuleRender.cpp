@@ -4,6 +4,7 @@
 #include "ModuleWindow.h"
 #include "ModuleInput.h"
 #include "SDL.h"
+#include "sdl2_gfxprimitives.h"
 
 ModuleRender::ModuleRender()
 {
@@ -39,7 +40,7 @@ bool ModuleRender::Init()
 	return ret;
 }
 
-update_status ModuleRender::PreUpdate()
+update_status ModuleRender::PreUpdate(float time)
 {
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
 	SDL_RenderClear(renderer);
@@ -47,7 +48,7 @@ update_status ModuleRender::PreUpdate()
 }
 
 // Called every draw update
-update_status ModuleRender::Update()
+update_status ModuleRender::Update(float time)
 {
 	//Here need to update camera depending on player position
 
@@ -69,7 +70,7 @@ update_status ModuleRender::Update()
 	return UPDATE_CONTINUE;
 }
 
-update_status ModuleRender::PostUpdate()
+update_status ModuleRender::PostUpdate(float time)
 {
 	SDL_RenderPresent(renderer);
 	return UPDATE_CONTINUE;
@@ -152,4 +153,14 @@ bool ModuleRender::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uin
 	}
 
 	return ret;
+}
+
+bool ModuleRender::DrawPoly4(short x1, short y1, short x2, short y2, short x3, short y3, short x4, short y4, SDL_Color c) {
+	int ret = 0;
+	short vx[4] = { x1 * SCREEN_SIZE, x2 * SCREEN_SIZE, x3 * SCREEN_SIZE, x4 * SCREEN_SIZE };
+	short vy[4] = { (y1 + SCREEN_Y_OFFSET) * SCREEN_SIZE, (y2 + SCREEN_Y_OFFSET) * SCREEN_SIZE, (y3 + SCREEN_Y_OFFSET) * SCREEN_SIZE, (y4 + SCREEN_Y_OFFSET) * SCREEN_SIZE };
+	
+	ret = filledPolygonRGBA(renderer, vx, vy, 4, c.r, c.g, c.b, c.a);
+
+	return (ret == 0);
 }

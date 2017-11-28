@@ -29,14 +29,14 @@ public:
 	~ModulePlayer();
 
 	bool Start();
-	update_status Update();
+	update_status Update(float time);
 	bool CleanUp();
 	void OnCollision(Collider* c1, Collider* c2);
 
 public:
-	float xPos, xSpeed;
+	int playerX, playerZ;
 	float speed, maxSpeed, lowAccel, highAccel;
-	float thresholdX, varThresholdX;
+	float thresholdX, varThresholdX, forceX;
 	InclPlayer inclination;
 	DirPlayer direction;
 	SDL_Texture* car = nullptr;

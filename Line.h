@@ -1,6 +1,13 @@
 #ifndef __LINE_H__
 #define __LINE_H__
 
+struct PointLine {
+	float xCamera, yCamera, zCamera;
+	float xWorld, yWorld, zWorld;
+	float xScreen, yScreen, wScreen;
+	float scale;
+};
+
 class Line
 {
 public:
@@ -8,13 +15,13 @@ public:
 	Line();
 	~Line();
 
-	void projection(int cameraX, int cameraY, int cameraZ, float cameraD);
+	void projection(PointLine &p, int cameraX, int cameraY, int cameraZ, float cameraD);
 
 public:
-	float xCamera, yCamera, zCamera;
-	float xWorld, yWorld, zWorld;
-	float xScreen, yScreen, wScreen;
-	float scale, curve;
+	int index;
+	PointLine p1, p2;
+	bool light;
+	float curve;
 };
 
 #endif // __LINE_H__

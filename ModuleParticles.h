@@ -42,8 +42,8 @@ public:
 	~ModuleParticles();
 
 	bool Start();
-	update_status PreUpdate(); // clear dirty particles
-	update_status Update(); // draw
+	update_status PreUpdate(float time); // clear dirty particles
+	update_status Update(float time); // draw
 	bool CleanUp();
 
 	void AddParticle(const Particle& particle, int x, int y, CType col_type = NONE); // feel free to expand this call

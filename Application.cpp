@@ -16,6 +16,7 @@ using namespace std;
 
 Application::Application()
 {
+	tick_timer = clock();
 	// Order matters: they will init/start/pre/update/post in this order
 	modules.push_back(input = new ModuleInput());
 	modules.push_back(window = new ModuleWindow());
@@ -65,17 +66,26 @@ update_status Application::Update()
 {
 	update_status ret = UPDATE_CONTINUE;
 
-	for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
-		if ((*it)->IsEnabled() == true)
-			ret = (*it)->PreUpdate();
+	clock_t now = clock();
+	float time = float(now - tick_timer) / CLOCKS_PER_SEC;
+	if (time > 1 / TICK_FPS)
+	{
+		float t = time;
+		for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
+			if ((*it)->IsEnabled() == true)
+				ret = (*it)->PreUpdate(time);
 
-	for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
-		if ((*it)->IsEnabled() == true)
-			ret = (*it)->Update();
+		for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
+			if ((*it)->IsEnabled() == true)
+				ret = (*it)->Update(time);
 
-	for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
-		if ((*it)->IsEnabled() == true)
-			ret = (*it)->PostUpdate();
+		for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
+			if ((*it)->IsEnabled() == true)
+				ret = (*it)->PostUpdate(time);
+
+		tick_timer = now;
+		LOG("time is %f", time);
+	}
 
 	return ret;
 }

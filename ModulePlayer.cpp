@@ -15,13 +15,13 @@ ModulePlayer::ModulePlayer(bool active) : Module(active)
 	inclination = STRAIGHT;
 	direction = FRONT;
 	speed = 0.f;
-	lowAccel = 0.07f;
 	highAccel = 10.f;
 	thresholdX = 1.f;
 	varThresholdX = 0.06f;
-	xPos = 0.f;
-	xSpeed = 0.f;
-	maxSpeed = 40.f;
+	maxSpeed = (float)(SEGMENT_LENGTH) / (float)(1 / (float)TICK_FPS);
+	lowAccel = maxSpeed/5.0f;
+	playerX = 0;
+	forceX = 0.3;
 
 	straight.frames.push_back({ 165, 91, 81, 44 });
 	straight.frames.push_back({ 165, 136, 81, 44 });
@@ -124,13 +124,18 @@ bool ModulePlayer::CleanUp()
 }
 
 // Update: draw background
-update_status ModulePlayer::Update()
+update_status ModulePlayer::Update(float time)
 {
 	//Check input for speed
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT && speed < maxSpeed)
-		speed += lowAccel;
-	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_IDLE && speed > 0.f) {
-		speed -= lowAccel;
+		speed += lowAccel*time;
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT && speed > 0.f) {
+		speed -= 3 * lowAccel*time;
+		if (speed < 0.f)
+			speed = 0.f;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_IDLE && App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_IDLE && speed > 0.f) {
+		speed -= lowAccel*time;
 		if (speed < 0.f)
 			speed = 0.f;
 	}
@@ -138,34 +143,20 @@ update_status ModulePlayer::Update()
 	//Check input for side
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 	{
-		if (xSpeed > -0.01f)
-			xSpeed -= 0.001f;
+		playerX -= 20; //Constant lateral move
 		if (thresholdX > 0.f)
 			thresholdX -= varThresholdX;
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 	{
-		if (xSpeed < 0.01f)
-			xSpeed += 0.001f;
+		playerX += 20;	//Constant lateral move
 		if (thresholdX < 2.f)
 			thresholdX += varThresholdX;
 	}
 	
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_IDLE && App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_IDLE)
 	{
-		if (xSpeed < 0.f)
-		{
-			xSpeed += 0.001f;
-			if (xSpeed > 0.f)
-				xSpeed = 0.f;
-		}
-		else if (xSpeed > 0.f)
-		{
-			xSpeed -= 0.001f;
-			if (xSpeed < 0.f)
-				xSpeed = 0.f;
-		}
 		if (thresholdX < 1.f)
 			thresholdX += varThresholdX;
 		else if (thresholdX > 1.f)
@@ -174,6 +165,7 @@ update_status ModulePlayer::Update()
 			thresholdX = 1.f;
 	}
 
+	//Change speed of wheels depending on car speed
 	if (speed > 0.f && speed < maxSpeed / 2)
 	{
 		for (int i = 0; i < MAXINCL; ++i)
@@ -190,10 +182,8 @@ update_status ModulePlayer::Update()
 				carStates[i][j]->speed = 0.25f;
 		}
 	}
-	
-	//Change xPos of car
-	xPos += xSpeed;
 
+	//Animation change
 	if (thresholdX < 0.4f && speed > 1.0f && direction != LEFTMOST)
 		direction = LEFTMOST;
 	if (thresholdX > 0.4f && speed > 1.0f && thresholdX < 0.8f && direction != LEFT)
@@ -207,7 +197,7 @@ update_status ModulePlayer::Update()
 
 	current_animation = carStates[inclination][direction];
 
-	App->renderer->Blit(car, (int)(SCREEN_WIDTH / 2), (int)(SCREEN_HEIGHT / 2) + 300, &(current_animation->GetCurrentFrame()), 1.0f, { 2,2 }, {0.5f,0.5f});
+	App->renderer->Blit(car, (int)(SCREEN_WIDTH / 2), (int)(SCREEN_HEIGHT / 2) + 300, &(current_animation->GetCurrentFrame()), 1.0f, { 3,3 }, {0.5f,0.5f});
 
 	return UPDATE_CONTINUE;
 }

@@ -13,7 +13,7 @@ public:
 	~ModuleSceneMain();
 
 	bool Start();
-	update_status Update();
+	update_status Update(float time);
 	bool CleanUp();
 
 public:

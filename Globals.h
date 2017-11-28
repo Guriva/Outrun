@@ -49,14 +49,16 @@ typedef unsigned int uint;
 #define FULLSCREEN false
 #define VSYNC true
 #define TITLE "OutRun Tribute"
+#define TICK_FPS 60
 
 // Road parameters ---------
-#define FOV 160
-#define CAMERA_HEIGHT 3000	//200 or higher
-#define ROAD_WIDTH 4000
-#define ROAD_LENGTH 500000	//Track length
-#define DRAW_DISTANCE 10000
-#define RUMBLE_LENGTH 100
+#define FOV 100
+#define CAMERA_HEIGHT 1000	//200 or higher
+#define ROAD_WIDTH 2000
+#define ROAD_LENGTH 1500	//Track length
+#define DRAW_DISTANCE 300
+#define SEGMENT_LENGTH 200
+#define RUMBLE_LENGTH 3
 #define ROAD_LANES 3
 #define LANEMARKER_WIDTH 4
 #define RUMBLE_WIDTH 1.08
