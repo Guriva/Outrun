@@ -116,7 +116,7 @@ bool ModuleSceneMain::CleanUp()
 }
 
 // Update: draw background
-update_status ModuleSceneMain::Update(float time)
+update_status ModuleSceneMain::Update()
 {
 	if (App->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN && credit < 9)
 	{

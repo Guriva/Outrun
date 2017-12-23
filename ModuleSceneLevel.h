@@ -2,11 +2,13 @@
 #define __MODULESCENELEVEL_H__
 
 #include "Module.h"
+#include <ctime>
 #include <vector>
 
 using namespace std;
 
 class Line;
+class Road;
 struct SDL_Texture;
 
 class ModuleSceneLevel : public Module
@@ -16,26 +18,13 @@ public:
 	~ModuleSceneLevel();
 
 	bool Start();
-	update_status Update(float time);
+	update_status Update();
 	bool CleanUp();
 
 private:
-	void AddSegment(float curve, float y);
-	void AddRoad(int enter, int hold, int leave, float curve, float y);
-	void AddStraight(int num);
-	void AddCurve(int num, float curve);
-	void AddHill(int num, float y);
-	void RenderRoad(const Line& baseLine, float x, float dx, int maxY);
-public:
-
-private:
-	SDL_Texture* layout = nullptr;
-	vector<Line*> lines;
-	float cameraDistance;
-	int position;
-	SDL_Color sand, road, rumble, lane;
-	int trackLength;
-	int playerY, playerZ;
+	float time;
+	Road* road;
+	clock_t tick_timer;
 };
 
 #endif // __MODULESCENELEVEL_H__

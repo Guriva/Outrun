@@ -4,7 +4,6 @@
 #include<list>
 #include "Globals.h"
 #include "Module.h"
-#include <time.h>
 
 class ModuleRender;
 class ModuleWindow;
@@ -51,7 +50,6 @@ public:
 private:
 
 	std::list<Module*> modules;
-	clock_t tick_timer;
 };
 
 extern Application* App;

@@ -9,5 +9,5 @@ float EaseIn(float a, float b, float percent)
 
 float EaseInOut(float a, float b, float percent)
 {
-	return (a + (b - a) * ((-cos(percent*M_PI) / 2.f) + 0.5f));
+	return (a + (b - a) * ((-cos(percent*(float)M_PI) / 2.f) + 0.5f));
 }

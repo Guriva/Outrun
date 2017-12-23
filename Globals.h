@@ -52,16 +52,8 @@ typedef unsigned int uint;
 #define TICK_FPS 60
 
 // Road parameters ---------
-#define FOV 100
-#define CAMERA_HEIGHT 1000	//200 or higher
-#define ROAD_WIDTH 2000
-#define ROAD_LENGTH 1500	//Track length
-#define DRAW_DISTANCE 300
-#define SEGMENT_LENGTH 200
-#define RUMBLE_LENGTH 3
-#define ROAD_LANES 3
-#define LANEMARKER_WIDTH 4
-#define RUMBLE_WIDTH 1.08
-#define SCREEN_Y_OFFSET 100
+#define ROAD_WIDTH 1600
+#define SEGMENT_LENGTH 150
+#define SCREEN_Y_OFFSET 130
 
 #endif //__GLOBALS_H__

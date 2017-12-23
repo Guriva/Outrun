@@ -65,7 +65,7 @@ bool ModuleParticles::CleanUp()
 }
 
 // PreUpdate to clear up all dirty particles
-update_status ModuleParticles::PreUpdate(float time)
+update_status ModuleParticles::PreUpdate()
 {
 	for (list<Particle*>::iterator it = active.begin(); it != active.end();)
 	{
@@ -82,7 +82,7 @@ update_status ModuleParticles::PreUpdate(float time)
 }
 
 // Update all particle logic and draw them
-update_status ModuleParticles::Update(float time)
+update_status ModuleParticles::Update()
 {
 	for (list<Particle*>::iterator it = active.begin(); it != active.end(); ++it)
 	{

@@ -40,7 +40,7 @@ bool ModuleRender::Init()
 	return ret;
 }
 
-update_status ModuleRender::PreUpdate(float time)
+update_status ModuleRender::PreUpdate()
 {
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
 	SDL_RenderClear(renderer);
@@ -48,7 +48,7 @@ update_status ModuleRender::PreUpdate(float time)
 }
 
 // Called every draw update
-update_status ModuleRender::Update(float time)
+update_status ModuleRender::Update()
 {
 	//Here need to update camera depending on player position
 
@@ -70,7 +70,7 @@ update_status ModuleRender::Update(float time)
 	return UPDATE_CONTINUE;
 }
 
-update_status ModuleRender::PostUpdate(float time)
+update_status ModuleRender::PostUpdate()
 {
 	SDL_RenderPresent(renderer);
 	return UPDATE_CONTINUE;

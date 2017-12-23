@@ -6,9 +6,10 @@ using namespace std;
 
 Line::Line()
 {
-	p1.xWorld = p1.yWorld = p1.zWorld = 0;
-	p2.xWorld = p2.yWorld = p2.zWorld = 0;
-	curve = 0;
+	p1.xWorld = p1.yWorld = p1.zWorld = p11.xWorld = p11.yWorld = p11.zWorld = 0;
+	p2.xWorld = p2.yWorld = p2.zWorld = p21.xWorld = p21.yWorld = p21.zWorld = 0;
+	curve = distance = 0;
+	mirror = false;
 }
 
 Line::~Line()

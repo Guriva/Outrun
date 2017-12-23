@@ -20,7 +20,7 @@ bool ModuleFadeToBlack::Start()
 }
 
 // Update: draw background
-update_status ModuleFadeToBlack::Update(float time)
+update_status ModuleFadeToBlack::Update()
 {
 	if (start_time > 0)
 	{

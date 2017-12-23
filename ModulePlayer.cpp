@@ -12,16 +12,16 @@
 
 ModulePlayer::ModulePlayer(bool active) : Module(active)
 {
+	tick_timer = clock();
 	inclination = STRAIGHT;
 	direction = FRONT;
 	speed = 0.f;
 	highAccel = 10.f;
 	thresholdX = 1.f;
 	varThresholdX = 0.06f;
-	maxSpeed = (float)(SEGMENT_LENGTH) / (float)(1 / (float)TICK_FPS);
-	lowAccel = maxSpeed/5.0f;
-	playerX = 0;
-	forceX = 0.3;
+	maxSpeed = (float)SEGMENT_LENGTH;
+	lowAccel = maxSpeed/7.0f;
+	forceX = 0.3f;
 
 	straight.frames.push_back({ 165, 91, 81, 44 });
 	straight.frames.push_back({ 165, 136, 81, 44 });
@@ -124,18 +124,20 @@ bool ModulePlayer::CleanUp()
 }
 
 // Update: draw background
-update_status ModulePlayer::Update(float time)
+update_status ModulePlayer::Update()
 {
+	time = (float)((clock() - tick_timer) / (double) CLOCKS_PER_SEC);
+	tick_timer = clock();
 	//Check input for speed
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT && speed < maxSpeed)
-		speed += lowAccel*time;
+		speed += lowAccel * time;
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT && speed > 0.f) {
-		speed -= 3 * lowAccel*time;
+		speed -= 3 * lowAccel * time;
 		if (speed < 0.f)
 			speed = 0.f;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_IDLE && App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_IDLE && speed > 0.f) {
-		speed -= lowAccel*time;
+		speed -= lowAccel * time;
 		if (speed < 0.f)
 			speed = 0.f;
 	}
@@ -143,14 +145,12 @@ update_status ModulePlayer::Update(float time)
 	//Check input for side
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 	{
-		playerX -= 20; //Constant lateral move
 		if (thresholdX > 0.f)
 			thresholdX -= varThresholdX;
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 	{
-		playerX += 20;	//Constant lateral move
 		if (thresholdX < 2.f)
 			thresholdX += varThresholdX;
 	}
@@ -180,6 +180,14 @@ update_status ModulePlayer::Update(float time)
 		{
 			for (int j = 0; j < MAXDIR; ++j)
 				carStates[i][j]->speed = 0.25f;
+		}
+	}
+	else
+	{
+		for (int i = 0; i < MAXINCL; ++i)
+		{
+			for (int j = 0; j < MAXDIR; ++j)
+				carStates[i][j]->speed = 0.f;
 		}
 	}
 

@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "Animation.h"
+#include <time.h>
 
 enum InclPlayer {
 	UP,
@@ -29,13 +30,12 @@ public:
 	~ModulePlayer();
 
 	bool Start();
-	update_status Update(float time);
+	update_status Update();
 	bool CleanUp();
 	void OnCollision(Collider* c1, Collider* c2);
 
 public:
-	int playerX, playerZ;
-	float speed, maxSpeed, lowAccel, highAccel;
+	float speed, maxSpeed, lowAccel, highAccel, time;
 	float thresholdX, varThresholdX, forceX;
 	InclPlayer inclination;
 	DirPlayer direction;
@@ -57,6 +57,7 @@ public:
 	Animation downright;
 	Animation downrightMost;
 	Animation* carStates[MAXINCL][MAXDIR];
+	clock_t tick_timer;
 };
 
 #endif

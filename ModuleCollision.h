@@ -44,8 +44,8 @@ public:
 	ModuleCollision();
 	~ModuleCollision();
 
-	update_status PreUpdate(float time);
-	update_status Update(float time);
+	update_status PreUpdate();
+	update_status Update();
 
 	bool CleanUp();
 
