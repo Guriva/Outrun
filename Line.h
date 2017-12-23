@@ -18,11 +18,11 @@ public:
 	void projection(PointLine &p, int cameraX, int cameraY, int cameraZ, float cameraD);
 
 public:
-	int index, distance;
+	int index;
 	PointLine p1, p2;
 	PointLine p11, p21;
 	bool light, mirror;
-	float curve;
+	float curve, distance;
 
 };
 
