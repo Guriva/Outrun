@@ -29,8 +29,8 @@ private:
 	void AddSegment(float curve, float y, bool mirror, float dist);
 	void AddRoad(int enter, int hold, int leave, float curve, float y, bool mirror, int distance);
 	void AddStraight(int num, bool mirror, int distance);
-	void AddCurve(int num, float curve, bool mirror, int distance);
-	void AddHill(int num, float y, int distance);
+	void AddCurve(int num, float curve, bool mirror, int distance, int length);
+	void AddHill(int num, float y, int distance, int length);
 
 private:
 	SDL_Texture* layout = nullptr;

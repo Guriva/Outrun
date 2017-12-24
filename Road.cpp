@@ -11,7 +11,7 @@
 Road::Road()
 {
 	//Road parameters
-	fov = 100.f;
+	fov = 120.f;
 	cameraHeight = 800.f;
 	drawDistance = 200;
 	segmentL = 150;
@@ -22,7 +22,7 @@ Road::Road()
 	cameraDistance = 1 / tan((float)((fov / 2.f) * M_PI / 180.0f));
 	position = 0;
 	playerX = 0;
-	playerZ = (int)(cameraHeight * cameraDistance) + 350;
+	playerZ = (int)(cameraHeight * cameraDistance) + 260;
 	playerRoad = LEFTROAD;
 	//Set distances for road lanes
 	dist3 = 0;
@@ -47,29 +47,50 @@ bool Road::InitRoad()
 	layout = App->textures->Load("Textures/Level/layoutLevel.png");
 
 	//Create Road
-	//AddStraight(50);
-	//AddHill(40, -10);
-	//AddHill(25,15);
-	//AddHill(40, -10);
-	//AddHill(25, 20);
-	//AddStraight(20);
-	//AddCurve(100, 2, false);
-	/*AddStraight(100, false, dist8);
-	AddStraight(20, false, dist7);
-	AddStraight(100, false, dist7);
-	AddStraight(20, false, dist6);
+
+	AddStraight(20, false, dist8);
+	AddHill(10, -5, dist8, 1);
+	AddHill(5,60,dist7, 28);
+	AddCurve(100, -1.5, false, dist7, 2);
+	AddStraight(26,false,dist7);
+	AddRoad(50, 50, 0, 1.5, 0, false, dist7);
+	AddRoad(0, 100, 0, 1.5, 20, false, dist7);
+	AddRoad(0, 50, 100, 1.5, -10, false, dist7);
+	AddHill(40, 20, dist6, 1);
+	AddRoad(30, 60, 0, 0, -15, false, dist6);
+	AddRoad(0, 170, 85, -1.5, 0, false, dist6);
+	AddStraight(50, false, dist6);
+	AddCurve(60, -3, false, dist6, 2);
+	AddStraight(70, false, dist6);
+	AddCurve(20, 3, false, dist6, 8);
+	AddHill(25, -10, dist6, 2);
+	AddRoad(20, 40, 0, -3, 10, false, dist6);
+	AddRoad(0, 80, 0, -3, -5, false, dist6);
+	AddRoad(0, 70, 0, -3, 15, false, dist6);
+	AddRoad(0, 50, 20, -3, 0, false, dist6);
 	AddStraight(100, false, dist6);
-	AddStraight(20, false, dist5);
-	AddStraight(100, false, dist5);
-	AddStraight(20, false, dist4);
-	AddStraight(100, false, dist4);*/
-	AddStraight(100, false, dist7);
-	AddStraight(50, false, dist5);
-	AddStraight(50, false, dist5);
-	AddStraight(20, false, dist3);
-	AddStraight(100, false, dist3);
-	AddCurve(100, -3, true, dist3);
+	AddCurve(30,-3,false,dist6,2);
+	AddStraight(30, false, dist6);
+	AddStraight(30,false,dist5);
+	AddCurve(10,3,false,dist5,3);
+	AddRoad(10,20,10,-3,5,false,dist5);
+	AddRoad(10,40,20,3,7,false,dist4);
+	AddStraight(10,false,dist4);
+	AddStraight(50,false,dist3);
+	AddHill(10,5,dist3,2);
+	AddHill(10,-5,dist3,2);
+	AddHill(10, 5, dist3, 2);
+	AddRoad(0, 400, 50, -3, 0, true, dist3);
 	AddStraight(100, true, distM);
+	//AddCurve(85, -1.5, false, dist6, 1);
+
+	//AddStraight(100, false, dist7);
+	//AddStraight(50, false, dist5);
+	//AddStraight(50, false, dist5);
+	//AddStraight(20, false, dist3);
+	//AddStraight(100, false, dist3);
+	//AddCurve(100, -3, true, dist3);
+	//AddStraight(100, true, distM);
 
 	trackLength = (int)(lines.size() * segmentL);
 
@@ -80,7 +101,7 @@ bool Road::InitRoad()
 bool Road::CleanUp()
 {
 	LOG("Unloading level scene");
-	/*** TODO !!***/
+	//TODO
 
 	return true;
 }
@@ -161,7 +182,7 @@ void Road::RenderRoad(float time)
 		sumX += difX;
 		difX += l->curve;
 
-		if ((l->p1.zCamera <= cameraDistance) || (l->p2.yScreen - SCREEN_Y_OFFSET >= maxY))
+		if ((l->p1.zCamera <= cameraDistance) || (l->p2.yScreen >= maxY))
 			continue;
 
 		short x1 = (short)l->p1.xScreen;
@@ -181,8 +202,6 @@ void Road::RenderRoad(float time)
 		App->renderer->DrawPoly4(0, y1, SCREEN_WIDTH, y1, SCREEN_WIDTH, y2, 0, y2, sand);
 		App->renderer->DrawPoly4(x1 - w1, y1, x1 + w1, y1, x2 + w2, y2, x2 - w2, y2, road);
 		App->renderer->DrawPoly4(x11 - w11, y11, x11 + w11, y11, x21 + w21, y21, x21 - w21, y21, road);
-		/*if (l == playerLine)
-			App->renderer->DrawPoly4(x11 - w11, y11, x11 + w11, y11, x21 + w21, y21, x21 - w21, y21, rumble);*/
 
 		App->renderer->DrawPoly4(x1 - w1 - (int)(w1 / 7), y1, x1 + w1 + (int)(w1 / 7), y1, x2 + w2 + (int)(w2 / 7), y2, x2 - w2 - (int)(w2 / 7), y2, rumble);
 		App->renderer->DrawPoly4(x11 - w11 - (int)(w11 / 7), y11, x11 + w11 + (int)(w11 / 7), y11, x21 + w21 + (int)(w21 / 7), y21, x21 - w21 - (int)(w21 / 7), y21, rumble);
@@ -282,12 +301,12 @@ void Road::AddStraight(int num, bool mirror, int distance)
 	AddRoad(num, num, num, 0, 0, mirror, distance);
 }
 
-void Road::AddCurve(int num, float curve, bool mirror, int distance)
+void Road::AddCurve(int num, float curve, bool mirror, int distance, int length)
 {
-	AddRoad(num, num, num, curve, 0, mirror, distance);
+	AddRoad(num, num*length, num, curve, 0, mirror, distance);
 }
 
-void Road::AddHill(int num, float y, int distance)
+void Road::AddHill(int num, float y, int distance, int length)
 {
-	AddRoad(num, num, num, 0, y, false, distance);
+	AddRoad(num, num*length, num, 0, y, false, distance);
 }
