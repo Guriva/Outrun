@@ -1,6 +1,9 @@
 #ifndef __LINE_H__
 #define __LINE_H__
 
+#include <vector>
+#include "Road.h"
+
 struct PointLine {
 	float xCamera, yCamera, zCamera;
 	float xWorld, yWorld, zWorld;
@@ -23,7 +26,8 @@ public:
 	PointLine p11, p21;
 	bool light, mirror;
 	float curve, distance;
-
+	vector<Prop*> lineProps;
+	vector<float> offsets;
 };
 
 #endif // __LINE_H__

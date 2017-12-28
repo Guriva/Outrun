@@ -38,6 +38,109 @@ Road::Road()
 Road::~Road()
 {}
 
+bool Road::Start()
+{
+	AddFlagmanAnim();
+	man1 = new Prop();
+	man1->animLeft.frames.push_back({ 1109, 296, 28, 61 });
+	man1->animRight.frames.push_back({ 1, 105, 28, 61 });
+	man2 = new Prop();
+	man2->animLeft.frames.push_back({ 1080, 296, 28, 61 });
+	man2->animRight.frames.push_back({ 30, 105, 28, 61 });
+	man3 = new Prop();
+	man3->animLeft.frames.push_back({ 1056, 296, 23, 62 });
+	man3->animRight.frames.push_back({ 59, 105, 23, 62 });
+	man4 = new Prop();
+	man4->animLeft.frames.push_back({ 1032, 296, 23, 61 });
+	man4->animRight.frames.push_back({ 83, 105, 23, 61 });
+	man5 = new Prop();
+	man5->animLeft.frames.push_back({ 982, 296, 20, 63 });
+	man5->animRight.frames.push_back({ 136, 105, 20, 63 });
+	cameraman = new Prop();
+	cameraman->animLeft.frames.push_back({ 107, 105, 28, 60 });
+	cameraman->animRight.frames.push_back({ 1003, 296, 28, 60 });
+	musicman = new Prop();
+	musicman->animLeft.frames.push_back({ 215, 105, 34, 35 });
+	musicman->animRight.frames.push_back({ 215, 105, 34, 35 });
+	woman1 = new Prop();
+	woman1->animLeft.frames.push_back({ 965, 296, 16, 54 });
+	woman1->animRight.frames.push_back({ 157, 105, 16, 54 });
+	woman2 = new Prop();
+	woman2->animLeft.frames.push_back({ 174, 105, 15, 56 });
+	woman2->animRight.frames.push_back({ 949, 296, 15, 56 });
+	woman3 = new Prop();
+	woman3->animLeft.frames.push_back({ 190, 105, 24, 57 });
+	woman3->animRight.frames.push_back({ 924, 296, 24, 57 });
+	sign75 = new Prop();
+	sign75->animLeft.frames.push_back({ 215, 141, 34, 27 });
+	sign75->animRight.frames.push_back({ 215, 141, 34, 27 });
+	trafficLight = new Prop();
+	trafficLight->animLeft.frames.push_back({ 250, 105, 74, 128 });
+	trafficLight->animLeft.frames.push_back({ 127, 296, 74, 128 });
+	trafficLight->animLeft.frames.push_back({ 202, 296, 74, 128 });
+	trafficLight->animLeft.frames.push_back({ 277, 296, 74 ,128 });
+	slow = new Prop();
+	slow->animLeft.frames.push_back({ 449, 105, 60, 112 });
+	slow->animRight.frames.push_back({ 388, 105, 60, 112 });
+	curveSlow = new Prop();
+	curveSlow->animLeft.frames.push_back({ 510, 105, 60, 112 });
+	curveSlow->animRight.frames.push_back({ 572, 105, 60, 112 });
+	house1 = new Prop();
+	house1->animLeft.frames.push_back({ 632, 105, 120, 86 });
+	house1->animRight.frames.push_back({ 632, 105, 120, 86 });
+	house2 = new Prop();
+	house2->animLeft.frames.push_back({ 753, 105, 120, 86 });
+	house2->animRight.frames.push_back({ 753, 105, 120, 86 });
+	house3 = new Prop();
+	house3->animLeft.frames.push_back({ 874, 105, 120, 86 });
+	house3->animRight.frames.push_back({ 874, 105, 120, 86 });
+	house4 = new Prop();
+	house4->animLeft.frames.push_back({ 582, 296, 116, 64 });
+	house4->animRight.frames.push_back({ 582, 296, 116, 64 });
+	water = new Prop();
+	water->animLeft.frames.push_back({ 127, 425, 244, 32 });
+	water->animLeft.frames.push_back({ 127, 458, 244, 32 });
+	water->animLeft.speed = 0.1f;
+	water->animRight.frames.push_back({ 1, 169, 244, 32 });
+	water->animRight.frames.push_back({ 1, 202, 244, 32 });
+	water->animRight.speed = 0.1f;
+	palm1 = new Prop();
+	palm1->animLeft.frames.push_back({ 924, 360, 153, 167 });
+	palm1->animRight.frames.push_back({ 995, 105, 153, 167 });
+	palm2 = new Prop();
+	palm2->animLeft.frames.push_back({ 453, 296, 128, 79 });
+	palm2->animRight.frames.push_back({ 453, 296, 128, 79 });
+	start = new Prop();
+	start->animLeft.frames.push_back({ 1, 234, 472, 61 });
+	start->animRight.frames.push_back({ 1, 234, 472, 61 });
+	people1 = new Prop();
+	people1->animLeft.frames.push_back({ 474, 230, 188, 65 });
+	people1->animRight.frames.push_back({ 474, 230, 188, 65 });
+	surf1 = new Prop();
+	surf1->animLeft.frames.push_back({ 780, 209, 51, 86 });
+	surf1->animRight.frames.push_back({ 780, 209, 51, 86 });
+	surf2 = new Prop();
+	surf2->animLeft.frames.push_back({ 832, 209, 51, 86 });
+	surf2->animRight.frames.push_back({ 832, 209, 51, 86 });
+	surf3 = new Prop();
+	surf3->animLeft.frames.push_back({ 884, 209, 51, 86 });
+	surf3->animRight.frames.push_back({ 884, 209, 51, 86 });
+	panel1 = new Prop();
+	panel1->animLeft.frames.push_back({ 1, 296, 125, 169 });
+	panel1->animRight.frames.push_back({ 1, 296, 125, 169 });
+	panel2 = new Prop();
+	panel2->animLeft.frames.push_back({ 352, 296, 100, 101 });
+	panel2->animRight.frames.push_back({ 352, 296, 100, 101 });
+	panel3 = new Prop();
+	panel3->animLeft.frames.push_back({ 663, 215, 116, 80 });
+	panel3->animRight.frames.push_back({ 663, 215, 116, 80 });
+	vulturesign = new Prop();
+	vulturesign->animLeft.frames.push_back({ 699, 296, 224, 152 });
+	vulturesign->animRight.frames.push_back({ 699, 296, 224, 152 });
+
+	return true;
+}
+
 // Load assets
 bool Road::InitRoad()
 {
@@ -45,7 +148,7 @@ bool Road::InitRoad()
 
 	//Load textures
 	layout = App->textures->Load("Textures/Level/layoutLevel.png");
-
+	sprites = App->textures->Load("Textures/Level/spriteslvl1.png");
 	//Create Road
 
 	AddStraight(20, false, dist8);
@@ -91,6 +194,10 @@ bool Road::InitRoad()
 	//AddStraight(100, false, dist3);
 	//AddCurve(100, -3, true, dist3);
 	//AddStraight(100, true, distM);
+
+	//Add elements to each line
+
+
 
 	trackLength = (int)(lines.size() * segmentL);
 
@@ -222,8 +329,122 @@ void Road::RenderRoad(float time)
 		maxY = (int)(l->p2.yScreen);
 	}
 
+	//Draw cars and sprites
+	for (int n = (int)(drawDistance - 1); n > 0; --n)
+	{
+		l = lines[(baseLine->index + n) % lines.size()];
+
+		for (int i = 0; i < l->lineProps.size(); ++i)
+		{
+
+		}
+	}
+
 	//Render layout
 	App->renderer->Blit(layout, (int)(SCREEN_WIDTH / 2), (int)(SCREEN_HEIGHT / 2), nullptr, 1.f, { 3.2f, 3.43f }, { 0.5f, 0.5f });
+}
+
+void Road::ActivateAnims()
+{
+	//Activate animations of flagmen and light
+}
+
+void Road::AddFlagmanAnim()
+{
+	flagman = new Prop();
+	flagman->animLeft.frames.push_back({ 1, 1, 81, 103 });
+	for (int i = 0; i < 12; ++i)
+		flagman->animLeft.frames.push_back({ 83, 1, 81, 103 });
+	flagman->animLeft.frames.push_back({ 165, 1, 81, 103 });
+
+	flagman->animLeft.frames.push_back({ 247, 1, 81, 103 });
+	flagman->animLeft.frames.push_back({ 329, 1, 81, 103 });
+	flagman->animLeft.frames.push_back({ 411, 1, 81, 103 });
+	flagman->animLeft.frames.push_back({ 493, 1, 81, 103 });
+	flagman->animLeft.frames.push_back({ 575, 1, 81, 103 });
+	flagman->animLeft.frames.push_back({ 657, 1, 81, 103 });
+	flagman->animLeft.frames.push_back({ 1, 1, 81, 103 });
+
+	for (int i = 0; i < 4; ++i)
+	{
+		flagman->animLeft.frames.push_back({ 739, 1, 81, 103 });
+		flagman->animLeft.frames.push_back({ 247, 1, 81, 103 });
+		flagman->animLeft.frames.push_back({ 329, 1, 81, 103 });
+		flagman->animLeft.frames.push_back({ 411, 1, 81, 103 });
+		flagman->animLeft.frames.push_back({ 493, 1, 81, 103 });
+		flagman->animLeft.frames.push_back({ 575, 1, 81, 103 });
+		flagman->animLeft.frames.push_back({ 657, 1, 81, 103 });
+		flagman->animLeft.frames.push_back({ 1, 1, 81, 103 });
+	}
+
+	for (int i = 0; i < 2; ++i)
+	{
+		flagman->animLeft.frames.push_back({ 821, 1, 81, 103 });
+		flagman->animLeft.frames.push_back({ 821, 1, 81, 103 });
+		flagman->animLeft.frames.push_back({ 903, 1, 81, 103 });
+		flagman->animLeft.frames.push_back({ 903, 1, 81, 103 });
+	}
+
+	flagman->animLeft.frames.push_back({ 247, 1, 81, 103 });
+	flagman->animLeft.frames.push_back({ 329, 1, 81, 103 });
+	flagman->animLeft.frames.push_back({ 411, 1, 81, 103 });
+	flagman->animLeft.frames.push_back({ 493, 1, 81, 103 });
+	flagman->animLeft.frames.push_back({ 575, 1, 81, 103 });
+	flagman->animLeft.frames.push_back({ 657, 1, 81, 103 });
+	flagman->animLeft.frames.push_back({ 1, 1, 81, 103 });
+
+	for (int i = 0; i < 2; ++i)
+	{
+		flagman->animLeft.frames.push_back({ 739, 1, 81, 103 });
+		flagman->animLeft.frames.push_back({ 247, 1, 81, 103 });
+		flagman->animLeft.frames.push_back({ 329, 1, 81, 103 });
+		flagman->animLeft.frames.push_back({ 411, 1, 81, 103 });
+		flagman->animLeft.frames.push_back({ 493, 1, 81, 103 });
+		flagman->animLeft.frames.push_back({ 575, 1, 81, 103 });
+		flagman->animLeft.frames.push_back({ 657, 1, 81, 103 });
+		flagman->animLeft.frames.push_back({ 1, 1, 81, 103 });
+	}
+
+	for (int i = 0; i < 2; ++i)
+	{
+		flagman->animLeft.frames.push_back({ 821, 1, 81, 103 });
+		flagman->animLeft.frames.push_back({ 821, 1, 81, 103 });
+		flagman->animLeft.frames.push_back({ 903, 1, 81, 103 });
+		flagman->animLeft.frames.push_back({ 903, 1, 81, 103 });
+	}
+
+	flagman->animLeft.frames.push_back({ 247, 1, 81, 103 });
+	flagman->animLeft.frames.push_back({ 329, 1, 81, 103 });
+	flagman->animLeft.frames.push_back({ 411, 1, 81, 103 });
+	flagman->animLeft.frames.push_back({ 493, 1, 81, 103 });
+	flagman->animLeft.frames.push_back({ 575, 1, 81, 103 });
+	flagman->animLeft.frames.push_back({ 657, 1, 81, 103 });
+	flagman->animLeft.frames.push_back({ 1, 1, 81, 103 });
+
+	flagman->animLeft.frames.push_back({ 739, 1, 81, 103 });
+	flagman->animLeft.frames.push_back({ 247, 1, 81, 103 });
+	flagman->animLeft.frames.push_back({ 329, 1, 81, 103 });
+	flagman->animLeft.frames.push_back({ 411, 1, 81, 103 });
+	flagman->animLeft.frames.push_back({ 493, 1, 81, 103 });
+	flagman->animLeft.frames.push_back({ 575, 1, 81, 103 });
+	flagman->animLeft.frames.push_back({ 657, 1, 81, 103 });
+	flagman->animLeft.frames.push_back({ 1, 1, 81, 103 });
+
+	for (int i = 0; i < 3; ++i)
+	{
+		flagman->animLeft.frames.push_back({ 821, 1, 81, 103 });
+		flagman->animLeft.frames.push_back({ 821, 1, 81, 103 });
+		flagman->animLeft.frames.push_back({ 903, 1, 81, 103 });
+		flagman->animLeft.frames.push_back({ 903, 1, 81, 103 });
+	}
+	flagman->animLeft.frames.push_back({ 903, 1, 81, 103 });
+	flagman->animLeft.frames.push_back({ 903, 1, 81, 103 });
+	flagman->animLeft.frames.push_back({ 903, 1, 81, 103 });
+	flagman->animLeft.frames.push_back({ 903, 1, 81, 103 });
+	flagman->animLeft.frames.push_back({ 985, 1, 81, 103 });
+	flagman->animLeft.frames.push_back({ 1067, 1, 81, 103 });
+
+	flagman->animLeft.speed = 0.f;
 }
 
 void Road::AddSegment(float curve, float y, bool mirror, float dist)
@@ -279,19 +500,19 @@ void Road::AddRoad(int enter, int hold, int leave, float curve, float y, bool mi
 	for (n = 0; n < enter; ++n)
 	{
 		dist += (int)distPerc;
-		AddSegment(EaseIn(0, curve, (float)n / enter), EaseInOut(firstY, endY, (float)n / total), mirror, (int)dist);
+		AddSegment(EaseIn(0, curve, (float)n / enter), EaseInOut(firstY, endY, (float)n / total), mirror, dist);
 	}
 		
 	for (n = 0; n < hold; ++n)
 	{
 		dist += (int)distPerc;
-		AddSegment(curve, EaseInOut(firstY, endY, (float)(enter + n) / total), mirror, (int)dist);
+		AddSegment(curve, EaseInOut(firstY, endY, (float)(enter + n) / total), mirror, dist);
 	}
 		
 	for (n = 0; n < leave; ++n)
 	{
 		dist += (int)distPerc;
-		AddSegment(EaseInOut(curve, 0, (float)n / leave), EaseInOut(firstY, endY, (float)(enter + hold + n) / total), mirror, (int)dist);
+		AddSegment(EaseInOut(curve, 0, (float)n / leave), EaseInOut(firstY, endY, (float)(enter + hold + n) / total), mirror, dist);
 	}
 		
 }

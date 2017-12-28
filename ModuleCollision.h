@@ -11,7 +11,8 @@
 enum CType {
 	NONE = -1,
 	PLAYER,
-	PARTICLE,
+	PROP,
+	CAR,
 
 	MAX_NUM_COLLIDERS
 };
@@ -57,8 +58,9 @@ private:
 	std::list<Collider*> colliders;
 	bool debug = false;
 
-	bool collisionMatrix[MAX_NUM_COLLIDERS][MAX_NUM_COLLIDERS] = { false, true,
-		true, false };
+	bool collisionMatrix[MAX_NUM_COLLIDERS][MAX_NUM_COLLIDERS] = { false, true, true,
+																   true, false, false,
+																   true, false, false};
 };
 
 #endif // __ModuleCollision_H__

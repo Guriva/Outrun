@@ -11,6 +11,13 @@ class Line;
 class Road;
 struct SDL_Texture;
 
+enum SceneLevelState
+{
+	COUNTDOWN,
+	RUNNING,
+	FINISH
+};
+
 class ModuleSceneLevel : public Module
 {
 public:
@@ -22,9 +29,10 @@ public:
 	bool CleanUp();
 
 private:
-	float time;
+	float time, countdownTimer;
 	Road* road;
 	clock_t tick_timer;
+	SceneLevelState actualState;
 };
 
 #endif // __MODULESCENELEVEL_H__

@@ -23,6 +23,13 @@ enum DirPlayer {
 	MAXDIR
 };
 
+enum StatePlayer
+{
+	PREPARING,
+	ONROAD,
+	ENDING
+};
+
 class ModulePlayer : public Module
 {
 public:
@@ -32,6 +39,8 @@ public:
 	bool Start();
 	update_status Update();
 	bool CleanUp();
+	void UpdatePlayerPreparing();
+	void UpdatePlayerOnRoad();
 	void OnCollision(Collider* c1, Collider* c2);
 
 public:
@@ -39,8 +48,12 @@ public:
 	float thresholdX, varThresholdX, forceX;
 	InclPlayer inclination;
 	DirPlayer direction;
+	StatePlayer playerState;
 	SDL_Texture* car = nullptr;
+	SDL_Texture* carPrep = nullptr;
+	SDL_Texture* carEffects = nullptr;
 	Animation* current_animation = nullptr;
+	Animation preparingAnim;
 	Animation straight;
 	Animation straightleft;
 	Animation straightleftMost;
@@ -57,7 +70,9 @@ public:
 	Animation downright;
 	Animation downrightMost;
 	Animation* carStates[MAXINCL][MAXDIR];
+	Animation carSmoke;
 	clock_t tick_timer;
+	Collider *col;
 };
 
 #endif

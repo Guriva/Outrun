@@ -23,6 +23,15 @@ ModulePlayer::ModulePlayer(bool active) : Module(active)
 	lowAccel = maxSpeed/7.0f;
 	forceX = 0.3f;
 
+	preparingAnim.frames.push_back({ 1, 1, 170, 41 });
+	preparingAnim.frames.push_back({ 1, 1, 170, 41 });
+	preparingAnim.frames.push_back({ 173, 1, 170, 41 });
+	preparingAnim.frames.push_back({ 345, 1, 170, 41 });
+	preparingAnim.frames.push_back({ 517, 1, 170, 41 });
+	preparingAnim.frames.push_back({ 689, 1, 170, 41 });
+	preparingAnim.loop = false;
+	preparingAnim.speed = 0.f;
+
 	straight.frames.push_back({ 165, 91, 81, 44 });
 	straight.frames.push_back({ 165, 136, 81, 44 });
 	straight.speed = 0.f;
@@ -111,6 +120,9 @@ bool ModulePlayer::Start()
 	LOG("Loading player");
 
 	car = App->textures->Load("Textures/Level/ferrari.png");
+	carPrep = App->textures->Load("Textures/Level/introCar.png");
+	carEffects = App->textures->Load("Textures/Level/effectsCar.png");
+	col = App->collision->AddCollider({ (int)(SCREEN_WIDTH / 2) + 5, (int)(SCREEN_HEIGHT / 2) + 314, 81, 44 }, PLAYER, nullptr);
 
 	return true;
 }
@@ -126,7 +138,42 @@ bool ModulePlayer::CleanUp()
 // Update: draw background
 update_status ModulePlayer::Update()
 {
-	time = (float)((clock() - tick_timer) / (double) CLOCKS_PER_SEC);
+	switch (playerState)
+	{
+	case PREPARING:
+		UpdatePlayerPreparing();
+		break;
+
+	case ONROAD:
+		UpdatePlayerOnRoad();
+		break;
+
+	case ENDING:
+		break;
+	}
+
+	return UPDATE_CONTINUE;
+}
+
+void ModulePlayer::UpdatePlayerPreparing()
+{
+	time = (float)((clock() - tick_timer) / (double)CLOCKS_PER_SEC);
+	tick_timer = clock();
+	if (preparingAnim.speed > 0.f)
+	{
+		App->renderer->Blit(carPrep, (int)(SCREEN_WIDTH / 2) - 30, (int)(SCREEN_HEIGHT / 2) + 377, &(preparingAnim.GetCurrentFrame()), 1.0f, { 3.f, 3.f }, { 0.5f, 1.f });
+	}
+	else
+	{
+		App->renderer->Blit(carPrep, (int)(SCREEN_WIDTH / 2) + 3, (int)(SCREEN_HEIGHT / 2) + 377, &(preparingAnim.GetCurrentFrame()), 1.0f, { 3.f, 3.f }, { 0.5f, 1.f });
+	}
+	
+
+}
+
+void ModulePlayer::UpdatePlayerOnRoad()
+{
+	time = (float)((clock() - tick_timer) / (double)CLOCKS_PER_SEC);
 	tick_timer = clock();
 	//Check input for speed
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT && speed < maxSpeed)
@@ -154,7 +201,7 @@ update_status ModulePlayer::Update()
 		if (thresholdX < 2.f)
 			thresholdX += varThresholdX;
 	}
-	
+
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_IDLE && App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_IDLE)
 	{
 		if (thresholdX < 1.f)
@@ -205,9 +252,7 @@ update_status ModulePlayer::Update()
 
 	current_animation = carStates[inclination][direction];
 
-	App->renderer->Blit(car, (int)(SCREEN_WIDTH / 2) + 5, (int)(SCREEN_HEIGHT / 2) + 314, &(current_animation->GetCurrentFrame()), 1.0f, { 3,3 }, {0.5f,0.5f});
-
-	return UPDATE_CONTINUE;
+	App->renderer->Blit(car, (int)(SCREEN_WIDTH / 2) + 5, (int)(SCREEN_HEIGHT / 2) + 314, &(current_animation->GetCurrentFrame()), 1.0f, { 3,3 }, { 0.5f,0.5f });
 }
 
 void ModulePlayer::OnCollision(Collider* c1, Collider* c2)

@@ -9,7 +9,9 @@ Line::Line()
 	p1.xWorld = p1.yWorld = p1.zWorld = p11.xWorld = p11.yWorld = p11.zWorld = 0;
 	p2.xWorld = p2.yWorld = p2.zWorld = p21.xWorld = p21.yWorld = p21.zWorld = 0;
 	curve = distance = 0;
-	mirror = false;
+	light = mirror = false;
+	lineProps.reserve(2);
+	offsets.reserve(2);
 }
 
 Line::~Line()
