@@ -1,5 +1,8 @@
+#include "Application.h"
 #include "Globals.h"
 #include "Line.h"
+#include "ModulePlayer.h"
+#include "ModuleRender.h"
 #include <cmath>
 
 using namespace std;
@@ -8,10 +11,11 @@ Line::Line()
 {
 	p1.xWorld = p1.yWorld = p1.zWorld = p11.xWorld = p11.yWorld = p11.zWorld = 0;
 	p2.xWorld = p2.yWorld = p2.zWorld = p21.xWorld = p21.yWorld = p21.zWorld = 0;
-	curve = distance = 0;
+	curve = distance = clip = 0.f;
 	light = mirror = false;
 	lineProps.reserve(2);
-	offsets.reserve(2);
+	offsetsX.reserve(2);
+	offsetsY.reserve(2);
 }
 
 Line::~Line()
@@ -27,4 +31,32 @@ void Line::projection(PointLine &p, int cameraX, int cameraY, int cameraZ, float
 	p.xScreen = (SCREEN_WIDTH / 2) + (SCREEN_WIDTH / 2) * p.xCamera * p.scale;
 	p.yScreen = (SCREEN_HEIGHT / 2) - (SCREEN_HEIGHT / 2) * p.yCamera * p.scale;
 	p.wScreen = p.scale * ROAD_WIDTH * SCREEN_WIDTH / 2;
+}
+
+void Line::renderProps(SDL_Texture* text, int i, float scale)
+{
+	float spriteX = p1.xScreen + (offsetsX[i] * p1.scale * ROAD_WIDTH * SCREEN_WIDTH / 2);
+	float spriteY = p1.yScreen + (offsetsY[i] * p1.scale * 1000.f * SCREEN_HEIGHT / 2);
+	SDL_Rect rectDest;
+
+	if (offsetsX[i] >= 0)
+		rectDest = lineProps[i]->animRight.GetCurrentFrame();
+	else
+		rectDest = lineProps[i]->animLeft.GetCurrentFrame();
+
+	float destW = (rectDest.w * p1.scale * SCREEN_WIDTH / 2) * ((0.3f * (1.f / 170.f)) * ROAD_WIDTH);
+	float destH = (rectDest.h * p1.scale * SCREEN_WIDTH / 2) * ((0.3f * (1.f / 170.f)) * ROAD_WIDTH);
+		
+	//If has to be clipped
+	if (clip < spriteY)
+	{
+		float clipH = MAX(0, clip - (spriteY - (destH*3.43f)));
+		float clipHPerc = (clipH / (destH*3.43f));
+		rectDest.h = rectDest.h * clipHPerc;
+		spriteY = clip;
+		destH *= clipHPerc;
+	}
+
+	if (rectDest.h > 0)
+		App->renderer->Blit(text, spriteX, spriteY + SCREEN_Y_OFFSET, &(rectDest), 1.f, { (destW / rectDest.w)*3.2f, (destH / rectDest.h)*3.43f }, lineProps[i]->pivotR);
 }

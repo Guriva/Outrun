@@ -22,7 +22,7 @@ Road::Road()
 	cameraDistance = 1 / tan((float)((fov / 2.f) * M_PI / 180.0f));
 	position = 0;
 	playerX = 0;
-	playerZ = (int)(cameraHeight * cameraDistance) + 260;
+	playerZ = (int)(cameraHeight * cameraDistance) + 241;
 	playerRoad = LEFTROAD;
 	//Set distances for road lanes
 	dist3 = 0;
@@ -77,8 +77,17 @@ bool Road::Start()
 	trafficLight = new Prop();
 	trafficLight->animLeft.frames.push_back({ 250, 105, 74, 128 });
 	trafficLight->animLeft.frames.push_back({ 127, 296, 74, 128 });
+	trafficLight->animLeft.frames.push_back({ 127, 296, 74, 128 });
+	trafficLight->animLeft.frames.push_back({ 127, 296, 74, 128 });
+	trafficLight->animLeft.frames.push_back({ 202, 296, 74, 128 });
+	trafficLight->animLeft.frames.push_back({ 202, 296, 74, 128 });
 	trafficLight->animLeft.frames.push_back({ 202, 296, 74, 128 });
 	trafficLight->animLeft.frames.push_back({ 277, 296, 74 ,128 });
+	trafficLight->animLeft.frames.push_back({ 277, 296, 74 ,128 });
+	trafficLight->animLeft.frames.push_back({ 277, 296, 74 ,128 });
+	trafficLight->animLeft.loop = false;
+	trafficLight->animLeft.speed = 0.f;
+	trafficLight->animRight = trafficLight->animLeft;
 	slow = new Prop();
 	slow->animLeft.frames.push_back({ 449, 105, 60, 112 });
 	slow->animRight.frames.push_back({ 388, 105, 60, 112 });
@@ -113,6 +122,8 @@ bool Road::Start()
 	start = new Prop();
 	start->animLeft.frames.push_back({ 1, 234, 472, 61 });
 	start->animRight.frames.push_back({ 1, 234, 472, 61 });
+	start->pivotL = { 1.f, 1.f };
+	start->pivotR = { 0.f, 1.f };
 	people1 = new Prop();
 	people1->animLeft.frames.push_back({ 474, 230, 188, 65 });
 	people1->animRight.frames.push_back({ 474, 230, 188, 65 });
@@ -196,7 +207,24 @@ bool Road::InitRoad()
 	//AddStraight(100, true, distM);
 
 	//Add elements to each line
+	/*AddProp(5, woman3, -0.63f, 0.f);
+	AddProp(5, musicman, -0.3f, 0.f);
+	AddProp(5, cameraman, -0.5f, 0.f);
+	AddProp(5, woman1, 0.5f, 0.f);
 
+	AddProp(6, man1, -0.7f, 0.f);
+	AddProp(6, man3, -0.5f, 0.f);
+	AddProp(6, flagman, -0.3f, 0.f);
+	AddProp(9, start, -1.25f, -1.4f);
+	AddProp(9, trafficLight, -0.8f, 0.f);*/
+	//AddProp(9, palm1, -0.8f, 0.f);
+
+	/*for (int i = 3; i < 60; i += 3)
+	{
+		AddProp(i, palm1, -0.8f, 0.f);
+		AddProp(i, palm1, 0.8f, 0.f);
+	}*/
+	AddProp(240, palm1, -0.8f, 0.f);
 
 
 	trackLength = (int)(lines.size() * segmentL);
@@ -209,6 +237,37 @@ bool Road::CleanUp()
 {
 	LOG("Unloading level scene");
 	//TODO
+	RELEASE(flagman);
+	RELEASE(man1);
+	RELEASE(man2);
+	RELEASE(man3);
+	RELEASE(man4);
+	RELEASE(man5);
+	RELEASE(cameraman);
+	RELEASE(musicman);
+	RELEASE(woman1);
+	RELEASE(woman2);
+	RELEASE(woman3);
+	RELEASE(sign75);
+	RELEASE(trafficLight);
+	RELEASE(slow);
+	RELEASE(curveSlow);
+	RELEASE(house1);
+	RELEASE(house2);
+	RELEASE(house3);
+	RELEASE(house4);
+	RELEASE(water);
+	RELEASE(palm1);
+	RELEASE(palm2);
+	RELEASE(start);
+	RELEASE(people1);
+	RELEASE(surf1);
+	RELEASE(surf2);
+	RELEASE(surf3);
+	RELEASE(panel1);
+	RELEASE(panel2);
+	RELEASE(panel3);
+	RELEASE(vulturesign);
 
 	return true;
 }
@@ -224,7 +283,6 @@ void Road::RenderRoad(float time)
 
 	//Calculate deviation on x for curves
 	Line* baseLine = lines[(int)(position / segmentL) % lines.size()];
-	int maxY = SCREEN_HEIGHT;
 	float percent = (float)((position % (int)segmentL) / segmentL);
 	float difX = -(baseLine->curve * percent);
 	float sumX = 0;
@@ -255,6 +313,9 @@ void Road::RenderRoad(float time)
 		break;
 	}
 
+	playerLine->projection(playerLine->p1, (int)((playerX * ROAD_WIDTH) - sumX), (int)((float)cameraHeight + playerY), position, cameraDistance);
+
+	float maxY = playerLine->p1.yScreen;
 	roadDistance = (int)playerLine->distance;
 
 	//Render sky background
@@ -266,6 +327,7 @@ void Road::RenderRoad(float time)
 
 	for (int n = 0; n < drawDistance; n++) {
 		l = lines[(baseLine->index + n) % lines.size()];
+		l->clip = maxY;
 
 		l->light ? sand = { 230, 214, 197, 255 } : sand = { 239, 222, 206, 255 };
 		l->light ? road = { 156, 156, 156, 255 } : road = { 148, 148, 148, 255 };
@@ -326,7 +388,7 @@ void Road::RenderRoad(float time)
 		App->renderer->DrawPoly4(x1 - w1 + (w1 / 18)*2 + (w1 * 16 / 27), y1, x1 + w1 - (w1 / 18)*2 - (w1 * 16 / 27), y1, x2 + w2 - (w2 / 18)*2 - (w2 * 16 / 27), y2, x2 - w2 + (w2 / 18)*2 + (w2 * 16 / 27), y2, road);
 		App->renderer->DrawPoly4(x11 - w11 + (w11 / 18) * 2 + (w11 * 16 / 27), y11, x11 + w11 - (w11 / 18) * 2 - (w11 * 16 / 27), y11, x21 + w21 - (w21 / 18) * 2 - (w21 * 16 / 27), y21, x21 - w21 + (w21 / 18) * 2 + (w21 * 16 / 27), y21, road);
 
-		maxY = (int)(l->p2.yScreen);
+		maxY = l->p2.yScreen;
 	}
 
 	//Draw cars and sprites
@@ -336,7 +398,8 @@ void Road::RenderRoad(float time)
 
 		for (int i = 0; i < l->lineProps.size(); ++i)
 		{
-
+			Prop* p = l->lineProps[i];
+			l->renderProps(sprites, i, ((drawDistance-1) - n) / (drawDistance-1));
 		}
 	}
 
@@ -347,6 +410,10 @@ void Road::RenderRoad(float time)
 void Road::ActivateAnims()
 {
 	//Activate animations of flagmen and light
+	flagman->animLeft.speed = 0.04f;
+	flagman->animRight.speed = 0.04f;
+	trafficLight->animLeft.speed = 0.021f;
+	trafficLight->animRight.speed = 0.021f;
 }
 
 void Road::AddFlagmanAnim()
@@ -445,6 +512,10 @@ void Road::AddFlagmanAnim()
 	flagman->animLeft.frames.push_back({ 1067, 1, 81, 103 });
 
 	flagman->animLeft.speed = 0.f;
+	flagman->animLeft.loop = false;
+	flagman->pivotL = { 0.58f, 0.91f };
+	flagman->pivotR = { 0.58f, 0.91f };
+	flagman->animRight = flagman->animLeft;
 }
 
 void Road::AddSegment(float curve, float y, bool mirror, float dist)
@@ -530,4 +601,14 @@ void Road::AddCurve(int num, float curve, bool mirror, int distance, int length)
 void Road::AddHill(int num, float y, int distance, int length)
 {
 	AddRoad(num, num*length, num, 0, y, false, distance);
+}
+
+void Road::AddProp(int line, Prop* p, float offsetX, float offsetY)
+{
+	if (line < lines.size())
+	{
+		lines[line]->lineProps.push_back(p);
+		lines[line]->offsetsX.push_back(offsetX);
+		lines[line]->offsetsY.push_back(offsetY);
+	}
 }

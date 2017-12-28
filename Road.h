@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "Animation.h"
+#include "Point.h"
 #include <vector>
 
 using namespace std;
@@ -20,7 +21,9 @@ struct Prop
 {
 	Animation animLeft;
 	Animation animRight;
-	float width;
+	fPoint pivotL;
+	fPoint pivotR;
+	Prop() : pivotL({ 0.f, 1.f }), pivotR({ 1.f, 1.f }) {}
 };
 
 class Road
@@ -42,6 +45,7 @@ private:
 	void AddStraight(int num, bool mirror, int distance);
 	void AddCurve(int num, float curve, bool mirror, int distance, int length);
 	void AddHill(int num, float y, int distance, int length);
+	void AddProp(int line, Prop* p, float offsetX, float offsetY);
 
 private:
 	SDL_Texture* layout = nullptr;

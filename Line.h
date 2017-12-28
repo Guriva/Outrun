@@ -19,15 +19,17 @@ public:
 	~Line();
 
 	void projection(PointLine &p, int cameraX, int cameraY, int cameraZ, float cameraD);
+	void renderProps(SDL_Texture* text, int i, float scale);
 
 public:
 	int index;
 	PointLine p1, p2;
 	PointLine p11, p21;
 	bool light, mirror;
-	float curve, distance;
+	float curve, distance, clip;
 	vector<Prop*> lineProps;
-	vector<float> offsets;
+	vector<float> offsetsX;
+	vector<float> offsetsY;
 };
 
 #endif // __LINE_H__

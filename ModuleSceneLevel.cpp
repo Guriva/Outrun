@@ -10,7 +10,7 @@ ModuleSceneLevel::ModuleSceneLevel(bool active) : Module(active)
 {
 	road = new Road();
 	actualState = COUNTDOWN;
-	countdownTimer = 5.0f;
+	countdownTimer = 0.0f;
 }
 
 ModuleSceneLevel::~ModuleSceneLevel()

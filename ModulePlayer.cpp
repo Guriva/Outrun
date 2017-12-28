@@ -252,7 +252,7 @@ void ModulePlayer::UpdatePlayerOnRoad()
 
 	current_animation = carStates[inclination][direction];
 
-	App->renderer->Blit(car, (int)(SCREEN_WIDTH / 2) + 5, (int)(SCREEN_HEIGHT / 2) + 314, &(current_animation->GetCurrentFrame()), 1.0f, { 3,3 }, { 0.5f,0.5f });
+	App->renderer->Blit(car, (int)(SCREEN_WIDTH / 2) + 5, (int)(SCREEN_HEIGHT / 2) + 314, &(current_animation->GetCurrentFrame()), 1.0f, { 3.2f,3.43f }, { 0.5f,0.5f });
 }
 
 void ModulePlayer::OnCollision(Collider* c1, Collider* c2)
