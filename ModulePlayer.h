@@ -30,6 +30,13 @@ enum StatePlayer
 	ENDING
 };
 
+enum StateWheel
+{
+	NORMAL,
+	SMOKE,
+	SAND
+};
+
 class ModulePlayer : public Module
 {
 public:
@@ -41,14 +48,19 @@ public:
 	bool CleanUp();
 	void UpdatePlayerPreparing();
 	void UpdatePlayerOnRoad();
-	void OnCollision(Collider* c1, Collider* c2);
+
+private:
+	void CheckWheels();
 
 public:
 	float speed, maxSpeed, lowAccel, highAccel, time;
 	float thresholdX, varThresholdX, forceX;
+	bool gear;
 	InclPlayer inclination;
 	DirPlayer direction;
 	StatePlayer playerState;
+	StateWheel wheelL;
+	StateWheel wheelR;
 	SDL_Texture* car = nullptr;
 	SDL_Texture* carPrep = nullptr;
 	SDL_Texture* carEffects = nullptr;
@@ -70,9 +82,11 @@ public:
 	Animation downright;
 	Animation downrightMost;
 	Animation* carStates[MAXINCL][MAXDIR];
-	Animation carSmoke;
+	Animation carSmokeL;
+	Animation carSmokeR;
+	Animation carSandL;
+	Animation carSandR;
 	clock_t tick_timer;
-	Collider *col;
 };
 
 #endif

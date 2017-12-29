@@ -10,7 +10,7 @@ ModuleSceneLevel::ModuleSceneLevel(bool active) : Module(active)
 {
 	road = new Road();
 	actualState = COUNTDOWN;
-	countdownTimer = 0.0f;
+	countdownTimer = 5.0f;
 }
 
 ModuleSceneLevel::~ModuleSceneLevel()
@@ -22,7 +22,6 @@ bool ModuleSceneLevel::Start()
 	LOG("Loading level scene");
 	tick_timer = clock();
 	App->player->Enable();
-	App->player->playerState = StatePlayer::PREPARING;
 	//App->particles->Enable();
 	road->Start();
 	road->InitRoad();

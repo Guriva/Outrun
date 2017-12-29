@@ -15,6 +15,8 @@ ModulePlayer::ModulePlayer(bool active) : Module(active)
 	tick_timer = clock();
 	inclination = STRAIGHT;
 	direction = FRONT;
+	playerState = PREPARING;
+	wheelL = wheelR = NORMAL;
 	speed = 0.f;
 	highAccel = 10.f;
 	thresholdX = 1.f;
@@ -22,6 +24,7 @@ ModulePlayer::ModulePlayer(bool active) : Module(active)
 	maxSpeed = (float)SEGMENT_LENGTH;
 	lowAccel = maxSpeed/7.0f;
 	forceX = 0.3f;
+	gear = false;
 
 	preparingAnim.frames.push_back({ 1, 1, 170, 41 });
 	preparingAnim.frames.push_back({ 1, 1, 170, 41 });
@@ -31,6 +34,30 @@ ModulePlayer::ModulePlayer(bool active) : Module(active)
 	preparingAnim.frames.push_back({ 689, 1, 170, 41 });
 	preparingAnim.loop = false;
 	preparingAnim.speed = 0.f;
+
+	carSmokeL.frames.push_back({ 1, 1, 58, 17 });
+	carSmokeL.frames.push_back({ 60, 1, 58, 17 });
+	carSmokeL.frames.push_back({ 119, 1, 58, 17 });
+	carSmokeL.frames.push_back({ 178, 1, 58, 17 });
+	carSmokeL.speed = 0.2f;
+
+	carSmokeR.frames.push_back({ 414, 1, 58, 17 });
+	carSmokeR.frames.push_back({ 355, 1, 58, 17 });
+	carSmokeR.frames.push_back({ 296, 1, 58, 17 });
+	carSmokeR.frames.push_back({ 237, 1, 58, 17 });
+	carSmokeR.speed = 0.2f;
+
+	carSandL.frames.push_back({ 1, 19, 68, 42 });
+	carSandL.frames.push_back({ 70, 19, 68, 42 });
+	carSandL.frames.push_back({ 139, 19, 68, 42 });
+	carSandL.frames.push_back({ 208, 19, 68, 42});
+	carSandL.speed = 0.2f;
+
+	carSandR.frames.push_back({ 484, 19, 68, 42 });
+	carSandR.frames.push_back({ 415, 19, 68, 42});
+	carSandR.frames.push_back({ 346, 19, 68, 42 });
+	carSandR.frames.push_back({ 277, 19, 68, 42 });
+	carSandR.speed = 0.2f;
 
 	straight.frames.push_back({ 165, 91, 81, 44 });
 	straight.frames.push_back({ 165, 136, 81, 44 });
@@ -122,7 +149,6 @@ bool ModulePlayer::Start()
 	car = App->textures->Load("Textures/Level/ferrari.png");
 	carPrep = App->textures->Load("Textures/Level/introCar.png");
 	carEffects = App->textures->Load("Textures/Level/effectsCar.png");
-	col = App->collision->AddCollider({ (int)(SCREEN_WIDTH / 2) + 5, (int)(SCREEN_HEIGHT / 2) + 314, 81, 44 }, PLAYER, nullptr);
 
 	return true;
 }
@@ -252,8 +278,33 @@ void ModulePlayer::UpdatePlayerOnRoad()
 
 	current_animation = carStates[inclination][direction];
 
-	App->renderer->Blit(car, (int)(SCREEN_WIDTH / 2) + 5, (int)(SCREEN_HEIGHT / 2) + 314, &(current_animation->GetCurrentFrame()), 1.0f, { 3.2f,3.43f }, { 0.5f,0.5f });
+	App->renderer->Blit(car, (int)(SCREEN_WIDTH / 2) + 5, (int)(SCREEN_HEIGHT / 2) + 304, &(current_animation->GetCurrentFrame()), 1.0f, { 3.2f,3.43f }, { 0.5f,0.5f });
+	CheckWheels();
 }
 
-void ModulePlayer::OnCollision(Collider* c1, Collider* c2)
-{}
+void ModulePlayer::CheckWheels()
+{
+	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT && !gear && speed < 80 && wheelL != SAND && wheelR != SAND)
+		wheelR = SMOKE;
+	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT && !gear && speed < 80 && wheelR != SAND && wheelL != SAND)
+		wheelL = SMOKE;
+
+	switch (wheelR)
+	{
+	case SMOKE:
+		App->renderer->Blit(carEffects, (int)(SCREEN_WIDTH / 2) + 30, (int)(SCREEN_HEIGHT / 2) + 380, &(carSmokeR.GetCurrentFrame()), 1.f, { 3.2f, 3.43f }, { 0.f, 1.f});
+		break;
+	case SAND:
+		App->renderer->Blit(carEffects, (int)(SCREEN_WIDTH / 2) + 30, (int)(SCREEN_HEIGHT / 2) + 380, &(carSandR.GetCurrentFrame()), 1.f, { 3.2f, 3.43f }, { 0.f, 1.f });
+		break;
+	}
+	switch (wheelL)
+	{
+	case SMOKE:
+		App->renderer->Blit(carEffects, (int)(SCREEN_WIDTH / 2) - 20, (int)(SCREEN_HEIGHT / 2) + 380, &(carSmokeL.GetCurrentFrame()), 1.f, { 3.2f, 3.43f }, { 1.f, 1.f });
+		break;
+	case SAND:
+		App->renderer->Blit(carEffects, (int)(SCREEN_WIDTH / 2) - 20, (int)(SCREEN_HEIGHT / 2) + 380, &(carSandL.GetCurrentFrame()), 1.f, { 3.2f, 3.43f }, { 1.f, 1.f });
+		break;
+	}
+}

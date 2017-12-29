@@ -23,7 +23,8 @@ struct Prop
 	Animation animRight;
 	fPoint pivotL;
 	fPoint pivotR;
-	Prop() : pivotL({ 0.f, 1.f }), pivotR({ 1.f, 1.f }) {}
+	float scale;
+	Prop() : pivotL({ 1.f, 1.f }), pivotR({ 0.f, 1.f }), scale(1.f) {}
 };
 
 class Road
@@ -45,7 +46,8 @@ private:
 	void AddStraight(int num, bool mirror, int distance);
 	void AddCurve(int num, float curve, bool mirror, int distance, int length);
 	void AddHill(int num, float y, int distance, int length);
-	void AddProp(int line, Prop* p, float offsetX, float offsetY);
+	void AddProp(unsigned int line, Prop* p, float offsetX, float offsetY);
+	void UpdateWheels();
 
 private:
 	SDL_Texture* layout = nullptr;
@@ -55,7 +57,7 @@ private:
 	int position;
 	SDL_Color sand, road, rumble, lane;
 	int trackLength;
-	float playerX;
+	float playerX, pWheelL, pWheelR;
 	int playerY, playerZ;
 	playerR playerRoad;
 
@@ -96,6 +98,7 @@ private:
 	Prop* panel1 = nullptr;
 	Prop* panel2 = nullptr;
 	Prop* panel3 = nullptr;
+	Prop* panel4 = nullptr;
 	Prop* vulturesign = nullptr;
 };
 

@@ -33,16 +33,25 @@ void Line::projection(PointLine &p, int cameraX, int cameraY, int cameraZ, float
 	p.wScreen = p.scale * ROAD_WIDTH * SCREEN_WIDTH / 2;
 }
 
-void Line::renderProps(SDL_Texture* text, int i, float scale)
+void Line::renderProps(SDL_Texture* text, int i)
 {
 	float spriteX = p1.xScreen + (offsetsX[i] * p1.scale * ROAD_WIDTH * SCREEN_WIDTH / 2);
 	float spriteY = p1.yScreen + (offsetsY[i] * p1.scale * 1000.f * SCREEN_HEIGHT / 2);
 	SDL_Rect rectDest;
+	fPoint pivot;
 
 	if (offsetsX[i] >= 0)
+	{
 		rectDest = lineProps[i]->animRight.GetCurrentFrame();
+		pivot = lineProps[i]->pivotR;
+	}
+
 	else
+	{
 		rectDest = lineProps[i]->animLeft.GetCurrentFrame();
+		pivot = lineProps[i]->pivotL;
+	}
+
 
 	float destW = (rectDest.w * p1.scale * SCREEN_WIDTH / 2) * ((0.3f * (1.f / 170.f)) * ROAD_WIDTH);
 	float destH = (rectDest.h * p1.scale * SCREEN_WIDTH / 2) * ((0.3f * (1.f / 170.f)) * ROAD_WIDTH);
@@ -50,13 +59,13 @@ void Line::renderProps(SDL_Texture* text, int i, float scale)
 	//If has to be clipped
 	if (clip < spriteY)
 	{
-		float clipH = MAX(0, clip - (spriteY - (destH*3.43f)));
-		float clipHPerc = (clipH / (destH*3.43f));
-		rectDest.h = rectDest.h * clipHPerc;
+		float clipH = MAX(0, clip - (spriteY - (destH*3.43f*lineProps[i]->scale)));
+		float clipHPerc = (clipH / (destH*3.43f*lineProps[i]->scale));
+		rectDest.h = (int)(rectDest.h * clipHPerc);
 		spriteY = clip;
 		destH *= clipHPerc;
 	}
 
 	if (rectDest.h > 0)
-		App->renderer->Blit(text, spriteX, spriteY + SCREEN_Y_OFFSET, &(rectDest), 1.f, { (destW / rectDest.w)*3.2f, (destH / rectDest.h)*3.43f }, lineProps[i]->pivotR);
+		App->renderer->Blit(text, (int)spriteX, (int)(spriteY + SCREEN_Y_OFFSET), &(rectDest), 1.f, { (destW / rectDest.w)*3.2f*lineProps[i]->scale, (destH / rectDest.h)*3.43f*lineProps[i]->scale }, pivot);
 }

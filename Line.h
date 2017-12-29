@@ -19,7 +19,7 @@ public:
 	~Line();
 
 	void projection(PointLine &p, int cameraX, int cameraY, int cameraZ, float cameraD);
-	void renderProps(SDL_Texture* text, int i, float scale);
+	void renderProps(SDL_Texture* text, int i);
 
 public:
 	int index;

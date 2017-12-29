@@ -22,6 +22,8 @@ Road::Road()
 	cameraDistance = 1 / tan((float)((fov / 2.f) * M_PI / 180.0f));
 	position = 0;
 	playerX = 0;
+	pWheelL = -20;
+	pWheelR = 20;
 	playerZ = (int)(cameraHeight * cameraDistance) + 241;
 	playerRoad = LEFTROAD;
 	//Set distances for road lanes
@@ -32,7 +34,7 @@ Road::Road()
 	dist7 = dist6 + ((int)ROAD_WIDTH * 16 / 27) + ((int)ROAD_WIDTH / 18);
 	dist8 = dist7 + ((int)ROAD_WIDTH * 16 / 27) + ((int)ROAD_WIDTH / 18);
 	distM = dist8 + ((int)ROAD_WIDTH * 16 / 27)*7 + ((int)ROAD_WIDTH / 18)*7;
-	roadDistance = 3200;
+	roadDistance = 0;
 }
 
 Road::~Road()
@@ -88,6 +90,7 @@ bool Road::Start()
 	trafficLight->animLeft.loop = false;
 	trafficLight->animLeft.speed = 0.f;
 	trafficLight->animRight = trafficLight->animLeft;
+	trafficLight->scale = 1.2f;
 	slow = new Prop();
 	slow->animLeft.frames.push_back({ 449, 105, 60, 112 });
 	slow->animRight.frames.push_back({ 388, 105, 60, 112 });
@@ -116,14 +119,15 @@ bool Road::Start()
 	palm1 = new Prop();
 	palm1->animLeft.frames.push_back({ 924, 360, 153, 167 });
 	palm1->animRight.frames.push_back({ 995, 105, 153, 167 });
+	palm1->scale = 1.2f;
 	palm2 = new Prop();
 	palm2->animLeft.frames.push_back({ 453, 296, 128, 79 });
 	palm2->animRight.frames.push_back({ 453, 296, 128, 79 });
 	start = new Prop();
 	start->animLeft.frames.push_back({ 1, 234, 472, 61 });
 	start->animRight.frames.push_back({ 1, 234, 472, 61 });
-	start->pivotL = { 1.f, 1.f };
-	start->pivotR = { 0.f, 1.f };
+	start->pivotL = { 0.f, 1.f };
+	start->pivotR = { 1.f, 1.f };
 	people1 = new Prop();
 	people1->animLeft.frames.push_back({ 474, 230, 188, 65 });
 	people1->animRight.frames.push_back({ 474, 230, 188, 65 });
@@ -145,6 +149,10 @@ bool Road::Start()
 	panel3 = new Prop();
 	panel3->animLeft.frames.push_back({ 663, 215, 116, 80 });
 	panel3->animRight.frames.push_back({ 663, 215, 116, 80 });
+	panel4 = new Prop();
+	panel4->animLeft.frames.push_back({ 325, 105, 62, 128 });
+	panel4->animRight.frames.push_back({ 325, 105, 62, 128 });
+	panel4->scale = 1.2f;
 	vulturesign = new Prop();
 	vulturesign->animLeft.frames.push_back({ 699, 296, 224, 152 });
 	vulturesign->animRight.frames.push_back({ 699, 296, 224, 152 });
@@ -207,7 +215,7 @@ bool Road::InitRoad()
 	//AddStraight(100, true, distM);
 
 	//Add elements to each line
-	/*AddProp(5, woman3, -0.63f, 0.f);
+	AddProp(5, woman3, -0.63f, 0.f);
 	AddProp(5, musicman, -0.3f, 0.f);
 	AddProp(5, cameraman, -0.5f, 0.f);
 	AddProp(5, woman1, 0.5f, 0.f);
@@ -215,16 +223,19 @@ bool Road::InitRoad()
 	AddProp(6, man1, -0.7f, 0.f);
 	AddProp(6, man3, -0.5f, 0.f);
 	AddProp(6, flagman, -0.3f, 0.f);
-	AddProp(9, start, -1.25f, -1.4f);
-	AddProp(9, trafficLight, -0.8f, 0.f);*/
+	AddProp(9, start, -1.25f, -1.8f);
+	AddProp(9, trafficLight, -0.8f, 0.f);
+	AddProp(9, panel4, 1.f, 0.f);
 	//AddProp(9, palm1, -0.8f, 0.f);
 
-	/*for (int i = 3; i < 60; i += 3)
+	float sep = 1;
+	for (int i = 1; i < 36; i += 3)
 	{
-		AddProp(i, palm1, -0.8f, 0.f);
-		AddProp(i, palm1, 0.8f, 0.f);
-	}*/
-	AddProp(240, palm1, -0.8f, 0.f);
+		AddProp(i + (int)sep, palm1, -0.8f, 0.f);
+		AddProp(i + (int)sep, palm1, 0.8f, 0.f);
+		sep *= 1.5f;
+	}
+	//AddProp(240, palm1, -0.8f, 0.f);
 
 
 	trackLength = (int)(lines.size() * segmentL);
@@ -267,6 +278,7 @@ bool Road::CleanUp()
 	RELEASE(panel1);
 	RELEASE(panel2);
 	RELEASE(panel3);
+	RELEASE(panel4);
 	RELEASE(vulturesign);
 
 	return true;
@@ -317,6 +329,8 @@ void Road::RenderRoad(float time)
 
 	float maxY = playerLine->p1.yScreen;
 	roadDistance = (int)playerLine->distance;
+
+	UpdateWheels();
 
 	//Render sky background
 	App->renderer->DrawQuad({ 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT }, 0, 148, 255, 255);
@@ -396,10 +410,13 @@ void Road::RenderRoad(float time)
 	{
 		l = lines[(baseLine->index + n) % lines.size()];
 
-		for (int i = 0; i < l->lineProps.size(); ++i)
+		if (l->index < playerLine->index)
+			continue;
+
+		for (unsigned int i = 0; i < l->lineProps.size(); ++i)
 		{
 			Prop* p = l->lineProps[i];
-			l->renderProps(sprites, i, ((drawDistance-1) - n) / (drawDistance-1));
+			l->renderProps(sprites, i);
 		}
 	}
 
@@ -410,10 +427,10 @@ void Road::RenderRoad(float time)
 void Road::ActivateAnims()
 {
 	//Activate animations of flagmen and light
-	flagman->animLeft.speed = 0.04f;
-	flagman->animRight.speed = 0.04f;
-	trafficLight->animLeft.speed = 0.021f;
-	trafficLight->animRight.speed = 0.021f;
+	flagman->animLeft.speed = 0.12f;
+	flagman->animRight.speed = 0.12f;
+	trafficLight->animLeft.speed = 0.063f;
+	trafficLight->animRight.speed = 0.063f;
 }
 
 void Road::AddFlagmanAnim()
@@ -603,12 +620,34 @@ void Road::AddHill(int num, float y, int distance, int length)
 	AddRoad(num, num*length, num, 0, y, false, distance);
 }
 
-void Road::AddProp(int line, Prop* p, float offsetX, float offsetY)
+void Road::AddProp(unsigned int line, Prop* p, float offsetX, float offsetY)
 {
 	if (line < lines.size())
 	{
 		lines[line]->lineProps.push_back(p);
 		lines[line]->offsetsX.push_back(offsetX);
 		lines[line]->offsetsY.push_back(offsetY);
+	}
+}
+
+void Road::UpdateWheels()
+{
+	pWheelL = playerX * ROAD_WIDTH - 210;
+	pWheelR = playerX * ROAD_WIDTH + 210;
+
+	App->player->wheelR = App->player->wheelL = NORMAL;
+	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT || App->player->speed > 0.f) {
+		if (pWheelR < -1831 || pWheelR > roadDistance + 1831)
+			App->player->wheelR = SAND;
+		if (pWheelL < -1831 || pWheelL > roadDistance + 1831)
+			App->player->wheelL = SAND;
+
+		if (roadDistance > 3662)
+		{
+			if (pWheelR > 1831 && pWheelR < 1831 + (roadDistance - 3662))
+				App->player->wheelR = SAND;
+			if (pWheelL > 1831 && pWheelL < 1831 + (roadDistance - 3662))
+				App->player->wheelL = SAND;
+		}
 	}
 }
