@@ -30,6 +30,7 @@ public:
 	vector<Prop*> lineProps;
 	vector<float> offsetsX;
 	vector<float> offsetsY;
+	vector<bool> sides;
 };
 
 #endif // __LINE_H__

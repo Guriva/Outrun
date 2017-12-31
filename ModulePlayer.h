@@ -27,6 +27,8 @@ enum StatePlayer
 {
 	PREPARING,
 	ONROAD,
+	SMALLCOLLISION,
+	MEDIUMCOLLISION,
 	ENDING
 };
 
@@ -46,15 +48,20 @@ public:
 	bool Start();
 	update_status Update();
 	bool CleanUp();
-	void UpdatePlayerPreparing();
-	void UpdatePlayerOnRoad();
+
+	void resetCounters();
 
 private:
+	void UpdatePlayerPreparing();
+	void UpdatePlayerOnRoad();
+	void UpdatePlayerSCol();
+	void UpdatePlayerMCol();
 	void CheckWheels();
 
 public:
 	float speed, maxSpeed, lowAccel, highAccel, time;
 	float thresholdX, varThresholdX, forceX;
+	float offsetCrash1;
 	bool gear;
 	InclPlayer inclination;
 	DirPlayer direction;
@@ -62,7 +69,6 @@ public:
 	StateWheel wheelL;
 	StateWheel wheelR;
 	SDL_Texture* car = nullptr;
-	SDL_Texture* carPrep = nullptr;
 	SDL_Texture* carEffects = nullptr;
 	Animation* current_animation = nullptr;
 	Animation preparingAnim;
@@ -86,6 +92,9 @@ public:
 	Animation carSmokeR;
 	Animation carSandL;
 	Animation carSandR;
+	Animation crash1;
+	Animation crash2;
+	Animation crash21;
 	clock_t tick_timer;
 };
 

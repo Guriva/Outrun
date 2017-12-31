@@ -16,6 +16,7 @@ Line::Line()
 	lineProps.reserve(2);
 	offsetsX.reserve(2);
 	offsetsY.reserve(2);
+	sides.reserve(2);
 }
 
 Line::~Line()
@@ -35,8 +36,12 @@ void Line::projection(PointLine &p, int cameraX, int cameraY, int cameraZ, float
 
 void Line::renderProps(SDL_Texture* text, int i)
 {
-	float spriteX = p1.xScreen + (offsetsX[i] * p1.scale * ROAD_WIDTH * SCREEN_WIDTH / 2);
-	float spriteY = p1.yScreen + (offsetsY[i] * p1.scale * 1000.f * SCREEN_HEIGHT / 2);
+	PointLine p = p1;
+	if (sides[i])
+		p = p11;
+
+	float spriteX = p.xScreen + (offsetsX[i] * p.scale * ROAD_WIDTH * SCREEN_WIDTH / 2);
+	float spriteY = p.yScreen + (offsetsY[i] * p.scale * 1000.f * SCREEN_HEIGHT / 2);
 	SDL_Rect rectDest;
 	fPoint pivot;
 
@@ -52,9 +57,8 @@ void Line::renderProps(SDL_Texture* text, int i)
 		pivot = lineProps[i]->pivotL;
 	}
 
-
-	float destW = (rectDest.w * p1.scale * SCREEN_WIDTH / 2) * ((0.3f * (1.f / 170.f)) * ROAD_WIDTH);
-	float destH = (rectDest.h * p1.scale * SCREEN_WIDTH / 2) * ((0.3f * (1.f / 170.f)) * ROAD_WIDTH);
+	float destW = (rectDest.w * p.scale * SCREEN_WIDTH / 2) * ((0.3f * (1.f / 170.f)) * ROAD_WIDTH);
+	float destH = (rectDest.h * p.scale * SCREEN_WIDTH / 2) * ((0.3f * (1.f / 170.f)) * ROAD_WIDTH);
 		
 	//If has to be clipped
 	if (clip < spriteY)

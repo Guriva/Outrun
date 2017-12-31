@@ -21,19 +21,91 @@ ModulePlayer::ModulePlayer(bool active) : Module(active)
 	highAccel = 10.f;
 	thresholdX = 1.f;
 	varThresholdX = 0.06f;
+	offsetCrash1 = 0.f;
 	maxSpeed = (float)SEGMENT_LENGTH;
 	lowAccel = maxSpeed/7.0f;
 	forceX = 0.3f;
+	current_animation = &preparingAnim;
 	gear = false;
 
-	preparingAnim.frames.push_back({ 1, 1, 170, 41 });
-	preparingAnim.frames.push_back({ 1, 1, 170, 41 });
-	preparingAnim.frames.push_back({ 173, 1, 170, 41 });
-	preparingAnim.frames.push_back({ 345, 1, 170, 41 });
-	preparingAnim.frames.push_back({ 517, 1, 170, 41 });
-	preparingAnim.frames.push_back({ 689, 1, 170, 41 });
+	preparingAnim.frames.push_back({ 481, 142, 171, 46 });
+	preparingAnim.frames.push_back({ 481, 142, 171, 46 });
+	preparingAnim.frames.push_back({ 653, 142, 171, 46 });
+	preparingAnim.frames.push_back({ 1, 181, 95, 44 });
+	preparingAnim.frames.push_back({ 97, 181, 95, 44 });
+	preparingAnim.frames.push_back({ 193, 181, 95, 44 });
 	preparingAnim.loop = false;
 	preparingAnim.speed = 0.f;
+
+	crash1.frames.push_back({ 193, 496, 95, 44 });
+	crash1.frames.push_back({ 193, 496, 95, 44 });
+	crash1.frames.push_back({ 193, 496, 95, 44 });
+	crash1.frames.push_back({ 193, 496, 95, 44 });
+	crash1.frames.push_back({ 193, 496, 95, 44 });
+	crash1.frames.push_back({ 193, 496, 95, 44 });
+	crash1.frames.push_back({ 193, 496, 95, 44 });
+	crash1.frames.push_back({ 481, 283, 95, 52 });
+	crash1.frames.push_back({ 481, 283, 95, 52 });
+	crash1.frames.push_back({ 577, 283, 95, 52 });
+	crash1.frames.push_back({ 577, 283, 95, 52 });
+	crash1.frames.push_back({ 481, 283, 95, 52 });
+	crash1.frames.push_back({ 481, 283, 95, 52 });
+	crash1.frames.push_back({ 577, 283, 95, 52 });
+	crash1.frames.push_back({ 577, 283, 95, 52 });
+	crash1.loop = false;
+	crash1.speed = 0.2f;
+
+	crash2.frames.push_back({ 653, 142, 171, 46 });
+	crash2.frames.push_back({ 481, 142, 171, 46 });
+	crash2.frames.push_back({ 653, 95, 171, 46 });
+	crash2.frames.push_back({ 481, 95, 171, 46 });
+	crash2.frames.push_back({ 653, 48, 171, 46 });
+	crash2.frames.push_back({ 481, 48, 171, 46 });
+	crash2.frames.push_back({ 653, 1, 171, 46 });
+	crash2.frames.push_back({ 481, 1, 171, 46 });
+	crash2.frames.push_back({ 653, 142, 171, 46 });
+	crash2.frames.push_back({ 653, 142, 171, 46 });
+	crash2.frames.push_back({ 653, 142, 171, 46 });
+	crash2.frames.push_back({ 481, 236, 171, 46 });
+	crash2.frames.push_back({ 481, 236, 171, 46 });
+	crash2.frames.push_back({ 653, 236, 171, 46 });
+	crash2.frames.push_back({ 653, 236, 171, 46 });
+	crash2.frames.push_back({ 481, 236, 171, 46 });
+	crash2.frames.push_back({ 481, 236, 171, 46 });
+	crash2.frames.push_back({ 653, 236, 171, 46 });
+	crash2.frames.push_back({ 653, 236, 171, 46 });
+	crash2.loop = false;
+	crash2.speed = 0.2f;
+
+	crash21.frames.push_back({ 653, 142, 171, 46 });
+	crash21.frames.push_back({ 481, 142, 171, 46 });
+	crash21.frames.push_back({ 653, 95, 171, 46 });
+	crash21.frames.push_back({ 481, 95, 171, 46 });
+	crash21.frames.push_back({ 653, 48, 171, 46 });
+	crash21.frames.push_back({ 481, 48, 171, 46 });
+	crash21.frames.push_back({ 653, 1, 171, 46 });
+	crash21.frames.push_back({ 481, 1, 171, 46 });
+	crash21.frames.push_back({ 653, 142, 171, 46 });
+	crash21.frames.push_back({ 481, 142, 171, 46 });
+	crash21.frames.push_back({ 653, 95, 171, 46 });
+	crash21.frames.push_back({ 481, 95, 171, 46 });
+	crash21.frames.push_back({ 653, 48, 171, 46 });
+	crash21.frames.push_back({ 481, 48, 171, 46 });
+	crash21.frames.push_back({ 653, 1, 171, 46 });
+	crash21.frames.push_back({ 481, 1, 171, 46 });
+	crash21.frames.push_back({ 653, 142, 171, 46 });
+	crash21.frames.push_back({ 653, 142, 171, 46 });
+	crash21.frames.push_back({ 653, 142, 171, 46 });
+	crash21.frames.push_back({ 481, 236, 171, 46 });
+	crash21.frames.push_back({ 481, 236, 171, 46 });
+	crash21.frames.push_back({ 653, 236, 171, 46 });
+	crash21.frames.push_back({ 653, 236, 171, 46 });
+	crash21.frames.push_back({ 481, 236, 171, 46 });
+	crash21.frames.push_back({ 481, 236, 171, 46 });
+	crash21.frames.push_back({ 653, 236, 171, 46 });
+	crash21.frames.push_back({ 653, 236, 171, 46 });
+	crash21.loop = false;
+	crash21.speed = 0.2f;
 
 	carSmokeL.frames.push_back({ 1, 1, 58, 17 });
 	carSmokeL.frames.push_back({ 60, 1, 58, 17 });
@@ -59,64 +131,154 @@ ModulePlayer::ModulePlayer(bool active) : Module(active)
 	carSandR.frames.push_back({ 277, 19, 68, 42 });
 	carSandR.speed = 0.2f;
 
-	straight.frames.push_back({ 165, 91, 81, 44 });
-	straight.frames.push_back({ 165, 136, 81, 44 });
+	straight.frames.push_back({ 193, 181, 95, 44 });
+	straight.frames.push_back({ 193, 271, 95, 44 });
+	straight.frames.push_back({ 193, 181, 95, 44 });
+	straight.frames.push_back({ 193, 271, 95, 44 });
+	straight.frames.push_back({ 193, 226, 95, 44 });
+	straight.frames.push_back({ 193, 316, 95, 44 });
+	straight.frames.push_back({ 193, 226, 95, 44 });
+	straight.frames.push_back({ 193, 316, 95, 44 });
 	straight.speed = 0.f;
 
-	straightleft.frames.push_back({ 83, 91, 81, 44 });
-	straightleft.frames.push_back({ 83, 136, 81, 44 });
+	straightleft.frames.push_back({ 97, 181, 95, 44 });
+	straightleft.frames.push_back({ 97, 271, 95, 44 });
+	straightleft.frames.push_back({ 97, 181, 95, 44 });
+	straightleft.frames.push_back({ 97, 271, 95, 44 });
+	straightleft.frames.push_back({ 97, 226, 95, 44 });
+	straightleft.frames.push_back({ 97, 316, 95, 44 });
+	straightleft.frames.push_back({ 97, 226, 95, 44 });
+	straightleft.frames.push_back({ 97, 316, 95, 44 });
 	straightleft.speed = 0.f;
 
-	straightleftMost.frames.push_back({ 1, 91, 81, 44 });
-	straightleftMost.frames.push_back({ 1, 136, 81, 44 });
+	straightleftMost.frames.push_back({ 1, 181, 95, 44 });
+	straightleftMost.frames.push_back({ 1, 271, 95, 44 });
+	straightleftMost.frames.push_back({ 1, 181, 95, 44 });
+	straightleftMost.frames.push_back({ 1, 271, 95, 44 });
+	straightleftMost.frames.push_back({ 1, 226, 95, 44 });
+	straightleftMost.frames.push_back({ 1, 316, 95, 44 });
+	straightleftMost.frames.push_back({ 1, 226, 95, 44 });
+	straightleftMost.frames.push_back({ 1, 316, 95, 44 });
 	straightleftMost.speed = 0.f;
 
-	straightright.frames.push_back({ 247, 91, 81, 44 });
-	straightright.frames.push_back({ 247, 136, 81, 44 });
+	straightright.frames.push_back({ 289, 181, 95, 44 });
+	straightright.frames.push_back({ 289, 271, 95, 44 });
+	straightright.frames.push_back({ 289, 181, 95, 44 });
+	straightright.frames.push_back({ 289, 271, 95, 44 });
+	straightright.frames.push_back({ 289, 226, 95, 44 });
+	straightright.frames.push_back({ 289, 316, 95, 44 });
+	straightright.frames.push_back({ 289, 226, 95, 44 });
+	straightright.frames.push_back({ 289, 316, 95, 44 });
 	straightright.speed = 0.f;
 
-	straightrightMost.frames.push_back({ 329, 91, 81, 44 });
-	straightrightMost.frames.push_back({ 329, 136, 81, 44 });
+	straightrightMost.frames.push_back({ 385, 181, 95, 44 });
+	straightrightMost.frames.push_back({ 385, 271, 95, 44 });
+	straightrightMost.frames.push_back({ 385, 181, 95, 44 });
+	straightrightMost.frames.push_back({ 385, 271, 95, 44 });
+	straightrightMost.frames.push_back({ 385, 226, 95, 44 });
+	straightrightMost.frames.push_back({ 385, 316, 95, 44 });
+	straightrightMost.frames.push_back({ 385, 226, 95, 44 });
+	straightrightMost.frames.push_back({ 385, 316, 95, 44 });
 	straightrightMost.speed = 0.f;
 
-	up.frames.push_back({ 165, 1, 81, 44 });
-	up.frames.push_back({ 165, 46, 81, 44 });
+	up.frames.push_back({ 193, 1, 95, 44 });
+	up.frames.push_back({ 193, 91, 95, 44 });
+	up.frames.push_back({ 193, 1, 95, 44 });
+	up.frames.push_back({ 193, 91, 95, 44 });
+	up.frames.push_back({ 193, 46, 95, 44 });
+	up.frames.push_back({ 193, 136, 95, 44 });
+	up.frames.push_back({ 193, 46, 95, 44 });
+	up.frames.push_back({ 193, 136, 95, 44 });
 	up.speed = 0.f;
 
-	upleft.frames.push_back({ 83, 1, 81, 44 });
-	upleft.frames.push_back({ 83, 46, 81, 44 });
+	upleft.frames.push_back({ 97, 1, 95, 44 });
+	upleft.frames.push_back({ 97, 91, 95, 44 });
+	upleft.frames.push_back({ 97, 1, 95, 44 });
+	upleft.frames.push_back({ 97, 91, 95, 44 });
+	upleft.frames.push_back({ 97, 46, 95, 44 });
+	upleft.frames.push_back({ 97, 136, 95, 44 });
+	upleft.frames.push_back({ 97, 46, 95, 44 });
+	upleft.frames.push_back({ 97, 136, 95, 44 });
 	upleft.speed = 0.f;
 
-	upleftMost.frames.push_back({ 1, 1, 81, 44 });
-	upleftMost.frames.push_back({ 1, 46, 81, 44 });
+	upleftMost.frames.push_back({ 1, 1, 95, 44 });
+	upleftMost.frames.push_back({ 1, 91, 95, 44 });
+	upleftMost.frames.push_back({ 1, 1, 95, 44 });
+	upleftMost.frames.push_back({ 1, 91, 95, 44 });
+	upleftMost.frames.push_back({ 1, 46, 95, 44 });
+	upleftMost.frames.push_back({ 1, 136, 95, 44 });
+	upleftMost.frames.push_back({ 1, 46, 95, 44 });
+	upleftMost.frames.push_back({ 1, 136, 95, 44 });
 	upleftMost.speed = 0.f;
 
-	upright.frames.push_back({ 247, 1, 81, 44 });
-	upright.frames.push_back({ 247, 46, 81, 44 });
+	upright.frames.push_back({ 289, 1, 95, 44 });
+	upright.frames.push_back({ 289, 91, 95, 44 });
+	upright.frames.push_back({ 289, 1, 95, 44 });
+	upright.frames.push_back({ 289, 91, 95, 44 });
+	upright.frames.push_back({ 289, 46, 95, 44 });
+	upright.frames.push_back({ 289, 136, 95, 44 });
+	upright.frames.push_back({ 289, 46, 95, 44 });
+	upright.frames.push_back({ 289, 136, 95, 44 });
 	upright.speed = 0.f;
 
-	uprightMost.frames.push_back({ 329, 1, 81, 44 });
-	uprightMost.frames.push_back({ 329, 46, 81, 44 });
+	uprightMost.frames.push_back({ 385, 1, 95, 44 });
+	uprightMost.frames.push_back({ 385, 91, 95, 44 });
+	uprightMost.frames.push_back({ 385, 1, 95, 44 });
+	uprightMost.frames.push_back({ 385, 91, 95, 44 });
+	uprightMost.frames.push_back({ 385, 46, 95, 44 });
+	uprightMost.frames.push_back({ 385, 136, 95, 44 });
+	uprightMost.frames.push_back({ 385, 46, 95, 44 });
+	uprightMost.frames.push_back({ 385, 136, 95, 44 });
 	uprightMost.speed = 0.f;
 
-	down.frames.push_back({ 165, 181, 81, 44 });
-	down.frames.push_back({ 165, 226, 81, 44 });
+	down.frames.push_back({ 193, 361, 95, 44 });
+	down.frames.push_back({ 193, 451, 95, 44 });
+	down.frames.push_back({ 193, 361, 95, 44 });
+	down.frames.push_back({ 193, 451, 95, 44 });
+	down.frames.push_back({ 193, 406, 95, 44 });
+	down.frames.push_back({ 193, 496, 95, 44 });
+	down.frames.push_back({ 193, 406, 95, 44 });
+	down.frames.push_back({ 193, 496, 95, 44 });
 	down.speed = 0.f;
 
-	downleft.frames.push_back({ 83, 181, 81, 44 });
-	downleft.frames.push_back({ 83, 226, 81, 44 });
+	downleft.frames.push_back({ 97, 361, 95, 44 });
+	downleft.frames.push_back({ 97, 451, 95, 44 });
+	downleft.frames.push_back({ 97, 361, 95, 44 });
+	downleft.frames.push_back({ 97, 451, 95, 44 });
+	downleft.frames.push_back({ 97, 406, 95, 44 });
+	downleft.frames.push_back({ 97, 496, 95, 44 });
+	downleft.frames.push_back({ 97, 406, 95, 44 });
+	downleft.frames.push_back({ 97, 496, 95, 44 });
 	downleft.speed = 0.f;
 
-	downleftMost.frames.push_back({ 1, 181, 81, 44 });
-	downleftMost.frames.push_back({ 1, 226, 81, 44 });
+	downleftMost.frames.push_back({ 1, 361, 95, 44 });
+	downleftMost.frames.push_back({ 1, 451, 95, 44 });
+	downleftMost.frames.push_back({ 1, 361, 95, 44 });
+	downleftMost.frames.push_back({ 1, 451, 95, 44 });
+	downleftMost.frames.push_back({ 1, 406, 95, 44 });
+	downleftMost.frames.push_back({ 1, 496, 95, 44 });
+	downleftMost.frames.push_back({ 1, 406, 95, 44 });
+	downleftMost.frames.push_back({ 1, 496, 95, 44 });
 	downleftMost.speed = 0.f;
 
-	downright.frames.push_back({ 247, 181, 81, 44 });
-	downright.frames.push_back({ 247, 226, 81, 44 });
+	downright.frames.push_back({ 289, 361, 95, 44 });
+	downright.frames.push_back({ 289, 451, 95, 44 });
+	downright.frames.push_back({ 289, 361, 95, 44 });
+	downright.frames.push_back({ 289, 451, 95, 44 });
+	downright.frames.push_back({ 289, 406, 95, 44 });
+	downright.frames.push_back({ 289, 496, 95, 44 });
+	downright.frames.push_back({ 289, 406, 95, 44 });
+	downright.frames.push_back({ 289, 496, 95, 44 });
 	downright.speed = 0.f;
 
-	downrightMost.frames.push_back({ 329, 181, 81, 44 });
-	downrightMost.frames.push_back({ 329, 226, 81, 44 });
+	downrightMost.frames.push_back({ 385, 361, 95, 44 });
+	downrightMost.frames.push_back({ 385, 451, 95, 44 });
+	downrightMost.frames.push_back({ 385, 361, 95, 44 });
+	downrightMost.frames.push_back({ 385, 451, 95, 44 });
+	downrightMost.frames.push_back({ 385, 406, 95, 44 });
+	downrightMost.frames.push_back({ 385, 496, 95, 44 });
+	downrightMost.frames.push_back({ 385, 406, 95, 44 });
+	downrightMost.frames.push_back({ 385, 496, 95, 44 });
 	downrightMost.speed = 0.f;
 
 	carStates[UP][LEFTMOST] = &upleftMost;
@@ -147,7 +309,6 @@ bool ModulePlayer::Start()
 	LOG("Loading player");
 
 	car = App->textures->Load("Textures/Level/ferrari.png");
-	carPrep = App->textures->Load("Textures/Level/introCar.png");
 	carEffects = App->textures->Load("Textures/Level/effectsCar.png");
 
 	return true;
@@ -173,7 +334,12 @@ update_status ModulePlayer::Update()
 	case ONROAD:
 		UpdatePlayerOnRoad();
 		break;
-
+	case SMALLCOLLISION:
+		UpdatePlayerSCol();
+		break;
+	case MEDIUMCOLLISION:
+		UpdatePlayerMCol();
+		break;
 	case ENDING:
 		break;
 	}
@@ -187,11 +353,11 @@ void ModulePlayer::UpdatePlayerPreparing()
 	tick_timer = clock();
 	if (preparingAnim.speed > 0.f)
 	{
-		App->renderer->Blit(carPrep, (int)(SCREEN_WIDTH / 2) - 30, (int)(SCREEN_HEIGHT / 2) + 377, &(preparingAnim.GetCurrentFrame()), 1.0f, { 3.f, 3.f }, { 0.5f, 1.f });
+		App->renderer->Blit(car, (int)(SCREEN_WIDTH / 2) - 30, (int)(SCREEN_HEIGHT / 2) + 377, &(current_animation->GetCurrentFrame()), 1.0f, { 3.f, 3.f }, { 0.5f, 1.f });
 	}
 	else
 	{
-		App->renderer->Blit(carPrep, (int)(SCREEN_WIDTH / 2) + 3, (int)(SCREEN_HEIGHT / 2) + 377, &(preparingAnim.GetCurrentFrame()), 1.0f, { 3.f, 3.f }, { 0.5f, 1.f });
+		App->renderer->Blit(car, (int)(SCREEN_WIDTH / 2) + 3, (int)(SCREEN_HEIGHT / 2) + 377, &(current_animation->GetCurrentFrame()), 1.0f, { 3.f, 3.f }, { 0.5f, 1.f });
 	}
 	
 
@@ -282,6 +448,29 @@ void ModulePlayer::UpdatePlayerOnRoad()
 	CheckWheels();
 }
 
+void ModulePlayer::UpdatePlayerSCol()
+{
+	speed = 0.f;
+	if (offsetCrash1 < 1.f)
+		offsetCrash1 += 0.03f;
+
+	if (!current_animation->Finished())
+		App->renderer->Blit(car, (int)(SCREEN_WIDTH / 2) + 5, (int)(SCREEN_HEIGHT / 2) + 304 - sin(offsetCrash1*M_PI) * 12, &(current_animation->GetCurrentFrame()), 1.0f, { 3.2f,3.43f }, { 0.5f,0.5f });
+}
+
+void ModulePlayer::UpdatePlayerMCol()
+{
+	
+	if (speed > 0.f)
+	{
+		speed -= lowAccel * time;
+		if (speed < 0.f)
+			speed = 0.f;
+	}
+	if (!current_animation->Finished())
+		App->renderer->Blit(car, (int)(SCREEN_WIDTH / 2) + 5, (int)(SCREEN_HEIGHT / 2) + 304, &(current_animation->GetCurrentFrame()), 1.0f, { 3.2f,3.43f }, { 0.5f,0.5f });
+}
+
 void ModulePlayer::CheckWheels()
 {
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT && !gear && speed < 80 && wheelL != SAND && wheelR != SAND)
@@ -307,4 +496,9 @@ void ModulePlayer::CheckWheels()
 		App->renderer->Blit(carEffects, (int)(SCREEN_WIDTH / 2) - 20, (int)(SCREEN_HEIGHT / 2) + 380, &(carSandL.GetCurrentFrame()), 1.f, { 3.2f, 3.43f }, { 1.f, 1.f });
 		break;
 	}
+}
+
+void ModulePlayer::resetCounters()
+{
+	offsetCrash1 = 0.f;
 }

@@ -46,6 +46,11 @@ public:
 	{
 		current_frame = 0.0f;
 	}
+
+	void ResetLoops()
+	{
+		loops = 0;
+	}
 };
 
 #endif // __ANIMATION_H__

@@ -61,14 +61,15 @@ update_status ModuleSceneLevel::Update()
 			actualState = SceneLevelState::RUNNING;
 			App->player->playerState = StatePlayer::ONROAD;
 		}
+		road->DrawRoad();
 		break;
 	case RUNNING:
+		road->UpdateRoad(time);
+		road->DrawRoad();
 		break;
 	case FINISH:
 		break;
 	}
-	
-	road->RenderRoad(time);
 
 	return UPDATE_CONTINUE;
 }

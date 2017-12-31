@@ -17,14 +17,25 @@ enum playerR
 	RIGHTROAD
 };
 
+struct Car
+{
+
+};
+
 struct Prop
 {
 	Animation animLeft;
 	Animation animRight;
-	fPoint pivotL;
-	fPoint pivotR;
+	fPoint pivotL, pivotR;
 	float scale;
-	Prop() : pivotL({ 1.f, 1.f }), pivotR({ 0.f, 1.f }), scale(1.f) {}
+	bool collider;
+	float wCol;
+	fPoint pivotColL, pivotColR;
+	Prop() : pivotL({ 1.f, 1.f }), pivotR({ 0.f, 1.f }),
+		scale(1.f),
+		collider(false),
+		wCol(0.f),
+		pivotColL({ 0.5f, 1.f }), pivotColR({ 0.5f, 1.f }) {}
 };
 
 class Road
@@ -35,7 +46,8 @@ public:
 
 	bool Start();
 	bool InitRoad();
-	void RenderRoad(float time);
+	void UpdateRoad(float time);
+	void DrawRoad();
 	void ActivateAnims();
 	bool CleanUp();
 
@@ -46,19 +58,25 @@ private:
 	void AddStraight(int num, bool mirror, int distance);
 	void AddCurve(int num, float curve, bool mirror, int distance, int length);
 	void AddHill(int num, float y, int distance, int length);
-	void AddProp(unsigned int line, Prop* p, float offsetX, float offsetY);
+	void AddProp(unsigned int line, Prop* p, float offsetX, float offsetY, bool side);
 	void UpdateWheels();
+	void UpdateCars();
+	void CheckCarsState();
+	void CheckPlayerCollision(const Line* playerLine);
+	bool Collides(float x1, int w1, float x2, float w2, float scale);
 
 private:
 	SDL_Texture* layout = nullptr;
 	SDL_Texture* sprites = nullptr;
+	SDL_Texture* backgrounds = nullptr;
 	vector<Line*> lines;
 	float cameraDistance;
 	int position;
 	SDL_Color sand, road, rumble, lane;
 	int trackLength;
-	float playerX, pWheelL, pWheelR;
-	int playerY, playerZ;
+	float playerX, pWheelL, pWheelR, collisionDir;
+	float thresholdX, varThresholdX;
+	int playerY, playerZ, playerW;
 	playerR playerRoad;
 
 	float fov, cameraHeight, drawDistance;
