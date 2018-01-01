@@ -10,6 +10,9 @@
 
 Road::Road()
 {
+	backgroundLvl1 = { 0, 0, 4030, 243 };
+	background2Lvl1 = { 810, 243, 1900, 11 };
+
 	AddFlagmanAnim();
 
 	man1 = new Prop();
@@ -199,6 +202,15 @@ Road::Road()
 	vulturesign->wCol = 8;
 	vulturesign->pivotColL = { 0.98f, 1.f };
 	vulturesign->pivotColR = { 0.98f, 1.f };
+
+	active.reserve(6);
+
+	/*truck1->left.frames.push_back({ 1, 1, 50, 55 });
+	truck1->left.frames.push_back({ 1, 57, 50, 55});
+	truck1->left.speed = 0.5f;
+	truck1->right.frames.push_back({ 52, 1, 50, 55});
+	truck1->right.frames.push_back({ 52, 57, 50, 55});
+	truck1->right.speed = 0.5f;*/
 }
 
 Road::~Road()
@@ -215,11 +227,14 @@ bool Road::Start()
 	roadLanes = 3;
 	lineW = 20;
 	roadDistance = 0;
+	offsetXBackground1 = 1000.f;
+	offsetXBackground2 = 0.f;
 
 	//Initial position
 	cameraDistance = 1 / tan((float)((fov / 2.f) * M_PI / 180.0f));
 	playerX = collisionDir = 0.f;
-	playerY = position = 0;
+	playerY = 0;
+	iniPosition = position = 300 * (int)SEGMENT_LENGTH;
 	playerZ = (int)(cameraHeight * cameraDistance) + 241;
 	playerW = 77;
 	playerRoad = LEFTROAD;
@@ -245,10 +260,12 @@ bool Road::InitRoad()
 	LOG("Loading level scene");
 
 	//Load textures
+	backgrounds = App->textures->Load("Textures/Level/backgroundlvl1.png");
 	layout = App->textures->Load("Textures/Level/layoutLevel.png");
 	sprites = App->textures->Load("Textures/Level/spriteslvl1.png");
+	cars = App->textures->Load("Textures/Level/cars.png");
 	//Create Road
-
+	AddStraight(100, false, dist8);
 	AddStraight(20, false, dist8);
 	AddHill(10, -5, dist8, 1);
 	AddHill(5,60,dist7, 28);
@@ -294,17 +311,17 @@ bool Road::InitRoad()
 	//AddStraight(100, true, distM);
 
 	//Add elements to each line
-	AddProp(5, woman3, -0.63f, 0.f, false);
-	AddProp(5, musicman, -0.3f, 0.f, false);
-	AddProp(5, cameraman, -0.5f, 0.f, false);
-	AddProp(5, woman1, 0.5f, 0.f, false);
+	AddProp(305, woman3, -0.63f, 0.f, false);
+	AddProp(305, musicman, -0.3f, 0.f, false);
+	AddProp(305, cameraman, -0.5f, 0.f, false);
+	AddProp(305, woman1, 0.5f, 0.f, false);
 
-	AddProp(6, man1, -0.7f, 0.f, false);
-	AddProp(6, man3, -0.5f, 0.f, false);
-	AddProp(6, flagman, -0.3f, 0.f, false);
-	AddProp(9, start, -1.25f, -1.8f, false);
-	AddProp(9, trafficLight, -0.8f, 0.f, false);
-	AddProp(9, panel4, 1.f, 0.f, false);
+	AddProp(306, man1, -0.7f, 0.f, false);
+	AddProp(306, man3, -0.5f, 0.f, false);
+	AddProp(306, flagman, -0.3f, 0.f, false);
+	AddProp(309, start, -1.25f, -1.8f, false);
+	AddProp(309, trafficLight, -0.8f, 0.f, false);
+	AddProp(309, panel4, 1.f, 0.f, false);
 
 	float sep = 1;
 	/*for (int i = 1; i < 36; i += 3)
@@ -379,6 +396,7 @@ void Road::UpdateRoad(float time)
 	UpdateCars();
 	CheckCarsState();
 
+	iniPosition = position;
 	//Update player position
 	position += (int)(App->player->speed);
 	while (position >= trackLength)
@@ -394,7 +412,7 @@ void Road::UpdateRoad(float time)
 
 	if (App->player->playerState == ONROAD)
 	{
-		varThresholdX = (App->player->speed / App->player->maxSpeed) * 2;
+		varThresholdX = (App->player->speed / App->player->maxSpeed) * 2.5f;
 		if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 		{
 			if (thresholdX > -varThresholdX)
@@ -423,7 +441,7 @@ void Road::UpdateRoad(float time)
 			}
 		}
 
-		playerX += thresholdX * time;
+		playerX += (thresholdX * time);
 
 		CheckPlayerCollision(playerLine);
 	}
@@ -446,7 +464,7 @@ void Road::UpdateRoad(float time)
 			{
 				anim->Reset();
 				anim->ResetLoops();
-				App->player->lowAccel = App->player->maxSpeed / 7.0f;
+				App->player->lowAccel = App->player->maxSpeed / 6.5f;
 				App->player->speed = 0.f;
 				App->player->playerState = ONROAD;
 				App->player->resetCounters();
@@ -455,23 +473,41 @@ void Road::UpdateRoad(float time)
 	}
 
 	playerRoad = (abs(playerLine->p1.xCamera) <= abs(playerLine->p11.xCamera) ? LEFTROAD : RIGHTROAD);
-
+	
+	//Apply centrifugal to curves
+	float centrifugal = (App->player->speed > 26 ? 0.5f : 0.f);
+	if (App->player->speed >= 100)
+		centrifugal = (App->player->speed - 50.f) / 100.f;
 	switch (playerRoad)
 	{
-	case LEFTROAD:
-		
-		break;
 	case RIGHTROAD:
 		if (roadDistance != playerLine->distance)
-		{
 			playerX += (playerLine->distance - roadDistance) / (float)ROAD_WIDTH;
-		}
+		if (playerLine->mirror)
+			playerX += (playerLine->curve * MIN((App->player->speed / App->player->maxSpeed),1.f) * centrifugal * time);
+		else
+			playerX -= (playerLine->curve * MIN((App->player->speed / App->player->maxSpeed),1.f) * centrifugal * time);
+		break;
+	case LEFTROAD:
+		playerX -= (playerLine->curve * MIN((App->player->speed / App->player->maxSpeed),1.f) * centrifugal * time);
 		break;
 	}
+		
 
 	roadDistance = (int)playerLine->distance;
 
 	UpdateWheels();
+
+	//Later update speed when both wheels are in sand
+	if (App->player->wheelL == SAND && App->player->wheelR == SAND)
+		App->player->maxSpeed = 50.f;
+	else
+	{
+		if (App->player->gear)
+			App->player->maxSpeed = (int)SEGMENT_LENGTH;
+		else
+			App->player->maxSpeed = 100.f;
+	}
 }
 
 void Road::ActivateAnims()
@@ -786,13 +822,6 @@ void Road::DrawRoad()
 	playerLine->projection(playerLine->p1, (int)((playerX * ROAD_WIDTH) - sumX), (int)((float)cameraHeight + playerY), position, cameraDistance);
 	float maxY = playerLine->p1.yScreen;
 
-	//Render sky background
-	App->renderer->DrawQuad({ 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT }, 0, 148, 255, 255);
-
-	//Render second background
-
-	//Render third background
-
 	for (int n = 0; n < drawDistance; n++) {
 		l = lines[(baseLine->index + n) % lines.size()];
 		l->clip = maxY;
@@ -858,6 +887,26 @@ void Road::DrawRoad()
 
 		maxY = l->p2.yScreen;
 	}
+
+	//Render sky background
+	App->renderer->DrawQuad({ 0, 0, SCREEN_WIDTH, (int)maxY + SCREEN_Y_OFFSET }, 0, 148, 255, 255);
+
+	//Render second background
+	//El background depen del valor de la curva!! (Si la corba es positiva, el valor en X disminueix. Si el valor en X baixa del limit, pasar al valor màxim. El mateix per quan corba negativa)
+	//El valor en Y depen del maxY;
+	if (!playerLine->mirror)
+		offsetXBackground1 += playerLine->curve * (position - iniPosition) / SEGMENT_LENGTH * 2.f;
+	if (offsetXBackground1 + SCREEN_WIDTH > backgroundLvl1.w)
+		offsetXBackground1 = 0.f;
+	if (offsetXBackground1 < 0.f)
+		offsetXBackground1 = backgroundLvl1.w - SCREEN_WIDTH;
+
+	float destX = backgroundLvl1.x + offsetXBackground1;
+	float destY = MAX(backgroundLvl1.y, backgroundLvl1.y + (backgroundLvl1.h - (maxY + SCREEN_Y_OFFSET)));
+	float destW = SCREEN_WIDTH;
+	float destH = MIN(backgroundLvl1.h, (maxY + SCREEN_Y_OFFSET));
+	SDL_Rect dest = { destX, destY, destW, destH };
+	App->renderer->Blit(backgrounds, 0, maxY + SCREEN_Y_OFFSET, &dest, 1.f, { 1.f, 1.f }, { 0.f, 1.f });
 
 	//Draw cars and sprites
 	for (int n = (int)(drawDistance - 1); n > 0; --n)

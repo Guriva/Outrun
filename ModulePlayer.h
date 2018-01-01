@@ -98,4 +98,4 @@ public:
 	clock_t tick_timer;
 };
 
-#endif
+#endif // __MODULEPLAYER_H__

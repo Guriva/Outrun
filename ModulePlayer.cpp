@@ -22,8 +22,8 @@ ModulePlayer::ModulePlayer(bool active) : Module(active)
 	thresholdX = 1.f;
 	varThresholdX = 0.06f;
 	offsetCrash1 = 0.f;
-	maxSpeed = (float)SEGMENT_LENGTH;
-	lowAccel = maxSpeed/7.0f;
+	maxSpeed = 100.f;
+	lowAccel = maxSpeed/6.5f;
 	forceX = 0.3f;
 	current_animation = &preparingAnim;
 	gear = false;
@@ -296,8 +296,8 @@ ModulePlayer::ModulePlayer(bool active) : Module(active)
 	carStates[DOWN][FRONT] = &down;
 	carStates[DOWN][RIGHT] = &downright;
 	carStates[DOWN][RIGHTMOST] = &downrightMost;
-	
-	
+
+
 }
 
 ModulePlayer::~ModulePlayer()
@@ -325,6 +325,8 @@ bool ModulePlayer::CleanUp()
 // Update: draw background
 update_status ModulePlayer::Update()
 {
+	time = (float)((clock() - tick_timer) / (double)CLOCKS_PER_SEC);
+	tick_timer = clock();
 	switch (playerState)
 	{
 	case PREPARING:
@@ -349,8 +351,6 @@ update_status ModulePlayer::Update()
 
 void ModulePlayer::UpdatePlayerPreparing()
 {
-	time = (float)((clock() - tick_timer) / (double)CLOCKS_PER_SEC);
-	tick_timer = clock();
 	if (preparingAnim.speed > 0.f)
 	{
 		App->renderer->Blit(car, (int)(SCREEN_WIDTH / 2) - 30, (int)(SCREEN_HEIGHT / 2) + 377, &(current_animation->GetCurrentFrame()), 1.0f, { 3.f, 3.f }, { 0.5f, 1.f });
@@ -359,26 +359,41 @@ void ModulePlayer::UpdatePlayerPreparing()
 	{
 		App->renderer->Blit(car, (int)(SCREEN_WIDTH / 2) + 3, (int)(SCREEN_HEIGHT / 2) + 377, &(current_animation->GetCurrentFrame()), 1.0f, { 3.f, 3.f }, { 0.5f, 1.f });
 	}
-	
+
 
 }
 
 void ModulePlayer::UpdatePlayerOnRoad()
 {
-	time = (float)((clock() - tick_timer) / (double)CLOCKS_PER_SEC);
-	tick_timer = clock();
 	//Check input for speed
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT && speed < maxSpeed)
+	{
 		speed += lowAccel * time;
-	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT && speed > 0.f) {
+		if (speed > maxSpeed)
+			speed = maxSpeed;
+	}
+	//Decelerate when changing car gear
+	if (speed > maxSpeed)
+		speed -= lowAccel * time;
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT && speed > 0.f)
+	{
 		speed -= 3 * lowAccel * time;
 		if (speed < 0.f)
 			speed = 0.f;
 	}
-	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_IDLE && App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_IDLE && speed > 0.f) {
+	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_IDLE && App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_IDLE && speed > 0.f)
+	{
 		speed -= lowAccel * time;
 		if (speed < 0.f)
 			speed = 0.f;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+	{
+		gear = !gear;
+		if (gear)
+			maxSpeed = (int)SEGMENT_LENGTH;
+		else
+			maxSpeed = 100.f;
 	}
 
 	//Check input for side
@@ -456,6 +471,7 @@ void ModulePlayer::UpdatePlayerSCol()
 
 	if (!current_animation->Finished())
 		App->renderer->Blit(car, (int)(SCREEN_WIDTH / 2) + 5, (int)(SCREEN_HEIGHT / 2) + 304 - sin(offsetCrash1*M_PI) * 12, &(current_animation->GetCurrentFrame()), 1.0f, { 3.2f,3.43f }, { 0.5f,0.5f });
+	CheckWheels();
 }
 
 void ModulePlayer::UpdatePlayerMCol()
@@ -469,14 +485,25 @@ void ModulePlayer::UpdatePlayerMCol()
 	}
 	if (!current_animation->Finished())
 		App->renderer->Blit(car, (int)(SCREEN_WIDTH / 2) + 5, (int)(SCREEN_HEIGHT / 2) + 304, &(current_animation->GetCurrentFrame()), 1.0f, { 3.2f,3.43f }, { 0.5f,0.5f });
+	CheckWheels();
 }
 
 void ModulePlayer::CheckWheels()
 {
-	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT && !gear && speed < 80 && wheelL != SAND && wheelR != SAND)
-		wheelR = SMOKE;
-	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT && !gear && speed < 80 && wheelR != SAND && wheelL != SAND)
-		wheelL = SMOKE;
+	if (playerState == ONROAD)
+	{
+		if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT && !gear && speed < 50 && wheelL != SAND && wheelR != SAND)
+			wheelR = SMOKE;
+		if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT && !gear && speed < 50 && wheelR != SAND && wheelL != SAND)
+			wheelL = SMOKE;
+	}
+	else
+	{
+		if (speed > 0 && wheelL != SAND && wheelR != SAND)
+			wheelR = SMOKE;
+		if (speed > 0 && wheelR != SAND && wheelL != SAND)
+			wheelL = SMOKE;
+	}
 
 	switch (wheelR)
 	{

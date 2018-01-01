@@ -11,6 +11,7 @@
 #include "ModuleSceneMain.h"
 #include "ModuleSceneLevel.h"
 #include "ModuleFontManager.h"
+#include "ModuleUI.h"
 
 using namespace std;
 
@@ -29,7 +30,7 @@ Application::Application()
 	modules.push_back(scene_main = new ModuleSceneMain(false));
 	modules.push_back(scene_level = new ModuleSceneLevel(false));
 	modules.push_back(player = new ModulePlayer(false));
-	//modules.push_back(ui = new ModuleUI(false));
+	modules.push_back(ui = new ModuleUI(false));
 
 	// Modules to draw on top of game logic
 	modules.push_back(collision = new ModuleCollision());		//If initial load takes too long, modify to load it on specific scene

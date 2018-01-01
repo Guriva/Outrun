@@ -19,7 +19,15 @@ enum playerR
 
 struct Car
 {
-
+	Animation* current_anim;
+	Animation left;
+	Animation right;
+	float offset, speed, zPos;
+	bool active, side;
+	int lane;
+	Car() : offset(0), speed(50),
+		active(false), side(false),
+		lane(1) {}
 };
 
 struct Prop
@@ -69,9 +77,14 @@ private:
 	SDL_Texture* layout = nullptr;
 	SDL_Texture* sprites = nullptr;
 	SDL_Texture* backgrounds = nullptr;
+	SDL_Texture* cars = nullptr;
+
+	SDL_Rect backgroundLvl1;
+	SDL_Rect background2Lvl1;
+
 	vector<Line*> lines;
 	float cameraDistance;
-	int position;
+	int position, iniPosition;
 	SDL_Color sand, road, rumble, lane;
 	int trackLength;
 	float playerX, pWheelL, pWheelR, collisionDir;
@@ -79,7 +92,7 @@ private:
 	int playerY, playerZ, playerW;
 	playerR playerRoad;
 
-	float fov, cameraHeight, drawDistance;
+	float fov, cameraHeight, drawDistance, offsetXBackground1, offsetXBackground2;
 	float segmentL, rumbleL;
 	int roadLanes, roadDistance;
 	short lineW;
@@ -118,6 +131,15 @@ private:
 	Prop* panel3 = nullptr;
 	Prop* panel4 = nullptr;
 	Prop* vulturesign = nullptr;
+
+	Car* truck1 = nullptr;
+	Car* truck2 = nullptr;
+	Car* atom1 = nullptr;
+	Car* atom2 = nullptr;
+	Car* out1 = nullptr;
+	Car* out2 = nullptr;
+
+	vector<Car*> active;
 };
 
 #endif // __ROAD_H__

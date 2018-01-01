@@ -135,6 +135,7 @@
     <ClInclude Include="ModuleSceneLevel.h" />
     <ClInclude Include="ModuleSceneMain.h" />
     <ClInclude Include="ModuleTextures.h" />
+    <ClInclude Include="ModuleUI.h" />
     <ClInclude Include="ModuleWindow.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Road.h" />
@@ -156,6 +157,7 @@
     <ClCompile Include="ModuleSceneLevel.cpp" />
     <ClCompile Include="ModuleSceneMain.cpp" />
     <ClCompile Include="ModuleTextures.cpp" />
+    <ClCompile Include="ModuleUI.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="Road.cpp" />
   </ItemGroup>
