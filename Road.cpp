@@ -205,12 +205,21 @@ Road::Road()
 
 	active.reserve(6);
 
-	/*truck1->left.frames.push_back({ 1, 1, 50, 55 });
+	truck1 = new Car();
+	truck1->left.frames.push_back({ 1, 1, 50, 55 });
 	truck1->left.frames.push_back({ 1, 57, 50, 55});
-	truck1->left.speed = 0.5f;
+	truck1->left.speed = 0.2f;
 	truck1->right.frames.push_back({ 52, 1, 50, 55});
 	truck1->right.frames.push_back({ 52, 57, 50, 55});
-	truck1->right.speed = 0.5f;*/
+	truck1->right.speed = 0.2f;
+	truck1->active = false;
+	truck1->speed = 120.f;
+	truck1->current_anim = &truck1->left;
+	truck1->offset = 0.5f;
+	truck1->side = false;
+	truck1->zPos = 350*SEGMENT_LENGTH;
+
+	active.push_back(truck1);
 }
 
 Road::~Road()
@@ -393,8 +402,7 @@ bool Road::CleanUp()
 
 void Road::UpdateRoad(float time)
 {
-	UpdateCars();
-	CheckCarsState();
+	UpdateCars(time);
 
 	iniPosition = position;
 	//Update player position
@@ -739,14 +747,41 @@ void Road::UpdateWheels()
 	}
 }
 
-void Road::UpdateCars()
+void Road::UpdateCars(float time)
 {
-
+	Line* l;
+	for (unsigned int i = 0; i < active.size(); ++i)
+	{
+		active[i]->zPos += active[i]->speed * time;
+		l = lines[(int)((active[i]->zPos) / segmentL) % lines.size()];
+		Line* playerLine = lines[(int)((position + playerZ) / segmentL) % lines.size()];
+		switch (active[i]->active)
+		{
+		case false:
+			if (l->index < playerLine->index + drawDistance && l->index > playerLine->index)
+			{
+				active[i]->active = true;
+				active[i]->speed = 120.f;
+			}
+			break;
+		case true:
+			if (l->index > playerLine->index + drawDistance || l->index < playerLine->index)
+			{
+				active[i]->active = false;
+				active[i]->speed = 0.f;
+				active[i]->zPos += 700;
+			}
+			break;
+		}
+	}
 }
 
 void Road::CheckCarsState()
 {
+	for (unsigned int i = 0; i < active.size(); ++i)
+	{
 
+	}
 }
 
 void Road::CheckPlayerCollision(const Line* playerLine)
@@ -919,8 +954,15 @@ void Road::DrawRoad()
 		for (unsigned int i = 0; i < l->lineProps.size(); ++i)
 		{
 			Prop* p = l->lineProps[i];
-			l->renderProps(sprites, i);
+			l->RenderProps(sprites, i);
 		}
+	}
+
+	for (unsigned int n = 0; n < active.size(); ++n)
+	{
+		l = lines[(int)(active[n]->zPos / segmentL) % lines.size()];
+		if (l->index >= playerLine->index && l->index < playerLine->index + drawDistance)
+			l->RenderCars(cars, active[n]);
 	}
 
 	//Render layout

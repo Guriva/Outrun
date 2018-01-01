@@ -19,7 +19,8 @@ public:
 	~Line();
 
 	void projection(PointLine &p, int cameraX, int cameraY, int cameraZ, float cameraD);
-	void renderProps(SDL_Texture* text, int i);
+	void RenderProps(SDL_Texture* text, int i);
+	void RenderCars(SDL_Texture* text, Car* car);
 
 public:
 	int index;

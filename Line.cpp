@@ -34,7 +34,7 @@ void Line::projection(PointLine &p, int cameraX, int cameraY, int cameraZ, float
 	p.wScreen = p.scale * ROAD_WIDTH * SCREEN_WIDTH / 2;
 }
 
-void Line::renderProps(SDL_Texture* text, int i)
+void Line::RenderProps(SDL_Texture* text, int i)
 {
 	PointLine p = p1;
 	if (sides[i])
@@ -72,4 +72,42 @@ void Line::renderProps(SDL_Texture* text, int i)
 
 	if (rectDest.h > 0)
 		App->renderer->Blit(text, (int)spriteX, (int)(spriteY + SCREEN_Y_OFFSET), &(rectDest), 1.f, { (destW / rectDest.w)*3.2f*lineProps[i]->scale, (destH / rectDest.h)*3.43f*lineProps[i]->scale }, pivot);
+}
+
+void Line::RenderCars(SDL_Texture* text, Car* car)
+{
+	PointLine p = p1;
+	PointLine px = p2;
+	if (car->side)
+	{
+		p = p11;
+		px = p21;
+	}
+
+	float perc = (float)(((int)(car->zPos)%(int)SEGMENT_LENGTH) / (float)SEGMENT_LENGTH);
+	float scaleOffset = p.scale + (px.scale - p.scale)*perc;
+	float xOffset = p.xScreen + (px.xScreen - p.xScreen)*perc;
+	float yOffset = p.yScreen + (px.yScreen - p.yScreen)*perc;
+
+	float spriteX = xOffset + (car->offset * scaleOffset * ROAD_WIDTH * SCREEN_WIDTH / 2);
+	float spriteY = yOffset;
+	SDL_Rect rectDest;
+	fPoint pivot = { 0.5f, 1.f };
+	rectDest = car->current_anim->GetCurrentFrame();
+
+	float destW = (rectDest.w * scaleOffset * SCREEN_WIDTH / 2) * ((0.3f * (1.f / 170.f)) * ROAD_WIDTH);
+	float destH = (rectDest.h * scaleOffset * SCREEN_WIDTH / 2) * ((0.3f * (1.f / 170.f)) * ROAD_WIDTH);
+
+	//If has to be clipped
+	if (clip < spriteY)
+	{
+		float clipH = MAX(0, clip - (spriteY - (destH*3.43f*1.2f)));
+		float clipHPerc = (clipH / (destH*3.43f*1.2f));
+		rectDest.h = (int)(rectDest.h * clipHPerc);
+		spriteY = clip;
+		destH *= clipHPerc;
+	}
+
+	if (rectDest.h > 0)
+		App->renderer->Blit(text, (int)spriteX, (int)(spriteY + SCREEN_Y_OFFSET), &(rectDest), 1.f, { (destW / rectDest.w)*3.2f*1.2f, (destH / rectDest.h)*3.43f*1.2f }, pivot);
 }

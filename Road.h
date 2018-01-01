@@ -22,7 +22,7 @@ struct Car
 	Animation* current_anim;
 	Animation left;
 	Animation right;
-	float offset, speed, zPos;
+	float offset, speed, zPos, percent;
 	bool active, side;
 	int lane;
 	Car() : offset(0), speed(50),
@@ -68,7 +68,7 @@ private:
 	void AddHill(int num, float y, int distance, int length);
 	void AddProp(unsigned int line, Prop* p, float offsetX, float offsetY, bool side);
 	void UpdateWheels();
-	void UpdateCars();
+	void UpdateCars(float time);
 	void CheckCarsState();
 	void CheckPlayerCollision(const Line* playerLine);
 	bool Collides(float x1, int w1, float x2, float w2, float scale);
