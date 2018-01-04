@@ -107,6 +107,29 @@ ModulePlayer::ModulePlayer(bool active) : Module(active)
 	crash21.loop = false;
 	crash21.speed = 0.2f;
 
+	endSequence.frames.push_back({ 193, 181, 95, 44 });
+	endSequence.frames.push_back({ 193, 271, 95, 44 });
+	endSequence.frames.push_back({ 193, 181, 95, 44 });
+	endSequence.frames.push_back({ 193, 271, 95, 44 });
+	endSequence.frames.push_back({ 193, 181, 95, 44 });
+	endSequence.frames.push_back({ 193, 271, 95, 44 });
+	endSequence.frames.push_back({ 193, 181, 95, 44 });
+	endSequence.frames.push_back({ 193, 271, 95, 44 });
+	endSequence.frames.push_back({ 97, 181, 95, 44 });
+	endSequence.frames.push_back({ 97, 271, 95, 44 });
+	endSequence.frames.push_back({ 1, 181, 95, 44 });
+	endSequence.frames.push_back({ 1, 271, 95, 44 });
+	endSequence.frames.push_back({ 653, 142, 171, 46 });
+	endSequence.frames.push_back({ 653, 142, 171, 46 });
+	endSequence.frames.push_back({ 481, 142, 171, 46 });
+	endSequence.frames.push_back({ 481, 142, 171, 46 });
+	endSequence.frames.push_back({ 481, 142, 171, 46 });
+	endSequence.frames.push_back({ 481, 142, 171, 46 });
+	endSequence.frames.push_back({ 481, 142, 171, 46 });
+	endSequence.frames.push_back({ 481, 142, 171, 46 });
+	endSequence.loop = false;
+	endSequence.speed = 0.12f;
+
 	carSmokeL.frames.push_back({ 1, 1, 58, 17 });
 	carSmokeL.frames.push_back({ 60, 1, 58, 17 });
 	carSmokeL.frames.push_back({ 119, 1, 58, 17 });
@@ -332,7 +355,6 @@ update_status ModulePlayer::Update()
 	case PREPARING:
 		UpdatePlayerPreparing();
 		break;
-
 	case ONROAD:
 		UpdatePlayerOnRoad();
 		break;
@@ -342,7 +364,11 @@ update_status ModulePlayer::Update()
 	case MEDIUMCOLLISION:
 		UpdatePlayerMCol();
 		break;
+	case AUTO:
+		UpdatePlayerAuto();
+		break;
 	case ENDING:
+		UpdatePlayerEnding();
 		break;
 	}
 
@@ -365,6 +391,16 @@ void ModulePlayer::UpdatePlayerPreparing()
 
 void ModulePlayer::UpdatePlayerOnRoad()
 {
+	if (wheelL == SAND && wheelR == SAND)
+		maxSpeed = 75.f;
+	else
+	{
+		if (gear)
+			maxSpeed = (int)SEGMENT_LENGTH;
+		else
+			maxSpeed = 100.f;
+	}
+
 	//Check input for speed
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT && speed < maxSpeed)
 	{
@@ -485,6 +521,32 @@ void ModulePlayer::UpdatePlayerMCol()
 	}
 	if (!current_animation->Finished())
 		App->renderer->Blit(car, (int)(SCREEN_WIDTH / 2) + 5, (int)(SCREEN_HEIGHT / 2) + 304, &(current_animation->GetCurrentFrame()), 1.0f, { 3.2f,3.43f }, { 0.5f,0.5f });
+	CheckWheels();
+}
+
+void ModulePlayer::UpdatePlayerAuto()
+{
+	//Player at maximum speed
+	if (!gear) gear = true;
+	maxSpeed = (int)SEGMENT_LENGTH;
+	speed += lowAccel * time;
+	if (speed > maxSpeed)
+		speed = maxSpeed;
+
+	wheelL = wheelR = NORMAL;
+
+	current_animation = carStates[STRAIGHT][FRONT];
+	App->renderer->Blit(car, (int)(SCREEN_WIDTH / 2) + 5, (int)(SCREEN_HEIGHT / 2) + 304, &(current_animation->GetCurrentFrame()), 1.0f, { 3.2f,3.43f }, { 0.5f,0.5f });
+	//CheckWheels();
+}
+
+void ModulePlayer::UpdatePlayerEnding()
+{
+	if (speed > 0.f)
+		speed -= lowAccel * time * 3.f;
+	else
+		wheelL = wheelR = NORMAL;
+	App->renderer->Blit(car, (int)(SCREEN_WIDTH / 2) + 5, (int)(SCREEN_HEIGHT / 2) + 304, &(endSequence.GetCurrentFrame()), 1.0f, { 3.2f,3.43f }, { 0.5f,0.5f });
 	CheckWheels();
 }
 

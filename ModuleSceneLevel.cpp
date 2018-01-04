@@ -36,6 +36,7 @@ bool ModuleSceneLevel::CleanUp()
 	/*** TODO !!***/
 
 	road->CleanUp();
+	RELEASE(road);
 
 	return true;
 }
@@ -58,16 +59,20 @@ update_status ModuleSceneLevel::Update()
 
 		if (countdownTimer < 0)
 		{
-			actualState = SceneLevelState::RUNNING;
-			App->player->playerState = StatePlayer::ONROAD;
+			actualState = RUNNING;
+			App->player->playerState = ONROAD;
 		}
 		road->DrawRoad();
 		break;
 	case RUNNING:
 		road->UpdateRoad(time);
 		road->DrawRoad();
+		if (road->ending)
+			actualState = FINISH;
 		break;
 	case FINISH:
+		road->UpdateRoadEnding(time);
+		road->DrawRoad();
 		break;
 	}
 

@@ -29,6 +29,7 @@ enum StatePlayer
 	ONROAD,
 	SMALLCOLLISION,
 	MEDIUMCOLLISION,
+	AUTO,
 	ENDING
 };
 
@@ -56,6 +57,8 @@ private:
 	void UpdatePlayerOnRoad();
 	void UpdatePlayerSCol();
 	void UpdatePlayerMCol();
+	void UpdatePlayerAuto();
+	void UpdatePlayerEnding();
 	void CheckWheels();
 
 public:
@@ -95,6 +98,7 @@ public:
 	Animation crash1;
 	Animation crash2;
 	Animation crash21;
+	Animation endSequence;
 	clock_t tick_timer;
 };
 
