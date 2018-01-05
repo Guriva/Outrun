@@ -81,6 +81,9 @@
     <ClInclude Include="ModuleUI.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleSceneHighscore.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -135,6 +138,9 @@
       <Filter>Archivos de origen</Filter>
     </ClCompile>
     <ClCompile Include="ModuleUI.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleSceneHighscore.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>

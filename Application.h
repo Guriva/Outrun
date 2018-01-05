@@ -19,6 +19,7 @@ class ModuleParticles;
 class ModulePlayer;
 class ModuleSceneMain;
 class ModuleSceneLevel;
+class ModuleSceneHighscore;
 class ModuleUI;
 
 class Application
@@ -47,10 +48,15 @@ public:
 	ModulePlayer* player;
 	ModuleSceneMain* scene_main;
 	ModuleSceneLevel* scene_level;
+	ModuleSceneHighscore* highscore;
 	ModuleUI* ui;
 
-private:
+	int score;
+	unsigned int credit;
+	float totalTime;
+	const char* musicLevel = nullptr;
 
+private:
 	std::list<Module*> modules;
 };
 

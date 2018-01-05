@@ -11,12 +11,16 @@
 #include "ModuleSceneMain.h"
 #include "ModuleSceneLevel.h"
 #include "ModuleFontManager.h"
+#include "ModuleSceneHighscore.h"
 #include "ModuleUI.h"
 
 using namespace std;
 
 Application::Application()
 {
+	credit = score = 0;
+	totalTime = 0.f;
+
 	// Order matters: they will init/start/pre/update/post in this order
 	modules.push_back(input = new ModuleInput());
 	modules.push_back(window = new ModuleWindow());
@@ -31,6 +35,7 @@ Application::Application()
 	modules.push_back(scene_level = new ModuleSceneLevel(false));
 	modules.push_back(player = new ModulePlayer(false));
 	modules.push_back(ui = new ModuleUI(false));
+	modules.push_back(highscore = new ModuleSceneHighscore(false));
 
 	// Modules to draw on top of game logic
 	modules.push_back(collision = new ModuleCollision());		//If initial load takes too long, modify to load it on specific scene

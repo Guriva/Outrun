@@ -4,16 +4,18 @@
 #include "ModulePlayer.h"
 #include "ModuleInput.h"
 #include "ModuleRender.h"
+#include "ModuleUI.h"
 #include "Line.h"
 #include "Globals.h"
 #include "Util.h"
 #include <cstdlib>
+#include <algorithm>
 
 using namespace std;
 
 Road::Road()
 {
-	srand(time(NULL));
+	srand((unsigned int)time(NULL));
 
 	backgroundLvl1 = { 0, 0, 4030, 243 };
 
@@ -240,6 +242,16 @@ Road::Road()
 	end->pivotL = { 0.f, 1.f };
 	end->pivotR = { 1.f, 1.f };
 
+	checkpoint = new Prop();
+	checkpoint->animLeft.frames.push_back({ 1, 489, 218, 154 });
+	checkpoint->animRight.frames.push_back({ 220, 489, 218, 154 });
+	checkpoint->scale = 1.2f;
+	checkpoint->collider = true;
+	checkpoint->wCol = 14;
+	checkpoint->pivotColL = { 0.064f, 1.f };
+	checkpoint->pivotColR = { 0.936f, 1.f };
+
+
 	active.reserve(6);
 
 	truck1 = new Car();
@@ -353,7 +365,6 @@ bool Road::Start()
 	ending = false;
 	sameColors = 0;
 
-
 	//Initial position
 	cameraDistance = 1 / tan((float)((fov / 2.f) * M_PI / 180.0f));
 	playerX = collisionDir = 0.f;
@@ -373,7 +384,7 @@ bool Road::Start()
 	dist6 = dist5 + ((int)ROAD_WIDTH * 16 / 27) + ((int)ROAD_WIDTH / 18);
 	dist7 = dist6 + ((int)ROAD_WIDTH * 16 / 27) + ((int)ROAD_WIDTH / 18);
 	dist8 = dist7 + ((int)ROAD_WIDTH * 16 / 27) + ((int)ROAD_WIDTH / 18);
-	distM = dist8 + ((int)ROAD_WIDTH * 16 / 27) * 20 + ((int)ROAD_WIDTH / 18) * 20;
+	distM = dist8 + ((int)ROAD_WIDTH * 16 / 27) * 10 + ((int)ROAD_WIDTH / 18) * 10;
 
 	return true;
 }
@@ -386,14 +397,8 @@ bool Road::InitRoad()
 	//Load textures
 	background1 = App->textures->Load("Textures/Level/backgroundlvl1.png");
 	background2 = nullptr;
-	layout = App->textures->Load("Textures/Level/layoutLevel.png");
 	sprites = App->textures->Load("Textures/Level/spriteslvl1.png");
 	cars = App->textures->Load("Textures/Level/cars.png");
-
-	/*l->light ? sand = { 230, 214, 197, 255 } : sand = { 239, 222, 206, 255 };
-		l->light ? road = { 156, 156, 156, 255 } : road = { 148, 148, 148, 255 };
-		l->light ? rumble = { 247, 247, 247, 255 } : rumble = { 148, 148, 148, 255 };
-		l->light ? lane = { 156, 156, 156, 255 } : lane = { 247, 247, 247, 255 };*/
 
 	//Create Road
 	beach = new Biome();
@@ -431,7 +436,7 @@ bool Road::InitRoad()
 
 	AddStraight(100, false, dist8, beach);
 	AddStraight(20, false, dist8, beach);
-	/*AddHill(10, -5, dist8, 1, beach);
+	AddHill(10, -5, dist8, 1, beach);
 	AddHill(5,60,dist7, 28, beach);
 	AddCurve(100, -1.5, false, dist7, 2, beach);
 	AddStraight(26,false,dist7, beach);
@@ -457,7 +462,7 @@ bool Road::InitRoad()
 	AddCurve(10,3,false,dist5,3, beach);
 	AddRoad(10,20,10,-3,5,false,dist5, beach);
 	AddRoad(10,40,20,3,7,false,dist4, beach);
-	AddStraight(10,false,dist4, beach);*/
+	AddStraight(10,false,dist4, beach);
 	AddStraight(50,false,dist3, beach);
 	AddHill(10,5,dist3,2, beach);
 	AddHill(10,-5,dist3,2, beach);
@@ -476,6 +481,8 @@ bool Road::InitRoad()
 	//AddStraight(100, true, distM);
 
 	//Add elements to each line
+
+	//Beach props
 	AddProp(305, woman3, -0.63f, 0.f, false, beach);
 	AddProp(305, musicman, -0.3f, 0.f, false, beach);
 	AddProp(305, cameraman, -0.5f, 0.f, false, beach);
@@ -488,6 +495,7 @@ bool Road::InitRoad()
 	AddProp(309, trafficLight, -0.8f, 0.f, false, beach);
 	AddProp(309, panel4, 1.f, 0.f, false, beach);
 
+	//End1 props
 	AddProp(705, end, -1.35f, -1.6f, false, end1);
 	AddProp(705, log, -1.2f, 0.f, false, end1);
 	AddProp(705, log, 1.2f, 0.f, false, end1);
@@ -500,20 +508,27 @@ bool Road::InitRoad()
 	AddProp(805, log, -1.2f, 0.f, false, end1);
 	AddProp(805, log, 1.2f, 0.f, false, end1);
 
-	float sep = 1;
-	/*for (int i = 1; i < 36; i += 3)
-	{
-		AddProp(i + (int)sep, palm1, -0.8f, 0.f);
-		AddProp(i + (int)sep, palm1, 0.8f, 0.f);
-		sep *= 1.5f;
-	}*/
+	AddProp(450, checkpoint, -0.4f, 0.f, false, beach);
+	AddProp(450, checkpoint, 0.4f, 0.f, false, beach);
 
-	/*for (int i = 1; i < 500; i += 3)
+	float sep = 1;
+	/*for (int i = 1; i < 300; i += 3)
 	{
 		AddProp(i + (int)sep, palm1, -0.8f, 0.f, false, beach);
-		AddProp(i + (int)sep, palm1, 0.8f, 0.f, false, beach);
 		AddProp(i + (int)sep, palm1, 0.8f, 0.f, true, beach);
 		sep *= 1.1f;
+	}*/
+
+	/*for (int i = 1; i < 200; i += 3)
+	{
+		AddProp(i + (int)sep, vulturesign, -0.8f, 0.f, false, beach);
+		AddProp(i + (int)sep, vulturesign, 0.8f, 0.f, false, beach);
+		AddProp(i + (int)sep, vulturesign, 0.8f, 0.f, true, beach);
+		sep *= 1.1f;
+	}*/
+	/*for (int i = 400; i < 450; i += 5)
+	{
+		AddProp(i, house1, -0.8f, 0.f, false, beach);
 	}*/
 
 	//AddProp(30, palm1, 0.1f, 0.f);
@@ -564,7 +579,20 @@ bool Road::CleanUp()
 	RELEASE(panel3);
 	RELEASE(panel4);
 	RELEASE(vulturesign);
+	RELEASE(desertSand);
+	RELEASE(nomad);
+	RELEASE(camel1);
+	RELEASE(camel2);
+	RELEASE(camel3);
+	RELEASE(log);
+	RELEASE(end);
+	RELEASE(checkpoint);
 	RELEASE(truck1);
+	RELEASE(truck2);
+	RELEASE(atom1);
+	RELEASE(atom2);
+	RELEASE(out1);
+	RELEASE(out2);
 
 	for (unsigned int i = 0; i < beach->lines.size(); ++i)
 	{
@@ -596,7 +624,6 @@ void Road::UpdateRoad(float time)
 	Line* playerLine = actual->lines[(int)((position + playerZ) / segmentL) % actual->lines.size()];
 	float playerPerc = (float)(((position + playerZ) % (int)segmentL) / segmentL);
 	playerY = (int)(playerLine->p1.yWorld + (playerLine->p2.yWorld - playerLine->p1.yWorld) * playerPerc);
-	Line* l;
 
 	//Check for biome road change
 	if (App->player->playerState == ONROAD && !actual->end && playerLine->index > actual->lastLine)
@@ -693,7 +720,7 @@ void Road::UpdateRoad(float time)
 			{
 				anim->Reset();
 				anim->ResetLoops();
-				App->player->lowAccel = (App->player->gear ? 150.f / 6.5f : 100.f / 6.5f);
+				App->player->lowAccel = 100.f / 6.5f;
 				App->player->speed = 0.f;
 				App->player->playerState = ONROAD;
 				App->player->resetCounters();
@@ -742,6 +769,17 @@ void Road::UpdateRoad(float time)
 		}
 	}
 
+	//check for checkpoints
+	for (unsigned int i = 0; i < playerLine->lineProps.size(); ++i)
+	{
+		//If checkpoint not visited
+		if (playerLine->lineProps[i] == checkpoint && !(find(checkpointsSeen.begin(), checkpointsSeen.end(), playerLine->index) != checkpointsSeen.end()))
+		{
+			App->ui->checkpoint = true;
+			checkpointsSeen.push_back(playerLine->index);
+		}
+	}
+
 	UpdateWheels();
 	if (App->player->playerState == ONROAD && App->player->wheelL != SAND && App->player->wheelR != SAND && App->player->speed > 100.f)
 	{
@@ -768,7 +806,6 @@ void Road::UpdateRoadEnding(float time)
 	Line* playerLine = actual->lines[(int)((position + playerZ) / segmentL) % actual->lines.size()];
 	float playerPerc = (float)(((position + playerZ) % (int)segmentL) / segmentL);
 	playerY = (int)(playerLine->p1.yWorld + (playerLine->p2.yWorld - playerLine->p1.yWorld) * playerPerc);
-	Line* l;
 
 	//Keep player on center of road
 	if (playerX > 0.1f)
@@ -940,9 +977,6 @@ void Road::DrawRoad()
 			}
 		}
 	}
-
-	//Render layout (this should be done later in ModuleUI)
-	App->renderer->Blit(layout, (int)(SCREEN_WIDTH / 2), (int)(SCREEN_HEIGHT / 2), nullptr, 1.f, { 3.2f, 3.43f }, { 0.5f, 0.5f });
 }
 
 void Road::ActivateAnims()
@@ -1197,6 +1231,8 @@ void Road::UpdateCars(float time)
 		case true:
 			if (l->index > playerLine->index + drawDistance || l->index < playerLine->index)
 			{
+				if (l->index < playerLine->index)
+					App->player->score += 20000;
 				c->side = rand() % 2;
 				c->active = false;
 				c->speed = 0.f;
@@ -1279,7 +1315,7 @@ void Road::CheckPlayerCollision(const Line* playerLine)
 			float x2 = xOffset + (c->offset * scaleOffset * ROAD_WIDTH * SCREEN_WIDTH / 2);
 			float scale = 1.6f * (0.3f * (1.f / 170.f)) * scaleOffset * SCREEN_WIDTH * ROAD_WIDTH * 1.2f;
 
-			if (Collides((int)(SCREEN_WIDTH / 2) + 5, playerW, x2, c->left.GetCurrentFrame().w, scale))
+			if (Collides((float)(SCREEN_WIDTH / 2) + 5.f, playerW, x2, (float)c->left.GetCurrentFrame().w, scale))
 			{
 				collisionDir = playerX;
 				float speed = App->player->speed;

@@ -4,7 +4,6 @@
 #include "SDL.h"
 
 #include "SDL_mixer.h"
-#pragma comment( lib, "SDL_mixer/libx86/SDL2_mixer.lib" )
 
 using namespace std;
 
@@ -119,6 +118,29 @@ bool ModuleAudio::PlayMusic(const char* path, float fade_time)
 	return ret;
 }
 
+bool ModuleAudio::StopMusic(float fade_time)
+{
+	bool ret = true;
+
+	if (music != nullptr)
+	{
+		if (fade_time > 0.0f)
+		{
+			Mix_FadeOutMusic((int)(fade_time * 1000.0f));
+		}
+		else
+		{
+			Mix_HaltMusic();
+		}
+
+		// this call blocks until fade out is done
+		Mix_FreeMusic(music);
+	}
+
+	LOG("Successfully stopping %s");
+	return ret;
+}
+
 // Load WAV
 unsigned int ModuleAudio::LoadFx(const char* path)
 {
@@ -152,8 +174,27 @@ bool ModuleAudio::PlayFx(unsigned int id, int repeat)
 	return ret;
 }
 
+bool ModuleAudio::PlayFxChannel(unsigned int id, int repeat, int channel)
+{
+	bool ret = false;
+
+	if (id < fx.size())
+	{
+		Mix_PlayChannel(channel, fx[id], repeat);
+		ret = true;
+	}
+
+	return ret;
+}
+
 bool ModuleAudio::StopFx()
 {
 	Mix_HaltChannel(-1);
+	return true;
+}
+
+bool ModuleAudio::StopFxChannel(int channel)
+{
+	Mix_HaltChannel(channel);
 	return true;
 }

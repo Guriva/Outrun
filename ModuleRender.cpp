@@ -50,8 +50,6 @@ update_status ModuleRender::PreUpdate()
 // Called every draw update
 update_status ModuleRender::Update()
 {
-	//Here need to update camera depending on player position
-
 	// debug camera
 	/*int speed = 1;
 
@@ -160,7 +158,8 @@ bool ModuleRender::DrawPoly4(short x1, short y1, short x2, short y2, short x3, s
 	short vx[4] = { x1 * SCREEN_SIZE, x2 * SCREEN_SIZE, x3 * SCREEN_SIZE, x4 * SCREEN_SIZE };
 	short vy[4] = { (y1 + SCREEN_Y_OFFSET) * SCREEN_SIZE, (y2 + SCREEN_Y_OFFSET) * SCREEN_SIZE, (y3 + SCREEN_Y_OFFSET) * SCREEN_SIZE, (y4 + SCREEN_Y_OFFSET) * SCREEN_SIZE };
 	
-	ret = filledPolygonRGBA(renderer, vx, vy, 4, c.r, c.g, c.b, c.a);
+	if (renderer != nullptr)
+		ret = filledPolygonRGBA(renderer, vx, vy, 4, c.r, c.g, c.b, c.a);
 
 	return (ret == 0);
 }

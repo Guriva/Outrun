@@ -22,15 +22,18 @@ public:
 
 	// Play a music file
 	bool PlayMusic(const char* path, float fade_time = DEFAULT_MUSIC_FADE_TIME);
+	bool StopMusic(float fade_time);
 
 	// Load a WAV in memory
 	unsigned int LoadFx(const char* path);
 
 	// Play a previously loaded WAV
 	bool PlayFx(unsigned int fx, int repeat = 0);
+	bool PlayFxChannel(unsigned int id, int repeat, int channel);
 
 	//Stops music on all channels
 	bool StopFx();
+	bool StopFxChannel(int channel);
 
 private:
 

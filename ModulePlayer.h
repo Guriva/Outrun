@@ -30,6 +30,7 @@ enum StatePlayer
 	SMALLCOLLISION,
 	MEDIUMCOLLISION,
 	AUTO,
+	PlayerGAMEOVER,
 	ENDING
 };
 
@@ -62,9 +63,14 @@ private:
 	void CheckWheels();
 
 public:
+	unsigned int speedSound, slideSound;
+	bool speedSoundAct, slideSoundAct;
 	float speed, maxSpeed, lowAccel, highAccel, time;
 	float thresholdX, varThresholdX, forceX;
 	float offsetCrash1;
+	float prepPos, sinDif, prepPosAct;
+	float lastSlide;
+	int score;
 	bool gear;
 	InclPlayer inclination;
 	DirPlayer direction;

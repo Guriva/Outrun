@@ -33,8 +33,8 @@ public:
 	vector<SDL_Rect> radioMusic;
 
 private:
-	float iniTime, countdown;
-	unsigned int credit, music;
+	float countdown;
+	unsigned int music;
 	unsigned int audioCoin, audioWave;
 	bool fxWavePlayed;
 };

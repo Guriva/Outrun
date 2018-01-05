@@ -7,35 +7,18 @@
 #include "ModuleCollision.h"
 #include "ModuleFadeToBlack.h"
 #include "ModulePlayer.h"
+#include "ModuleAudio.h"
 #include "SDL_timer.h"
 #include <math.h>
 
 ModulePlayer::ModulePlayer(bool active) : Module(active)
 {
-	tick_timer = clock();
-	inclination = STRAIGHT;
-	direction = FRONT;
-	playerState = PREPARING;
-	wheelL = wheelR = NORMAL;
-	speed = 0.f;
-	highAccel = 10.f;
-	thresholdX = 1.f;
-	varThresholdX = 0.06f;
-	offsetCrash1 = 0.f;
-	maxSpeed = 100.f;
-	lowAccel = maxSpeed/6.5f;
-	forceX = 0.3f;
-	current_animation = &preparingAnim;
-	gear = false;
-
 	preparingAnim.frames.push_back({ 481, 142, 171, 46 });
 	preparingAnim.frames.push_back({ 481, 142, 171, 46 });
 	preparingAnim.frames.push_back({ 653, 142, 171, 46 });
 	preparingAnim.frames.push_back({ 1, 181, 95, 44 });
 	preparingAnim.frames.push_back({ 97, 181, 95, 44 });
 	preparingAnim.frames.push_back({ 193, 181, 95, 44 });
-	preparingAnim.loop = false;
-	preparingAnim.speed = 0.f;
 
 	crash1.frames.push_back({ 193, 496, 95, 44 });
 	crash1.frames.push_back({ 193, 496, 95, 44 });
@@ -52,8 +35,6 @@ ModulePlayer::ModulePlayer(bool active) : Module(active)
 	crash1.frames.push_back({ 481, 283, 95, 52 });
 	crash1.frames.push_back({ 577, 283, 95, 52 });
 	crash1.frames.push_back({ 577, 283, 95, 52 });
-	crash1.loop = false;
-	crash1.speed = 0.2f;
 
 	crash2.frames.push_back({ 653, 142, 171, 46 });
 	crash2.frames.push_back({ 481, 142, 171, 46 });
@@ -74,8 +55,6 @@ ModulePlayer::ModulePlayer(bool active) : Module(active)
 	crash2.frames.push_back({ 481, 236, 171, 46 });
 	crash2.frames.push_back({ 653, 236, 171, 46 });
 	crash2.frames.push_back({ 653, 236, 171, 46 });
-	crash2.loop = false;
-	crash2.speed = 0.2f;
 
 	crash21.frames.push_back({ 653, 142, 171, 46 });
 	crash21.frames.push_back({ 481, 142, 171, 46 });
@@ -104,8 +83,6 @@ ModulePlayer::ModulePlayer(bool active) : Module(active)
 	crash21.frames.push_back({ 481, 236, 171, 46 });
 	crash21.frames.push_back({ 653, 236, 171, 46 });
 	crash21.frames.push_back({ 653, 236, 171, 46 });
-	crash21.loop = false;
-	crash21.speed = 0.2f;
 
 	endSequence.frames.push_back({ 193, 181, 95, 44 });
 	endSequence.frames.push_back({ 193, 271, 95, 44 });
@@ -119,16 +96,9 @@ ModulePlayer::ModulePlayer(bool active) : Module(active)
 	endSequence.frames.push_back({ 97, 271, 95, 44 });
 	endSequence.frames.push_back({ 1, 181, 95, 44 });
 	endSequence.frames.push_back({ 1, 271, 95, 44 });
-	endSequence.frames.push_back({ 653, 142, 171, 46 });
-	endSequence.frames.push_back({ 653, 142, 171, 46 });
-	endSequence.frames.push_back({ 481, 142, 171, 46 });
-	endSequence.frames.push_back({ 481, 142, 171, 46 });
-	endSequence.frames.push_back({ 481, 142, 171, 46 });
-	endSequence.frames.push_back({ 481, 142, 171, 46 });
-	endSequence.frames.push_back({ 481, 142, 171, 46 });
-	endSequence.frames.push_back({ 481, 142, 171, 46 });
-	endSequence.loop = false;
-	endSequence.speed = 0.12f;
+	for (int i = 0; i < 25; ++i)
+		endSequence.frames.push_back({ 481, 142, 171, 46 });
+	
 
 	carSmokeL.frames.push_back({ 1, 1, 58, 17 });
 	carSmokeL.frames.push_back({ 60, 1, 58, 17 });
@@ -319,8 +289,6 @@ ModulePlayer::ModulePlayer(bool active) : Module(active)
 	carStates[DOWN][FRONT] = &down;
 	carStates[DOWN][RIGHT] = &downright;
 	carStates[DOWN][RIGHTMOST] = &downrightMost;
-
-
 }
 
 ModulePlayer::~ModulePlayer()
@@ -330,10 +298,55 @@ ModulePlayer::~ModulePlayer()
 bool ModulePlayer::Start()
 {
 	LOG("Loading player");
+	tick_timer = clock();
+	inclination = STRAIGHT;
+	direction = FRONT;
+	playerState = PREPARING;
+	wheelL = wheelR = NORMAL;
+	speed = 0.f;
+	highAccel = 10.f;
+	thresholdX = 1.f;
+	varThresholdX = 0.06f;
+	offsetCrash1 = 0.f;
+	maxSpeed = 100.f;
+	lowAccel = maxSpeed / 6.5f;
+	forceX = 0.3f;
+	prepPos = 7.29f;
+	sinDif = 0.f;
+	prepPosAct = 0.f;
+	score = 0;
+	lastSlide = 0.2f;
+	current_animation = &preparingAnim;
+	gear = false;
+	speedSoundAct = slideSoundAct = false;
+
+	preparingAnim.loop = false;
+	preparingAnim.speed = 0.f;
+	preparingAnim.Reset();
+	preparingAnim.ResetLoops();
+	crash1.loop = false;
+	crash1.speed = 0.2f;
+	crash1.Reset();
+	crash1.ResetLoops();
+	crash2.loop = false;
+	crash2.speed = 0.2f;
+	crash2.Reset();
+	crash2.ResetLoops();
+	crash21.loop = false;
+	crash21.speed = 0.2f;
+	crash21.Reset();
+	crash21.ResetLoops();
+	endSequence.loop = false;
+	endSequence.speed = 0.12f;
+	endSequence.Reset();
+	endSequence.ResetLoops();
 
 	car = App->textures->Load("Textures/Level/ferrari.png");
 	carEffects = App->textures->Load("Textures/Level/effectsCar.png");
+	speedSound = App->audio->LoadFx("Audio/turboCar.wav");
+	slideSound = App->audio->LoadFx("Audio/slide.wav");
 
+	//App->audio->PlayFx(slideSound, -1);
 	return true;
 }
 
@@ -367,6 +380,10 @@ update_status ModulePlayer::Update()
 	case AUTO:
 		UpdatePlayerAuto();
 		break;
+	case PlayerGAMEOVER:
+		App->audio->StopFxChannel(1);
+		App->renderer->Blit(car, (int)(SCREEN_WIDTH / 2) + 5, (int)(SCREEN_HEIGHT / 2) + 304, &(current_animation->GetCurrentFrame()), 1.0f, { 3.2f,3.43f }, { 0.5f,0.5f });
+		break;
 	case ENDING:
 		UpdatePlayerEnding();
 		break;
@@ -379,14 +396,24 @@ void ModulePlayer::UpdatePlayerPreparing()
 {
 	if (preparingAnim.speed > 0.f)
 	{
-		App->renderer->Blit(car, (int)(SCREEN_WIDTH / 2) - 30, (int)(SCREEN_HEIGHT / 2) + 377, &(current_animation->GetCurrentFrame()), 1.0f, { 3.f, 3.f }, { 0.5f, 1.f });
+		if (sinDif < 180)
+		{
+			sinDif += time * 200.f;
+			if (sinDif > 180)
+				sinDif = 180;
+		}
+		prepPosAct += prepPos*sin(sinDif*(float)M_PI / 180.f);
+		App->renderer->Blit(car, (int)(SCREEN_WIDTH / 2) + 255 - (int)prepPosAct, (int)(SCREEN_HEIGHT / 2) + 304, &(current_animation->GetCurrentFrame()), 1.0f, { 3.2f, 3.43f }, { 0.5f, 0.5f });
+		if (sinDif > 0.f && sinDif < 180.f)
+		{
+			App->renderer->Blit(carEffects, (int)(SCREEN_WIDTH / 2) + 280 - (int)prepPosAct, (int)(SCREEN_HEIGHT / 2) + 380, &(carSmokeR.GetCurrentFrame()), 1.f, { 3.2f, 3.43f }, { 0.f, 1.f });
+			App->renderer->Blit(carEffects, (int)(SCREEN_WIDTH / 2) + 230 - (int)prepPosAct, (int)(SCREEN_HEIGHT / 2) + 380, &(carSmokeR.GetCurrentFrame()), 1.f, { 3.2f, 3.43f }, { 1.f, 1.f });
+		}
 	}
 	else
 	{
-		App->renderer->Blit(car, (int)(SCREEN_WIDTH / 2) + 3, (int)(SCREEN_HEIGHT / 2) + 377, &(current_animation->GetCurrentFrame()), 1.0f, { 3.f, 3.f }, { 0.5f, 1.f });
+		App->renderer->Blit(car, (int)(SCREEN_WIDTH / 2) + 255, (int)(SCREEN_HEIGHT / 2) + 304, &(current_animation->GetCurrentFrame()), 1.0f, { 3.2f, 3.43f }, { 0.5f, 0.5f });
 	}
-
-
 }
 
 void ModulePlayer::UpdatePlayerOnRoad()
@@ -497,6 +524,10 @@ void ModulePlayer::UpdatePlayerOnRoad()
 
 	App->renderer->Blit(car, (int)(SCREEN_WIDTH / 2) + 5, (int)(SCREEN_HEIGHT / 2) + 304, &(current_animation->GetCurrentFrame()), 1.0f, { 3.2f,3.43f }, { 0.5f,0.5f });
 	CheckWheels();
+
+	//Player only scores if in road
+	if (wheelL != SAND && wheelR != SAND && speed > 5.f)
+		score += (int)((10.f + 950.f * ((speed - 5.f) / (145.f))) / 10.f) * 10;
 }
 
 void ModulePlayer::UpdatePlayerSCol()
@@ -506,7 +537,7 @@ void ModulePlayer::UpdatePlayerSCol()
 		offsetCrash1 += 0.03f;
 
 	if (!current_animation->Finished())
-		App->renderer->Blit(car, (int)(SCREEN_WIDTH / 2) + 5, (int)(SCREEN_HEIGHT / 2) + 304 - sin(offsetCrash1*M_PI) * 12, &(current_animation->GetCurrentFrame()), 1.0f, { 3.2f,3.43f }, { 0.5f,0.5f });
+		App->renderer->Blit(car, (int)(SCREEN_WIDTH / 2) + 5, (int)(SCREEN_HEIGHT / 2) + 304 - sin((float)(offsetCrash1*M_PI)) * 12, &(current_animation->GetCurrentFrame()), 1.0f, { 3.2f,3.43f }, { 0.5f,0.5f });
 	CheckWheels();
 }
 
@@ -534,8 +565,10 @@ void ModulePlayer::UpdatePlayerAuto()
 		speed = maxSpeed;
 
 	wheelL = wheelR = NORMAL;
-
 	current_animation = carStates[STRAIGHT][FRONT];
+	if (speed > 5.f)
+		score += (int)((10.f + 950.f * ((speed - 5.f) / (145.f))) / 10.f) * 10;
+
 	App->renderer->Blit(car, (int)(SCREEN_WIDTH / 2) + 5, (int)(SCREEN_HEIGHT / 2) + 304, &(current_animation->GetCurrentFrame()), 1.0f, { 3.2f,3.43f }, { 0.5f,0.5f });
 	//CheckWheels();
 }
@@ -543,9 +576,14 @@ void ModulePlayer::UpdatePlayerAuto()
 void ModulePlayer::UpdatePlayerEnding()
 {
 	if (speed > 0.f)
+	{
 		speed -= lowAccel * time * 3.f;
+		if (speed < 0.f)
+			speed = 0.f;
+	}
 	else
 		wheelL = wheelR = NORMAL;
+
 	App->renderer->Blit(car, (int)(SCREEN_WIDTH / 2) + 5, (int)(SCREEN_HEIGHT / 2) + 304, &(endSequence.GetCurrentFrame()), 1.0f, { 3.2f,3.43f }, { 0.5f,0.5f });
 	CheckWheels();
 }
@@ -585,6 +623,26 @@ void ModulePlayer::CheckWheels()
 		App->renderer->Blit(carEffects, (int)(SCREEN_WIDTH / 2) - 20, (int)(SCREEN_HEIGHT / 2) + 380, &(carSandL.GetCurrentFrame()), 1.f, { 3.2f, 3.43f }, { 1.f, 1.f });
 		break;
 	}
+
+	if ((wheelL == SMOKE || wheelR == SMOKE))
+	{
+		if (!slideSoundAct && lastSlide > 0.1f)
+		{
+			slideSoundAct = true;
+			App->audio->PlayFxChannel(slideSound, -1, 1);
+		}
+		lastSlide = 0.f;
+	}
+	else
+	{
+		lastSlide += time;
+		if (lastSlide > 0.1f && slideSoundAct)
+		{
+			slideSoundAct = false;
+			App->audio->StopFxChannel(1);
+		}
+	}
+		
 }
 
 void ModulePlayer::resetCounters()

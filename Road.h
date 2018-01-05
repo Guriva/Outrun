@@ -93,7 +93,6 @@ public:
 	bool ending;
 
 private:
-	SDL_Texture* layout = nullptr;
 	SDL_Texture* sprites = nullptr;
 	SDL_Texture* background1 = nullptr;
 	SDL_Texture* background2 = nullptr;
@@ -160,6 +159,7 @@ private:
 	Prop* camel3 = nullptr;
 	Prop* log = nullptr;
 	Prop* end = nullptr;
+	Prop* checkpoint = nullptr;
 
 	Car* truck1 = nullptr;
 	Car* truck2 = nullptr;
@@ -169,6 +169,8 @@ private:
 	Car* out2 = nullptr;
 
 	vector<Car*> active;
+
+	list<int> checkpointsSeen;
 
 	Biome* actual = nullptr;
 	Biome* beach = nullptr;

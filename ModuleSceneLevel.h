@@ -15,6 +15,7 @@ enum SceneLevelState
 {
 	COUNTDOWN,
 	RUNNING,
+	GAMEOVER,
 	FINISH
 };
 
@@ -29,7 +30,7 @@ public:
 	bool CleanUp();
 
 private:
-	float time, countdownTimer;
+	float time, countdownTimer, gameoverTimer;
 	Road* road;
 	clock_t tick_timer;
 	SceneLevelState actualState;
