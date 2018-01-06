@@ -96,6 +96,7 @@ bool ModuleSceneMain::Start()
 
 	audioCoin = App->audio->LoadFx("Audio/creditInsert.wav");
 	audioWave = App->audio->LoadFx("Audio/waveSound.wav");
+	App->audio->StopMusic(0.f);
 
 	return true;
 }

@@ -8,7 +8,6 @@
 #include "ModuleSceneMain.h"
 #include "ModuleInput.h"
 #include "ModuleAudio.h"
-#include <iostream>
 #include <fstream>
 #include <string>
 
@@ -149,7 +148,8 @@ update_status ModuleSceneHighscore::Update()
 			{
 				ofstream file;
 				file.open("highscoreData.txt");
-				file << scores.size() << endl;
+				unsigned int n = scores.size();
+				file << n << endl;
 				for (unsigned int i = 0; i < scores.size(); ++i)
 				{
 					if (i + 1 == pos)
@@ -161,7 +161,6 @@ update_status ModuleSceneHighscore::Update()
 				}
 				file.close();
 			}
-			App->audio->StopMusic(0.f);
 			App->fade->FadeToBlack(App->scene_main, this, 0.f);
 		}
 	}
