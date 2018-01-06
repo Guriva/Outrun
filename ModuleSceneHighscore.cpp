@@ -7,6 +7,7 @@
 #include "ModuleFadeToBlack.h"
 #include "ModuleSceneMain.h"
 #include "ModuleInput.h"
+#include "ModuleAudio.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -77,6 +78,8 @@ bool ModuleSceneHighscore::Start()
 			found = true;
 		}
 	}
+
+	App->audio->PlayMusic("Audio/LastWave.ogg", 0.f);
 
 	layout = App->textures->Load("Textures/Highscore/highscoreLayout.png");
 	spritesRoute = App->textures->Load("Textures/Highscore/routeSprites.png");
@@ -158,6 +161,7 @@ update_status ModuleSceneHighscore::Update()
 				}
 				file.close();
 			}
+			App->audio->StopMusic(0.f);
 			App->fade->FadeToBlack(App->scene_main, this, 0.f);
 		}
 	}
@@ -166,6 +170,7 @@ update_status ModuleSceneHighscore::Update()
 		passTimer -= time;
 		if (passTimer < 0.f)
 		{
+			App->audio->StopMusic(0.f);
 			App->fade->FadeToBlack(App->scene_main, this, 0.f);
 		}
 	}

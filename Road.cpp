@@ -64,6 +64,7 @@ Road::Road()
 	sign75 = new Prop();
 	sign75->animLeft.frames.push_back({ 215, 141, 34, 27 });
 	sign75->animRight.frames.push_back({ 215, 141, 34, 27 });
+	sign75->scale = 1.5f;
 	sign75->collider = true;
 	sign75->wCol = 26;
 	sign75->pivotColL = { 0.38f, 1.f };
@@ -131,11 +132,7 @@ Road::Road()
 
 	water = new Prop();
 	water->animLeft.frames.push_back({ 127, 425, 244, 32 });
-	water->animLeft.frames.push_back({ 127, 458, 244, 32 });
-	water->animLeft.speed = 0.1f;
 	water->animRight.frames.push_back({ 1, 169, 244, 32 });
-	water->animRight.frames.push_back({ 1, 202, 244, 32 });
-	water->animRight.speed = 0.1f;
 
 	palm1 = new Prop();
 	palm1->animLeft.frames.push_back({ 924, 360, 153, 167 });
@@ -266,7 +263,7 @@ Road::Road()
 	truck1->current_anim = &truck1->left;
 	truck1->offset = 0.5f;
 	truck1->side = true;
-	truck1->zPos = 200.f*SEGMENT_LENGTH;
+	truck1->zPos = 190.f*SEGMENT_LENGTH;
 	active.push_back(truck1);
 
 	truck2 = new Car();
@@ -281,7 +278,7 @@ Road::Road()
 	truck2->current_anim = &truck2->left;
 	truck2->offset = 0.f;
 	truck2->side = true;
-	truck2->zPos = 180.f*SEGMENT_LENGTH;
+	truck2->zPos = 170.f*SEGMENT_LENGTH;
 	active.push_back(truck2);
 
 	atom1 = new Car();
@@ -296,7 +293,7 @@ Road::Road()
 	atom1->current_anim = &atom1->left;
 	atom1->offset = 0.5f;
 	atom1->side = true;
-	atom1->zPos = 175.f*SEGMENT_LENGTH;
+	atom1->zPos = 165.f*SEGMENT_LENGTH;
 	active.push_back(atom1);
 
 	atom2 = new Car();
@@ -311,7 +308,7 @@ Road::Road()
 	atom2->current_anim = &atom2->left;
 	atom2->offset = -0.5f;
 	atom2->side = true;
-	atom2->zPos = 170.f*SEGMENT_LENGTH;
+	atom2->zPos = 160.f*SEGMENT_LENGTH;
 	active.push_back(atom2);
 
 	out1 = new Car();
@@ -326,7 +323,7 @@ Road::Road()
 	out1->current_anim = &out1->left;
 	out1->offset = 0.5f;
 	out1->side = true;
-	out1->zPos = 165.f*SEGMENT_LENGTH;
+	out1->zPos = 155.f*SEGMENT_LENGTH;
 	active.push_back(out1);
 
 	out2 = new Car();
@@ -341,7 +338,7 @@ Road::Road()
 	out2->current_anim = &out2->left;
 	out2->offset = 0.f;
 	out2->side = true;
-	out2->zPos = 160.f*SEGMENT_LENGTH;
+	out2->zPos = 150.f*SEGMENT_LENGTH;
 	active.push_back(out2);
 }
 
@@ -434,6 +431,7 @@ bool Road::InitRoad()
 	sand = beach->c1; sand2 = beach->c11; road = beach->c2; road2 = beach->c21;
 	rumble = beach->c3; rumble2 = beach->c31; lane = beach->c4; lane2 = beach->c41;
 
+	//beach road
 	AddStraight(100, false, dist8, beach);
 	AddStraight(20, false, dist8, beach);
 	AddHill(10, -5, dist8, 1, beach);
@@ -459,9 +457,9 @@ bool Road::InitRoad()
 	AddCurve(30,-3,false,dist6,2, beach);
 	AddStraight(30, false, dist6, beach);
 	AddStraight(30,false,dist5, beach);
-	AddCurve(10,3,false,dist5,3, beach);
-	AddRoad(10,20,10,-3,5,false,dist5, beach);
-	AddRoad(10,40,20,3,7,false,dist4, beach);
+	AddCurve(20,-3.5,false,dist5,3, beach);
+	AddRoad(10,60,10,3.5,20,false,dist5, beach);
+	AddRoad(10,90,10,-3.5,25,false,dist4, beach);
 	AddStraight(10,false,dist4, beach);
 	AddStraight(50,false,dist3, beach);
 	AddHill(10,5,dist3,2, beach);
@@ -469,18 +467,9 @@ bool Road::InitRoad()
 	AddHill(10, 5, dist3, 2, beach);
 	AddRoad(10, 400, 50, -2, 0, true, dist3, beach);
 	AddStraight(100, true, distM, beach);
+
+	//end1 road
 	AddStraight(400, false, dist3, end1);
-	//AddCurve(85, -1.5, false, dist6, 1);
-
-	//AddStraight(100, false, dist7);
-	//AddStraight(50, false, dist5);
-	//AddStraight(50, false, dist5);
-	//AddStraight(20, false, dist3);
-	//AddStraight(100, false, dist3);
-	//AddCurve(100, -3, true, dist3);
-	//AddStraight(100, true, distM);
-
-	//Add elements to each line
 
 	//Beach props
 	AddProp(305, woman3, -0.63f, 0.f, false, beach);
@@ -495,6 +484,148 @@ bool Road::InitRoad()
 	AddProp(309, trafficLight, -0.8f, 0.f, false, beach);
 	AddProp(309, panel4, 1.f, 0.f, false, beach);
 
+	unsigned int i;
+
+	for (i = 300; i < 360; i += 2)
+	{
+		AddProp(i, people1, -1.2f, 0.f, false, beach);
+	}
+
+	float sep = 1.0f;
+	for (i = 299; i < 350; i += 3)
+	{
+		AddProp(i + (int)sep, palm1, -0.8f, 0.f, false, beach);
+		AddProp(i + (int)sep, palm1, 0.8f, 0.f, false, beach);
+		sep *= 1.1f;
+	}
+
+	for (i = 450; i < 550; i += 2)
+	{
+		AddProp(i, people1, -1.2f, 0.f, false, beach);
+	}
+
+	for (i = 0; i < 10; ++i)
+	{
+		for (unsigned int j = 530; j < 554; j += 8)
+		{
+			if (i % 3 == 0)
+				AddProp(j + i * 90,sign75, 1.2f, 0.f, false, beach);
+			else
+				AddProp(j + i * 90, palm2, 1.f, 0.f, false, beach);
+		}
+	}
+
+	for (i = 550; i < 1600; i += 10)
+	{
+		AddProp(i, palm1, -0.8f, 0.f, false, beach);
+		AddProp(i, palm1, 0.8f, 0.f, true, beach);
+	}
+
+	for (i = 1620; i < 1850; i += 15)
+	{
+		AddProp(i, palm2, -1.f, 0.f, false, beach);
+		AddProp(i, palm2, 1.f, 0.f, true, beach);
+		AddProp(i + 5, palm2, -1.6f, 0.f, false, beach);
+		AddProp(i + 5, palm2, 1.6f, 0.f, true, beach);
+	}
+
+	for (i = 1902; i < 3150; i += 2)
+	{
+		AddProp(i, water, -6.5f, 0.f, false, beach);
+		AddProp(i, water, -5.5f, 0.f, false, beach);
+		AddProp(i, water, -4.5f, 0.f, false, beach);
+		AddProp(i, water, -3.5f, 0.f, false, beach);
+		AddProp(i, water, -2.5f, 0.f, false, beach);
+		AddProp(i, water, -1.5f, 0.f, false, beach);
+		if (i % 50 == 0)
+		{
+			AddProp(i, surf1, -2.5f, 0.f, false, beach);
+			AddProp(i - 10, surf2, -3.f, 0.f, false, beach);
+			AddProp(i - 15, surf3, -3.5f, 0.f, false, beach);
+			AddProp(i, palm1, 0.8f, 0.f, true, beach);
+			AddProp(i - 10, palm1, 1.3f, 0.f, true, beach);
+			AddProp(i - 15, palm1, 1.f, 0.f, true, beach);
+		}
+	}
+	AddProp(2250, checkpoint, -0.8f, 0.f, false, beach);
+	AddProp(2250, checkpoint, 0.8f, 0.f, true, beach);
+
+	for (i = 1930; i < 1990; i += 15)
+		AddProp(i, slow, 1.2f, 0.f, true, beach);
+	for (i = 2000; i < 2100; i += 25)
+		AddProp(i, panel3, 1.f, 0.f, true, beach);
+	for (i = 2400; i < 2460; i += 15)
+		AddProp(i, slow, -1.2f, 0.f, false, beach);
+	for (i = 2700; i < 2760; i += 15)
+		AddProp(i, slow, 1.2f, 0.f, true, beach);
+	for (i = 3100; i < 3200; i += 25)
+		AddProp(i, panel3, 1.f, 0.f, true, beach);
+	AddProp(3250, slow, 1.2f, 0.f, true, beach);
+	
+	for (i = 3300; i < 3800; i += 2)
+	{
+		if (i % 50 == 0)
+		{
+			AddProp(i, palm1, 0.8f, 0.f, true, beach);
+			AddProp(i - 10, palm1, 1.3f, 0.f, true, beach);
+			AddProp(i - 15, palm1, 1.f, 0.f, true, beach);
+			AddProp(i + 10, palm1, -0.8f, 0.f, false, beach);
+			AddProp(i, palm1, -1.3f, 0.f, false, beach);
+			AddProp(i - 5, palm1, -1.f, 0.f, false, beach);
+		}
+		if (i % 60 == 0)
+		{
+			AddProp(i, house1, -1.f, 0.f, false, beach);
+			AddProp(i + 10, house2, -1.f, 0.f, false, beach);
+			AddProp(i + 20, house1, -1.f, 0.f, false, beach);
+			AddProp(i, house2, 1.f, 0.f, true, beach);
+			AddProp(i + 20, house3, 1.f, 0.f, true, beach);
+			AddProp(i + 35, house1, 1.f, 0.f, true, beach);
+		}
+	}
+	AddProp(3450, house4, 1.f, 0.f, true, beach);
+	for (i = 3460; i < 3540; i += 20)
+		AddProp(i, panel1, -1.f, 0.f, false, beach);
+	for (i = 3540; i < 3600; i += 20)
+		AddProp(i, panel2, 1.f, 0.f, true, beach);
+	AddProp(3600, slow, 1.f, 0.f, true, beach);
+	AddProp(3610, slow, 1.f, 0.f, true, beach);
+	AddProp(3620, slow, 1.f, 0.f, true, beach);
+	AddProp(3640, panel1, -1.f, 0.f, false, beach);
+	AddProp(3650, panel1, -1.f, 0.f, false, beach);
+	AddProp(3660, curveSlow, 1.f, 0.f, true, beach);
+	AddProp(3670, curveSlow, 1.f, 0.f, true, beach);
+	AddProp(3680, curveSlow, 1.f, 0.f, true, beach);
+	for (i = 3815; i < 3900; i += 15)
+	{
+		AddProp(i, palm2, -1.f, 0.f, false, beach);
+		AddProp(i, palm2, 1.f, 0.f, true, beach);
+		AddProp(i + 5, palm2, -1.6f, 0.f, false, beach);
+		AddProp(i + 5, palm2, 1.6f, 0.f, true, beach);
+	}
+	for (i = 3920; i < 4120; i += 2)
+	{
+		if (i % 50 == 0)
+		{
+			AddProp(i, palm1, 0.8f, 0.f, true, beach);
+			AddProp(i - 10, palm1, 1.3f, 0.f, true, beach);
+			AddProp(i - 15, palm1, 1.f, 0.f, true, beach);
+			AddProp(i + 10, palm1, -0.8f, 0.f, false, beach);
+			AddProp(i, palm1, -1.3f, 0.f, false, beach);
+			AddProp(i - 5, palm1, -1.f, 0.f, false, beach);
+		}
+		if (i % 60 == 0)
+		{
+			AddProp(i, house1, -1.f, 0.f, false, beach);
+			AddProp(i + 10, house2, -1.f, 0.f, false, beach);
+			AddProp(i + 20, house1, -1.f, 0.f, false, beach);
+			AddProp(i, house2, 1.f, 0.f, true, beach);
+			AddProp(i + 20, house3, 1.f, 0.f, true, beach);
+			AddProp(i + 35, house1, 1.f, 0.f, true, beach);
+		}
+	}
+	AddProp(4125, vulturesign, 0.1f, 0.f, true, beach);
+
 	//End1 props
 	AddProp(705, end, -1.35f, -1.6f, false, end1);
 	AddProp(705, log, -1.2f, 0.f, false, end1);
@@ -507,34 +638,22 @@ bool Road::InitRoad()
 	AddProp(805, end, -1.35f, -1.6f, false, end1);
 	AddProp(805, log, -1.2f, 0.f, false, end1);
 	AddProp(805, log, 1.2f, 0.f, false, end1);
-
-	AddProp(450, checkpoint, -0.4f, 0.f, false, beach);
-	AddProp(450, checkpoint, 0.4f, 0.f, false, beach);
-
-	float sep = 1;
-	/*for (int i = 1; i < 300; i += 3)
+	for (i = 300; i < 1100; i += 10)
 	{
-		AddProp(i + (int)sep, palm1, -0.8f, 0.f, false, beach);
-		AddProp(i + (int)sep, palm1, 0.8f, 0.f, true, beach);
-		sep *= 1.1f;
-	}*/
-
-	/*for (int i = 1; i < 200; i += 3)
-	{
-		AddProp(i + (int)sep, vulturesign, -0.8f, 0.f, false, beach);
-		AddProp(i + (int)sep, vulturesign, 0.8f, 0.f, false, beach);
-		AddProp(i + (int)sep, vulturesign, 0.8f, 0.f, true, beach);
-		sep *= 1.1f;
-	}*/
-	/*for (int i = 400; i < 450; i += 5)
-	{
-		AddProp(i, house1, -0.8f, 0.f, false, beach);
-	}*/
-
-	//AddProp(30, palm1, 0.1f, 0.f);
-	//AddProp(60, palm1, 0.1f, 0.f);
-	//AddProp(260, palm1, -0.8f, 0.f);
-	//AddProp(260, house2, -0.8f, 0.f);
+		AddProp(i, desertSand, -6.5f, 0.f, false, end1);
+		AddProp(i, desertSand, -5.5f, 0.f, false, end1);
+		AddProp(i, desertSand, -4.5f, 0.f, false, end1);
+		AddProp(i, desertSand, -3.5f, 0.f, false, end1);
+		AddProp(i, desertSand, -2.5f, 0.f, false, end1);
+		AddProp(i, desertSand, -1.5f, 0.f, false, end1);
+		AddProp(i, desertSand, 6.5f, 0.f, true, end1);
+		AddProp(i, desertSand, 5.5f, 0.f, true, end1);
+		AddProp(i, desertSand, 4.5f, 0.f, true, end1);
+		AddProp(i, desertSand, 3.5f, 0.f, true, end1);
+		AddProp(i, desertSand, 2.5f, 0.f, true, end1);
+		AddProp(i, desertSand, 1.5f, 0.f, true, end1);
+	}
+		
 
 	roadDistance = (int)actual->lines[0]->distance;
 	trackLength = (int)(actual->lines.size() * segmentL);
@@ -546,7 +665,6 @@ bool Road::InitRoad()
 bool Road::CleanUp()
 {
 	//LOG("Unloading level scene");
-	//TODO
 	RELEASE(flagman);
 	RELEASE(man1);
 	RELEASE(man2);
@@ -776,15 +894,17 @@ void Road::UpdateRoad(float time)
 		if (playerLine->lineProps[i] == checkpoint && !(find(checkpointsSeen.begin(), checkpointsSeen.end(), playerLine->index) != checkpointsSeen.end()))
 		{
 			App->ui->checkpoint = true;
+			App->ui->timeLeft += 44.f;
 			checkpointsSeen.push_back(playerLine->index);
 		}
 	}
 
 	UpdateWheels();
+
+	//Make smoke if sliding to the side when in a huge curve
 	if (App->player->playerState == ONROAD && App->player->wheelL != SAND && App->player->wheelR != SAND && App->player->speed > 100.f)
 	{
-		//abs(playerLine->curve) > 2.5f && (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) && App->player->speed > 100.f
-		if (thresholdX != 0.f && abs(playerLine->curve) > 2.5f && abs(thresholdX * time) < abs(playerLine->curve * MIN((App->player->speed / App->player->maxSpeed), 1.f) * centrifugal * time))
+		if (abs(thresholdX) >= (App->player->speed * time * 0.8f) && abs(playerLine->curve) > 2.5f)
 		{
 			App->player->wheelL = SMOKE;
 			App->player->wheelR = SMOKE;
@@ -934,12 +1054,15 @@ void Road::DrawRoad()
 	//Render second background
 	if (!swapping)
 	{
-		if (!playerLine->mirror)
-			offsetXBackground1 += playerLine->curve * (position - iniPosition) / SEGMENT_LENGTH * 2.f;
-		if (offsetXBackground1 + SCREEN_WIDTH > backgroundLvl1.w)
-			offsetXBackground1 = 0.f;
-		if (offsetXBackground1 < 0.f)
-			offsetXBackground1 = (float)(backgroundLvl1.w - SCREEN_WIDTH);
+		if (App->player->playerState != PlayerGAMEOVER)
+		{
+			if (!playerLine->mirror)
+				offsetXBackground1 += playerLine->curve * (position - iniPosition) / SEGMENT_LENGTH * 2.f;
+			if (offsetXBackground1 + SCREEN_WIDTH > backgroundLvl1.w)
+				offsetXBackground1 = 0.f;
+			if (offsetXBackground1 < 0.f)
+				offsetXBackground1 = (float)(backgroundLvl1.w - SCREEN_WIDTH);
+		}
 
 		SDL_Rect dest = { backgroundLvl1.x + (int)offsetXBackground1, MAX(backgroundLvl1.y, backgroundLvl1.y + (backgroundLvl1.h - (int)(maxY + SCREEN_Y_OFFSET))), SCREEN_WIDTH, MIN(backgroundLvl1.h, (int)(maxY + SCREEN_Y_OFFSET)) };
 		App->renderer->Blit(background1, 0, (int)(maxY + SCREEN_Y_OFFSET), &dest, 1.f, { 1.f, 1.f }, { 0.f, 1.f });

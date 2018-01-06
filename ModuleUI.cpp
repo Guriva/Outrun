@@ -43,7 +43,7 @@ ModuleUI::~ModuleUI()
 
 bool ModuleUI::Start()
 {
-	timeLeft = 45.99f;
+	timeLeft = 44.99f;
 	lapTime = lastLapTime = totalTime = 0.f;
 	score = 0;
 	speed = turboIndex = 0.f;
