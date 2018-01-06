@@ -5,8 +5,6 @@
 #include "ModuleInput.h"
 #include "ModuleAudio.h"
 #include "ModuleFadeToBlack.h"
-#include "ModuleCollision.h"
-#include "ModuleParticles.h"
 #include "ModulePlayer.h"
 #include "ModuleSceneMain.h"
 #include "ModuleSceneLevel.h"
@@ -38,8 +36,6 @@ Application::Application()
 	modules.push_back(highscore = new ModuleSceneHighscore(false));
 
 	// Modules to draw on top of game logic
-	modules.push_back(collision = new ModuleCollision());		//If initial load takes too long, modify to load it on specific scene
-	modules.push_back(particles = new ModuleParticles());
 	modules.push_back(fade = new ModuleFadeToBlack());
 }
 

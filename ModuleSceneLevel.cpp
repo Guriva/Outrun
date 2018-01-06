@@ -1,6 +1,5 @@
 #include "Application.h"
 #include "ModuleSceneLevel.h"
-#include "ModuleParticles.h"
 #include "ModulePlayer.h"
 #include "ModuleUI.h"
 #include "ModuleFadeToBlack.h"

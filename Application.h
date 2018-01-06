@@ -12,8 +12,6 @@ class ModuleFontManager;
 class ModuleInput;
 class ModuleAudio;
 class ModuleFadeToBlack;
-class ModuleCollision;
-class ModuleParticles;
 
 // Game modules ---
 class ModulePlayer;
@@ -41,8 +39,6 @@ public:
 	ModuleInput* input;
 	ModuleAudio* audio;
 	ModuleFadeToBlack* fade;
-	ModuleCollision* collision;
-	ModuleParticles* particles;
 
 	// Game modules ---
 	ModulePlayer* player;
