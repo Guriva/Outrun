@@ -33,7 +33,3 @@
 # Directories
 Debug/
 Release/
-SDL/
-SDL_image/
-SDL_mixer/
-.vs/
