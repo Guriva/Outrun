@@ -1,37 +1,47 @@
-## Welcome to GitHub Pages
+# Super Hang On (Drive)
+This is my tribute to Super Hang On, released for Sega Mega Drive in 5 of december 1988.
 
-You can use the [editor on GitHub](https://github.com/Nyghor/Outrun/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+## PROJECT INFORMATION
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+Full project at github: [https://github.com/vandalo/SuperHangOn](https://github.com/vandalo/SuperHangOn) 
 
-### Markdown
+Project webpage: [https://vandalo.github.io/SuperHangOn/](https://vandalo.github.io/SuperHangOn/) 
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+Latest release (1.0): [https://github.com/vandalo/SuperHangOn/releases/download/v1.0/Super.Hang.On.zip](https://github.com/vandalo/SuperHangOn/releases/download/v1.0/Super.Hang.On.zip)  
 
-```markdown
-Syntax highlighted code block
+*Author*: Ferran Coma
 
-# Header 1
-## Header 2
-### Header 3
+Contact: ferrancomarosell@gmail.com
 
-- Bulleted
-- List
+License: GNU GENERAL PUBLIC LICENSE
 
-1. Numbered
-2. List
+## Gameplay video
 
-**Bold** and _Italic_ and `Code` text
+<iframe width="560" height="315" src="https://www.youtube.com/embed/vjaiAo2JBPI" frameborder="0" allowfullscreen=""></iframe>
+You can watch it directly on [youtube](https://www.youtube.com/watch?v=vjaiAo2JBPI).
 
-[Link](url) and ![Image](src)
-```
+Currently the game only features the race of africa, with all the assets and decoration and the bikes which run agains you. The game
+is ready to implement the other maps just creating the file with the road configuration.
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+## Commands
 
-### Jekyll Themes
+On the game you manage a motorbike on the track where you have to face other motorbikes and the time. You will have a number of seconds to get the next check point, once you get it, this time increase giving you the chance of getting the next one.
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/Nyghor/Outrun/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+* **SPEED UP:** (Up key)
+* **BREAK:** (Down key)
+* **TURN LEFT:** (Left key)
+* **TURN RIGHT:** (Right key)
+* **TURBO:** (Space)
 
-### Support or Contact
+## How to finish the game:
 
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+The game just have the track of Afirca from the arcade mode. When you arrive to the goal or your time ends, you'll be able to save
+your score if it's between the 8th best scores.
+
+## Acknowledgements
+
+
+* [http://www.extentofthejam.com/pseudo/]
+* [https://www.youtube.com/watch?v=N60lBZDEwJ8]
+* Super Hang On (MegaDrive)
+
