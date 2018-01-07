@@ -294,8 +294,8 @@ ModulePlayer::~ModulePlayer()
 
 bool ModulePlayer::Init()
 {
-	speedSound = App->audio->LoadFx("Audio/turboCar.wav");
-	slideSound = App->audio->LoadFx("Audio/slide.wav");
+	//speedSound = App->audio->LoadFx("Audio/turboCar.wav");
+	//slideSound = App->audio->LoadFx("Audio/slide.wav");
 
 	return true;
 }

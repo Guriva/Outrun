@@ -57,11 +57,6 @@ bool ModuleUI::Start()
 	layout = App->textures->Load("Textures/Level/layoutLevel.png");
 	turbo = App->textures->Load("Textures/Level/turboBar.png");
 	spritesUI = App->textures->Load("Textures/Level/spritesLayout.png");
-	App->fonts->loadFont("time", "Textures/Fonts/timeFont.png", "0123456789", 8, 14);
-	App->fonts->loadFont("speed", "Textures/Fonts/speedFont.png", "0123456789", 8, 14);
-	App->fonts->loadFont("green", "Textures/Fonts/greenFont.png", "0123456789$abcdefghijklmnopqrstuvwxyz.!@ ", 8, 8);
-	App->fonts->loadFont("blue", "Textures/Fonts/blueFont.png", "0123456789$abcdefghijklmnopqrstuvwxyz.!@ '^", 8, 8);
-	App->fonts->loadFont("pink", "Textures/Fonts/pinkFont.png", "0123456789$abcdefghijklmnopqrstuvwxyz.!@ ", 8, 8);
 
 	return true;
 }
@@ -205,10 +200,5 @@ bool ModuleUI::CleanUp()
 	App->textures->Unload(layout);
 	App->textures->Unload(turbo);
 	App->textures->Unload(spritesUI);
-	App->fonts->closeFont("time");
-	App->fonts->closeFont("speed");
-	App->fonts->closeFont("green");
-	App->fonts->closeFont("blue");
-	App->fonts->closeFont("pink");
 	return true;
 }

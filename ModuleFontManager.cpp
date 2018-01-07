@@ -78,7 +78,6 @@ int ModuleFontManager::getFontWidth(const char* fontName)
 void ModuleFontManager::closeFont(const char* fontName)
 {
 	SDL_DestroyTexture(fontTable[fontName].font);
-	fontTable[fontName].font = nullptr;
 	fontTable[fontName].indexTable.clear();
 	fontTable.erase(fontName);
 }
@@ -89,7 +88,6 @@ bool ModuleFontManager::CleanUp()
 
 	for (map<const char*, Font>::iterator it = fontTable.begin(); it != fontTable.end(); ++it) {
 		SDL_DestroyTexture(it->second.font);
-		it->second.font = nullptr;
 		it->second.indexTable.clear();
 	}
 	fontTable.clear();

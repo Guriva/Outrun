@@ -58,7 +58,6 @@ SDL_Texture* const ModuleTextures::Load(const char* path)
 
 	if (surface == nullptr)
 	{
-		printf("couldn't load");
 		//LOG("Could not load surface with path: %s. IMG_Load: %s", path, IMG_GetError());
 	}
 	else
@@ -67,7 +66,6 @@ SDL_Texture* const ModuleTextures::Load(const char* path)
 
 		if (texture == nullptr)
 		{
-			printf("Couldn't load");
 			//LOG("Unable to create texture from surface! SDL Error: %s\n", SDL_GetError());
 		}
 		else

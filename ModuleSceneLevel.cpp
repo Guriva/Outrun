@@ -91,7 +91,7 @@ update_status ModuleSceneLevel::Update()
 	case GAMEOVER:
 		road->DrawRoad();
 		gameoverTimer -= time;
-		if (gameoverTimer < 0.f)
+		if (gameoverTimer < 0.f && App->fade->isFading() == false)
 		{
 			App->audio->StopMusic(0.f);
 			App->score = App->player->score;
@@ -102,7 +102,7 @@ update_status ModuleSceneLevel::Update()
 	case FINISH:
 		road->UpdateRoadEnding(time);
 		road->DrawRoad();
-		if (App->player->endSequence.Finished())
+		if (App->player->endSequence.Finished() && App->fade->isFading() == false)
 		{
 			App->audio->StopFx();
 			App->audio->StopMusic(0.f);

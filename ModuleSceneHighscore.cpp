@@ -82,11 +82,6 @@ bool ModuleSceneHighscore::Start()
 
 	layout = App->textures->Load("Textures/Highscore/highscoreLayout.png");
 	spritesRoute = App->textures->Load("Textures/Highscore/routeSprites.png");
-	App->fonts->loadFont("yellowhigh", "Textures/Fonts/highscoreFont.png", "abcdefghijklmnopqrstuvwxyz.<;", 8, 16);
-	App->fonts->loadFont("redhigh", "Textures/Fonts/redhighscoreFont.png", "abcdefghijklmnopqrstuvwxyz.<;0123456789", 8, 16);
-	App->fonts->loadFont("green", "Textures/Fonts/greenFont.png", "0123456789$abcdefghijklmnopqrstuvwxyz.!@ ", 8, 8);
-	App->fonts->loadFont("blue", "Textures/Fonts/blueFont.png", "0123456789$abcdefghijklmnopqrstuvwxyz.!@ '^", 8, 8);
-	App->fonts->loadFont("pink", "Textures/Fonts/pinkFont.png", "0123456789$abcdefghijklmnopqrstuvwxyz.!@ ", 8, 8);
 
 	return true;
 }
@@ -99,7 +94,7 @@ update_status ModuleSceneHighscore::Update()
 	App->renderer->Blit(layout, (int)(SCREEN_WIDTH / 2.f), (int)(SCREEN_HEIGHT / 2.f), nullptr, 1.f, { 3.2f, 3.43f }, { 0.5f, 0.5f });
 
 	//New score
-	if (score > scores[scores.size() - 1])
+	if (score > scores[scores.size() - 1] && App->fade->isFading() == false)
 	{
 		if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN && index > 0)
 			--index;
@@ -167,7 +162,7 @@ update_status ModuleSceneHighscore::Update()
 	else
 	{
 		passTimer -= time;
-		if (passTimer < 0.f)
+		if (passTimer < 0.f && App->fade->isFading() == false)
 		{
 			App->audio->StopMusic(0.f);
 			App->fade->FadeToBlack(App->scene_main, this, 0.f);
@@ -210,10 +205,5 @@ bool ModuleSceneHighscore::CleanUp()
 {
 	App->textures->Unload(layout);
 	App->textures->Unload(spritesRoute);
-	App->fonts->closeFont("yellowhigh");
-	App->fonts->closeFont("redhigh");
-	App->fonts->closeFont("green");
-	App->fonts->closeFont("blue");
-	App->fonts->closeFont("pink");
 	return true;
 }

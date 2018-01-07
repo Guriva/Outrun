@@ -69,6 +69,19 @@ ModuleSceneMain::ModuleSceneMain(bool active) : Module(active)
 ModuleSceneMain::~ModuleSceneMain()
 {}
 
+bool ModuleSceneMain::Init()
+{
+	App->fonts->loadFont("yellowhigh", "Textures/Fonts/highscoreFont.png", "abcdefghijklmnopqrstuvwxyz.<;", 8, 16);
+	App->fonts->loadFont("redhigh", "Textures/Fonts/redhighscoreFont.png", "abcdefghijklmnopqrstuvwxyz.<;0123456789", 8, 16);
+	App->fonts->loadFont("time", "Textures/Fonts/timeFont.png", "0123456789", 8, 14);
+	App->fonts->loadFont("speed", "Textures/Fonts/speedFont.png", "0123456789", 8, 14);
+	App->fonts->loadFont("green", "Textures/Fonts/greenFont.png", "0123456789$abcdefghijklmnopqrstuvwxyz.!@ ", 8, 8);
+	App->fonts->loadFont("blue", "Textures/Fonts/blueFont.png", "0123456789$abcdefghijklmnopqrstuvwxyz.!@ '^", 8, 8);
+	App->fonts->loadFont("pink", "Textures/Fonts/pinkFont.png", "0123456789$abcdefghijklmnopqrstuvwxyz.!@ ", 8, 8);
+
+	return true;
+}
+
 // Load assets
 bool ModuleSceneMain::Start()
 {
@@ -90,13 +103,9 @@ bool ModuleSceneMain::Start()
 	background = App->textures->Load("Textures/Main/backgroundMain.png");
 	background2 = App->textures->Load("Textures/Main/background2Main.png");
 	letters = App->textures->Load("Textures/Main/flashLetters.png");
-	App->fonts->loadFont("green", "Textures/Fonts/greenFont.png", "0123456789$abcdefghijklmnopqrstuvwxyz.!@ ", 8, 8);
-	App->fonts->loadFont("blue", "Textures/Fonts/blueFont.png", "0123456789$abcdefghijklmnopqrstuvwxyz.!@ '^", 8, 8);
-	App->fonts->loadFont("pink", "Textures/Fonts/pinkFont.png", "0123456789$abcdefghijklmnopqrstuvwxyz.!@ ", 8, 8);
-
-	audioCoin = App->audio->LoadFx("Audio/creditInsert.wav");
-	audioWave = App->audio->LoadFx("Audio/waveSound.wav");
-	App->audio->StopMusic(0.f);
+	//audioCoin = App->audio->LoadFx("Audio/creditInsert.wav");
+	//audioWave = App->audio->LoadFx("Audio/waveSound.wav");
+	//App->audio->StopMusic(0.f);
 
 	//LOG("Main scene loaded correctly");
 
@@ -113,9 +122,6 @@ bool ModuleSceneMain::CleanUp()
 	App->textures->Unload(background);
 	App->textures->Unload(background2);
 	App->textures->Unload(letters);
-	App->fonts->closeFont("green");
-	App->fonts->closeFont("blue");
-	App->fonts->closeFont("pink");
 
 	return true;
 }
@@ -126,7 +132,7 @@ update_status ModuleSceneMain::Update()
 	if (App->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN && App->credit < 9)
 	{
 		++App->credit;
-		App->audio->PlayFx(audioCoin);
+		//App->audio->PlayFx(audioCoin);
 		//Make sound of credit
 	}
 	if (App->credit == 0)
@@ -141,7 +147,11 @@ update_status ModuleSceneMain::Update()
 	else
 	{
 		if (fxWavePlayed == false)
+		{
+			fxWavePlayed = true;
 			fxWavePlayed = App->audio->PlayFx(audioWave, 3);
+		}
+			
 		switch (music)
 		{
 		case 0:
@@ -180,8 +190,11 @@ update_status ModuleSceneMain::Update()
 				App->musicLevel = "Audio/SplashWave.ogg";
 				break;
 			}
-			App->audio->StopFx();
-			App->fade->FadeToBlack(App->scene_level, this, 0.f);
+			if (App->fade->isFading() == false)
+			{
+				//App->audio->StopFx();
+				App->fade->FadeToBlack(App->scene_level, this, 0.f);
+			}
 		}
 	}
 	App->fonts->print("credit", 58, 733, "pink", { 3.2f, 3.43f });

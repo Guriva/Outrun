@@ -12,6 +12,7 @@ public:
 	ModuleSceneMain(bool active = true);
 	~ModuleSceneMain();
 
+	bool Init();
 	bool Start();
 	update_status Update();
 	bool CleanUp();
