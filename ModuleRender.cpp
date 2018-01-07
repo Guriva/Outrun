@@ -20,7 +20,7 @@ ModuleRender::~ModuleRender()
 // Called before render is available
 bool ModuleRender::Init()
 {
-	LOG("Creating Renderer context");
+	//LOG("Creating Renderer context");
 	bool ret = true;
 	Uint32 flags = 0;
 
@@ -33,7 +33,7 @@ bool ModuleRender::Init()
 
 	if (renderer == nullptr)
 	{
-		LOG("Renderer could not be created! SDL_Error: %s\n", SDL_GetError());
+		//LOG("Renderer could not be created! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
 	}
 
@@ -43,6 +43,10 @@ bool ModuleRender::Init()
 update_status ModuleRender::PreUpdate()
 {
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+	if (renderer == nullptr)
+	{
+		printf("yo");
+	}
 	SDL_RenderClear(renderer);
 	return UPDATE_CONTINUE;
 }
@@ -77,7 +81,7 @@ update_status ModuleRender::PostUpdate()
 // Called before quitting
 bool ModuleRender::CleanUp()
 {
-	LOG("Destroying renderer");
+	//LOG("Destroying renderer");
 
 	//Destroy window
 	if (renderer != nullptr)
@@ -119,9 +123,22 @@ bool ModuleRender::Blit(SDL_Texture* texture, int x, int y, SDL_Rect* section, f
 	rect.w = (int)(w * scale.x) * SCREEN_SIZE;
 	rect.h = (int)(h * scale.y) * SCREEN_SIZE;
 
+	if (texture == nullptr)
+	{
+		printf("yo");
+	}
+	if (renderer == nullptr)
+	{
+		printf("yo");
+	}
+	if (section == nullptr)
+	{
+		printf("yo");
+	}
+
 	if (SDL_RenderCopy(renderer, texture, section, &rect) != 0)
 	{
-		LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
+		//LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
 		ret = false;
 	}
 
@@ -146,7 +163,7 @@ bool ModuleRender::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uin
 
 	if (SDL_RenderFillRect(renderer, &rec) != 0)
 	{
-		LOG("Cannot draw quad to screen. SDL_RenderFillRect error: %s", SDL_GetError());
+		//LOG("Cannot draw quad to screen. SDL_RenderFillRect error: %s", SDL_GetError());
 		ret = false;
 	}
 

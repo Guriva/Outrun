@@ -18,6 +18,7 @@ Application::Application()
 {
 	credit = score = 0;
 	totalTime = 0.f;
+	musicLevel = "";
 
 	// Order matters: they will init/start/pre/update/post in this order
 	modules.push_back(input = new ModuleInput());

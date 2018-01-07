@@ -24,7 +24,7 @@ bool ModuleFontManager::loadFont(const char* fontName, const char* path, const c
 
 	if (f.font == nullptr)
 	{
-		LOG("Failed to create texture font");
+		//LOG("Failed to create texture font");
 		ret = false;
 	}
 	else {
@@ -85,7 +85,7 @@ void ModuleFontManager::closeFont(const char* fontName)
 
 bool ModuleFontManager::CleanUp()
 {
-	LOG("Freeing fonts surfaces, clearing Font Table");
+	//LOG("Freeing fonts surfaces, clearing Font Table");
 
 	for (map<const char*, Font>::iterator it = fontTable.begin(); it != fontTable.end(); ++it) {
 		SDL_DestroyTexture(it->second.font);

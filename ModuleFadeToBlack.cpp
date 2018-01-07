@@ -14,7 +14,7 @@ ModuleFadeToBlack::~ModuleFadeToBlack()
 // Load assets
 bool ModuleFadeToBlack::Start()
 {
-	LOG("Preparing Fade Screen");
+	//LOG("Preparing Fade Screen");
 	SDL_SetRenderDrawBlendMode(App->renderer->renderer, SDL_BLENDMODE_BLEND);
 	return true;
 }

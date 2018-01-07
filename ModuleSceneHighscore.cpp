@@ -122,7 +122,7 @@ update_status ModuleSceneHighscore::Update()
 		}
 		
 		App->fonts->print(to_string((int)recordTimer).c_str(), 820, 135, "redhigh", { 3.2f, 3.43f }, { 1.f, 1.f });
-		App->fonts->print((to_string(pos + 1) + ".").c_str(), 180, 250 + 50 * (pos-1), "pink", { 3.2f, 3.43f }, { 1.f, 1.f });
+		App->fonts->print((to_string(pos) + ".").c_str(), 180, 250 + 50 * (pos-1), "pink", { 3.2f, 3.43f }, { 1.f, 1.f });
 		App->fonts->print(to_string(score).c_str(), 400, 250 + 50 * (pos-1), "blue", { 3.2f, 3.43f }, { 1.f, 1.f });
 		App->fonts->print(recordName.c_str(), 443, 250 + 50 * (pos-1), "green", { 3.2f, 3.43f }, { 0.f, 1.f });
 		App->renderer->Blit(spritesRoute, 640, 250 + 50 * (pos-1), &route1, 1.f, { 3.2f, 3.43f }, { 1.f, 1.f });

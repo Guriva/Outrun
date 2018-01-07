@@ -19,7 +19,7 @@ ModuleSceneLevel::~ModuleSceneLevel()
 // Load assets
 bool ModuleSceneLevel::Start()
 {
-	LOG("Loading level scene");
+	//LOG("Loading level scene");
 	road = new Road();
 	actualState = COUNTDOWN;
 	countdownTimer = 5.f;
@@ -37,7 +37,7 @@ bool ModuleSceneLevel::Start()
 // UnLoad assets
 bool ModuleSceneLevel::CleanUp()
 {
-	LOG("Unloading level scene");
+	//LOG("Unloading level scene");
 	/*** TODO !!***/
 
 	App->player->Disable();
@@ -82,6 +82,7 @@ update_status ModuleSceneLevel::Update()
 		}
 		if (App->ui->timeLeft < 0.f)
 		{
+			App->audio->StopFx();
 			actualState = GAMEOVER;
 			App->ui->uiState = UIGameOver;
 			App->player->playerState = PlayerGAMEOVER;
@@ -92,7 +93,6 @@ update_status ModuleSceneLevel::Update()
 		gameoverTimer -= time;
 		if (gameoverTimer < 0.f)
 		{
-			App->audio->StopFx();
 			App->audio->StopMusic(0.f);
 			App->score = App->player->score;
 			App->totalTime = App->ui->totalTime + App->ui->lapTime;

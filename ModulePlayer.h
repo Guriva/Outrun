@@ -47,6 +47,7 @@ public:
 	ModulePlayer(bool active = true);
 	~ModulePlayer();
 
+	bool Init();
 	bool Start();
 	update_status Update();
 	bool CleanUp();

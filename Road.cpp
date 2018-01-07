@@ -838,6 +838,7 @@ void Road::UpdateRoad(float time)
 			{
 				anim->Reset();
 				anim->ResetLoops();
+				thresholdX = 0.f;
 				App->player->lowAccel = 100.f / 6.5f;
 				App->player->speed = 0.f;
 				App->player->playerState = ONROAD;

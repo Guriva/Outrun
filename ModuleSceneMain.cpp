@@ -72,7 +72,7 @@ ModuleSceneMain::~ModuleSceneMain()
 // Load assets
 bool ModuleSceneMain::Start()
 {
-	LOG("Loading logo scene");
+	//LOG("Loading main scene");
 
 	countdown = 15.f;
 	music = 1;
@@ -98,17 +98,19 @@ bool ModuleSceneMain::Start()
 	audioWave = App->audio->LoadFx("Audio/waveSound.wav");
 	App->audio->StopMusic(0.f);
 
+	//LOG("Main scene loaded correctly");
+
 	return true;
 }
 
 // UnLoad assets
 bool ModuleSceneMain::CleanUp()
 {
-	LOG("Unloading logo scene");
+	//LOG("Unloading main scene");
 
 	App->textures->Unload(logoTexture);
-	App->textures->Unload(background);
 	App->textures->Unload(radioTexture);
+	App->textures->Unload(background);
 	App->textures->Unload(background2);
 	App->textures->Unload(letters);
 	App->fonts->closeFont("green");

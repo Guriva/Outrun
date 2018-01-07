@@ -292,10 +292,18 @@ ModulePlayer::ModulePlayer(bool active) : Module(active)
 ModulePlayer::~ModulePlayer()
 {}
 
+bool ModulePlayer::Init()
+{
+	speedSound = App->audio->LoadFx("Audio/turboCar.wav");
+	slideSound = App->audio->LoadFx("Audio/slide.wav");
+
+	return true;
+}
+
 // Load assets
 bool ModulePlayer::Start()
 {
-	LOG("Loading player");
+	//LOG("Loading player");
 	tick_timer = clock();
 	inclination = STRAIGHT;
 	direction = FRONT;
@@ -341,17 +349,16 @@ bool ModulePlayer::Start()
 
 	car = App->textures->Load("Textures/Level/ferrari.png");
 	carEffects = App->textures->Load("Textures/Level/effectsCar.png");
-	speedSound = App->audio->LoadFx("Audio/turboCar.wav");
-	slideSound = App->audio->LoadFx("Audio/slide.wav");
-
-	//App->audio->PlayFx(slideSound, -1);
 	return true;
 }
 
 // Unload assets
 bool ModulePlayer::CleanUp()
 {
-	LOG("Unloading player");
+	//LOG("Unloading player");
+
+	App->textures->Unload(car);
+	App->textures->Unload(carEffects);
 
 	return true;
 }
@@ -379,7 +386,6 @@ update_status ModulePlayer::Update()
 		UpdatePlayerAuto();
 		break;
 	case PlayerGAMEOVER:
-		App->audio->StopFxChannel(1);
 		App->renderer->Blit(car, (int)(SCREEN_WIDTH / 2) + 5, (int)(SCREEN_HEIGHT / 2) + 304, &(current_animation->GetCurrentFrame()), 1.0f, { 3.2f,3.43f }, { 0.5f,0.5f });
 		break;
 	case ENDING:
@@ -535,7 +541,7 @@ void ModulePlayer::UpdatePlayerSCol()
 		offsetCrash1 += 0.03f;
 
 	if (!current_animation->Finished())
-		App->renderer->Blit(car, (int)(SCREEN_WIDTH / 2) + 5, (int)(SCREEN_HEIGHT / 2) + 304 - sin((float)(offsetCrash1*M_PI)) * 12, &(current_animation->GetCurrentFrame()), 1.0f, { 3.2f,3.43f }, { 0.5f,0.5f });
+		App->renderer->Blit(car, (int)(SCREEN_WIDTH / 2) + 5, (int)(SCREEN_HEIGHT / 2) + 304 - (int)(sin((float)(offsetCrash1*M_PI)) * 12), &(current_animation->GetCurrentFrame()), 1.0f, { 3.2f,3.43f }, { 0.5f,0.5f });
 	CheckWheels();
 }
 

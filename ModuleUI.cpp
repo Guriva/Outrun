@@ -43,17 +43,17 @@ ModuleUI::~ModuleUI()
 
 bool ModuleUI::Start()
 {
+	score = 0;
+	gear = 1;
+	speed = maxSpeed = turboIndex = 0.f;
 	timeLeft = 44.99f;
 	lapTime = lastLapTime = totalTime = 0.f;
-	score = 0;
-	speed = turboIndex = 0.f;
-	maxSpeed = 0.f;
-	uiState = UIInit;
-	gear = 1;
 	checkpointTimer = 4.5f;
-	checkpoint = savedTime = false;
 	finishTimer = 8.f;
 	bonusTime = bonusTimeSub = 0.f;
+	checkpoint = savedTime = false;
+	uiState = UIInit;
+	tick_timer = clock();
 	layout = App->textures->Load("Textures/Level/layoutLevel.png");
 	turbo = App->textures->Load("Textures/Level/turboBar.png");
 	spritesUI = App->textures->Load("Textures/Level/spritesLayout.png");
@@ -207,8 +207,8 @@ bool ModuleUI::CleanUp()
 	App->textures->Unload(spritesUI);
 	App->fonts->closeFont("time");
 	App->fonts->closeFont("speed");
-	App->fonts->closeFont("blue");
 	App->fonts->closeFont("green");
+	App->fonts->closeFont("blue");
 	App->fonts->closeFont("pink");
 	return true;
 }
