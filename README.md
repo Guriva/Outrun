@@ -16,7 +16,7 @@ License: GNU GENERAL PUBLIC LICENSE
 
 ## Gameplay video
 
-<iframe width="560" height="315" src="https://youtu.be/zZm8nOKnqJA" frameborder="0" allowfullscreen=""></iframe>
+<iframe width="1280" height="720" src="https://www.youtube.com/embed/zZm8nOKnqJA" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>
 
 ## Contents of the game
 
