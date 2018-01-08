@@ -58,7 +58,7 @@ struct Biome
 	SDL_Texture* background;
 	bool biomeSwap;
 	Biome() : left(nullptr), right(nullptr), background(nullptr),
-	end(false), biomeSwap(false), swapLine(0), lastLine(0) {}
+		end(false), biomeSwap(false), swapLine(0), lastLine(0) {}
 };
 
 class Road

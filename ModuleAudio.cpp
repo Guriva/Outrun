@@ -61,8 +61,8 @@ bool ModuleAudio::CleanUp()
 		Mix_FreeChunk(*it);
 
 	fx.clear();
-	Mix_CloseAudio();
 	Mix_Quit();
+	Mix_CloseAudio();
 	SDL_QuitSubSystem(SDL_INIT_AUDIO);
 	return true;
 }
@@ -84,11 +84,7 @@ bool ModuleAudio::PlayMusic(const char* path, float fade_time)
 		}
 
 		// this call blocks until fade out is done
-		if (music == nullptr)
-		{
-			printf("yo");
-		}
-		Mix_FreeMusic(music);
+		//Mix_FreeMusic(music);
 	}
 
 	music = Mix_LoadMUS(path);
@@ -138,7 +134,7 @@ bool ModuleAudio::StopMusic(float fade_time)
 		}
 
 		// this call blocks until fade out is done
-		Mix_FreeMusic(music);
+		//Mix_FreeMusic(music);
 	}
 
 	//LOG("Successfully stopping %s");

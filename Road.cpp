@@ -75,9 +75,15 @@ Road::Road()
 	trafficLight->animLeft.frames.push_back({ 127, 296, 74, 128 });
 	trafficLight->animLeft.frames.push_back({ 127, 296, 74, 128 });
 	trafficLight->animLeft.frames.push_back({ 127, 296, 74, 128 });
+	trafficLight->animLeft.frames.push_back({ 127, 296, 74, 128 });
+	trafficLight->animLeft.frames.push_back({ 127, 296, 74, 128 });
 	trafficLight->animLeft.frames.push_back({ 202, 296, 74, 128 });
 	trafficLight->animLeft.frames.push_back({ 202, 296, 74, 128 });
 	trafficLight->animLeft.frames.push_back({ 202, 296, 74, 128 });
+	trafficLight->animLeft.frames.push_back({ 202, 296, 74, 128 });
+	trafficLight->animLeft.frames.push_back({ 202, 296, 74, 128 });
+	trafficLight->animLeft.frames.push_back({ 277, 296, 74 ,128 });
+	trafficLight->animLeft.frames.push_back({ 277, 296, 74 ,128 });
 	trafficLight->animLeft.frames.push_back({ 277, 296, 74 ,128 });
 	trafficLight->animLeft.frames.push_back({ 277, 296, 74 ,128 });
 	trafficLight->animLeft.frames.push_back({ 277, 296, 74 ,128 });
@@ -253,10 +259,10 @@ Road::Road()
 
 	truck1 = new Car();
 	truck1->left.frames.push_back({ 1, 1, 50, 55 });
-	truck1->left.frames.push_back({ 1, 57, 50, 55});
+	truck1->left.frames.push_back({ 1, 57, 50, 55 });
 	truck1->left.speed = 0.2f;
-	truck1->right.frames.push_back({ 52, 1, 50, 55});
-	truck1->right.frames.push_back({ 52, 57, 50, 55});
+	truck1->right.frames.push_back({ 52, 1, 50, 55 });
+	truck1->right.frames.push_back({ 52, 57, 50, 55 });
 	truck1->right.speed = 0.2f;
 	truck1->active = false;
 	truck1->speed = 120.f;
@@ -435,9 +441,9 @@ bool Road::InitRoad()
 	AddStraight(100, false, dist8, beach);
 	AddStraight(20, false, dist8, beach);
 	AddHill(10, -5, dist8, 1, beach);
-	AddHill(5,60,dist7, 28, beach);
+	AddHill(5, 60, dist7, 28, beach);
 	AddCurve(100, -1.5, false, dist7, 2, beach);
-	AddStraight(26,false,dist7, beach);
+	AddStraight(26, false, dist7, beach);
 	AddRoad(50, 50, 0, 1.5, 0, false, dist7, beach);
 	AddRoad(0, 100, 0, 1.5, 20, false, dist7, beach);
 	AddRoad(0, 50, 100, 1.5, -10, false, dist7, beach);
@@ -454,16 +460,16 @@ bool Road::InitRoad()
 	AddRoad(0, 70, 0, -3, 15, false, dist6, beach);
 	AddRoad(0, 50, 20, -3, 0, false, dist6, beach);
 	AddStraight(100, false, dist6, beach);
-	AddCurve(30,-3,false,dist6,2, beach);
+	AddCurve(30, -3, false, dist6, 2, beach);
 	AddStraight(30, false, dist6, beach);
-	AddStraight(30,false,dist5, beach);
-	AddCurve(20,-3.5,false,dist5,3, beach);
-	AddRoad(10,60,10,3.5,20,false,dist5, beach);
-	AddRoad(10,90,10,-3.5,25,false,dist4, beach);
-	AddStraight(10,false,dist4, beach);
-	AddStraight(50,false,dist3, beach);
-	AddHill(10,5,dist3,2, beach);
-	AddHill(10,-5,dist3,2, beach);
+	AddStraight(30, false, dist5, beach);
+	AddCurve(20, -3.5, false, dist5, 3, beach);
+	AddRoad(10, 60, 10, 3.5, 20, false, dist5, beach);
+	AddRoad(10, 90, 10, -3.5, 25, false, dist4, beach);
+	AddStraight(10, false, dist4, beach);
+	AddStraight(50, false, dist3, beach);
+	AddHill(10, 5, dist3, 2, beach);
+	AddHill(10, -5, dist3, 2, beach);
 	AddHill(10, 5, dist3, 2, beach);
 	AddRoad(10, 400, 50, -2, 0, true, dist3, beach);
 	AddStraight(100, true, distM, beach);
@@ -509,7 +515,7 @@ bool Road::InitRoad()
 		for (unsigned int j = 530; j < 554; j += 8)
 		{
 			if (i % 3 == 0)
-				AddProp(j + i * 90,sign75, 1.2f, 0.f, false, beach);
+				AddProp(j + i * 90, sign75, 1.2f, 0.f, false, beach);
 			else
 				AddProp(j + i * 90, palm2, 1.f, 0.f, false, beach);
 		}
@@ -561,7 +567,7 @@ bool Road::InitRoad()
 	for (i = 3100; i < 3200; i += 25)
 		AddProp(i, panel3, 1.f, 0.f, true, beach);
 	AddProp(3250, slow, 1.2f, 0.f, true, beach);
-	
+
 	for (i = 3300; i < 3800; i += 2)
 	{
 		if (i % 50 == 0)
@@ -653,7 +659,7 @@ bool Road::InitRoad()
 		AddProp(i, desertSand, 2.5f, 0.f, true, end1);
 		AddProp(i, desertSand, 1.5f, 0.f, true, end1);
 	}
-		
+
 
 	roadDistance = (int)actual->lines[0]->distance;
 	trackLength = (int)(actual->lines.size() * segmentL);
@@ -848,7 +854,7 @@ void Road::UpdateRoad(float time)
 	}
 
 	playerRoad = (abs(playerLine->p1.xCamera) <= abs(playerLine->p11.xCamera) ? LEFTROAD : RIGHTROAD);
-	
+
 	//Apply centrifugal to curves
 	float centrifugal = (App->player->speed > 26 ? 0.5f : 0.f);
 	if (App->player->speed >= 100)
@@ -860,15 +866,15 @@ void Road::UpdateRoad(float time)
 		if (roadDistance != playerLine->distance)
 			playerX += (playerLine->distance - roadDistance) / (float)ROAD_WIDTH;
 		if (playerLine->mirror)
-			playerX += (playerLine->curve * MIN((App->player->speed / App->player->maxSpeed),1.f) * centrifugal * time);
+			playerX += (playerLine->curve * MIN((App->player->speed / App->player->maxSpeed), 1.f) * centrifugal * time);
 		else
-			playerX -= (playerLine->curve * MIN((App->player->speed / App->player->maxSpeed),1.f) * centrifugal * time);
+			playerX -= (playerLine->curve * MIN((App->player->speed / App->player->maxSpeed), 1.f) * centrifugal * time);
 		break;
 	case LEFTROAD:
-		playerX -= (playerLine->curve * MIN((App->player->speed / App->player->maxSpeed),1.f) * centrifugal * time);
+		playerX -= (playerLine->curve * MIN((App->player->speed / App->player->maxSpeed), 1.f) * centrifugal * time);
 		break;
 	}
-	
+
 	roadDistance = (int)playerLine->distance;
 
 	//Check road limits for player
@@ -876,7 +882,7 @@ void Road::UpdateRoad(float time)
 		playerX = -1.48f;
 	else if (playerX > 1.5f + ((float)roadDistance / (float)ROAD_WIDTH))
 		playerX = 1.48f + ((float)roadDistance / (float)ROAD_WIDTH);
-	
+
 	if (playerLine->mirror)
 	{
 		if ((float)roadDistance / (float)ROAD_WIDTH > 3.5f && playerX > 1.75f && playerX < (float)roadDistance / (float)ROAD_WIDTH - 1.75f)
@@ -1108,8 +1114,8 @@ void Road::ActivateAnims()
 	//Activate animations of flagmen and light
 	flagman->animLeft.speed = 0.12f;
 	flagman->animRight.speed = 0.12f;
-	trafficLight->animLeft.speed = 0.063f;
-	trafficLight->animRight.speed = 0.063f;
+	trafficLight->animLeft.speed = 0.095f;
+	trafficLight->animRight.speed = 0.095f;
 }
 
 void Road::AddFlagmanAnim()
@@ -1273,7 +1279,7 @@ void Road::AddRoad(int enter, int hold, int leave, float curve, float y, bool mi
 		dist += (int)distPerc;
 		AddSegment(curve, EaseInOut(firstY, endY, (float)(enter + n) / total), mirror, dist, biome);
 
-		if (n == (int)(hold/2))
+		if (n == (int)(hold / 2))
 			if (mirror && biome->swapLine == 0)
 				biome->swapLine = (int)biome->lines.size();
 	}
@@ -1360,7 +1366,7 @@ void Road::UpdateCars(float time)
 				c->side = rand() % 2;
 				c->active = false;
 				c->speed = 0.f;
-				c->zPos += (rand()%(680) + 220)*SEGMENT_LENGTH;
+				c->zPos += (rand() % (680) + 220)*SEGMENT_LENGTH;
 			}
 			break;
 		}
@@ -1388,10 +1394,10 @@ void Road::CheckPlayerCollision(const Line* playerLine)
 			float scale = 1.6f * (0.3f * (1.f / 170.f)) * point.scale * SCREEN_WIDTH * ROAD_WIDTH * p->scale;
 			if (playerLine->offsetsX[n] >= 0)
 				x2 = x2 + p->animRight.GetCurrentFrame().w * scale * p->pivotColR.x;
-			
+
 			else
 				x2 = x2 - p->animLeft.GetCurrentFrame().w * scale * (1 - p->pivotColL.x);
-			
+
 			if (Collides((int)(SCREEN_WIDTH / 2) + 5, playerW, x2, p->wCol, scale))
 			{
 				collisionDir = playerX;
@@ -1400,7 +1406,7 @@ void Road::CheckPlayerCollision(const Line* playerLine)
 					App->player->current_animation = &(App->player->crash1);
 					App->player->playerState = SMALLCOLLISION;
 				}
-				
+
 				else if (speed >= 80 && speed <= 100) {
 					App->player->current_animation = &(App->player->crash2);
 					//Collision animation time to stop at 0.8 (1 turn)
@@ -1484,7 +1490,7 @@ void Road::InterpolateBiomes()
 		if (backgroundSwapOffset > SCREEN_WIDTH)
 			backgroundSwapOffset = SCREEN_WIDTH;
 	}
-	
+
 	bg = InterpolateColors(bg, bg2);
 	sand = InterpolateColors(sand, sandAux);
 	sand2 = InterpolateColors(sand2, sand2Aux);
@@ -1495,8 +1501,8 @@ void Road::InterpolateBiomes()
 	lane = InterpolateColors(lane, laneAux);
 	lane2 = InterpolateColors(lane2, lane2Aux);
 
-	if (backgroundSwapOffset >= SCREEN_WIDTH && SameColor(bg,bg2) && SameColor(sand,sandAux) && SameColor(sand2,sand2Aux) && SameColor(road,roadAux) && SameColor(road2,road2Aux) &&
-		SameColor(rumble,rumbleAux) && SameColor(rumble2,rumble2Aux) && SameColor(lane,laneAux) && SameColor(lane2,lane2Aux))
+	if (backgroundSwapOffset >= SCREEN_WIDTH && SameColor(bg, bg2) && SameColor(sand, sandAux) && SameColor(sand2, sand2Aux) && SameColor(road, roadAux) && SameColor(road2, road2Aux) &&
+		SameColor(rumble, rumbleAux) && SameColor(rumble2, rumble2Aux) && SameColor(lane, laneAux) && SameColor(lane2, lane2Aux))
 	{
 		background1 = background2;
 		backgroundSwapOffset = 0.f;

@@ -67,7 +67,7 @@ update_status ModuleUI::Update()
 	tick_timer = clock();
 
 	int min = (int)(lapTime / 60.f);
-	int sec = (int)((int)(lapTime - (float)(min*60)));
+	int sec = (int)((int)(lapTime - (float)(min * 60)));
 	int mili = (int)((int)((lapTime - (int)(lapTime)) * 100.f));
 	int secBonus;
 	int decBonus;
@@ -166,7 +166,7 @@ update_status ModuleUI::Update()
 			App->fonts->print(to_string(decBonus).c_str(), 340, 410, "time", { 3.2f, 3.43f }, { 1.f, 1.f });
 		}
 
-		
+
 		break;
 	case UIGameOver:
 		App->renderer->Blit(spritesUI, (int)(SCREEN_WIDTH / 2.f), 300, &gameoverUI, 1.f, { 3.2f, 3.43f }, { 0.5f, 0.5f });
@@ -184,7 +184,7 @@ update_status ModuleUI::Update()
 		App->fonts->print(("0" + to_string(mili)).c_str(), 950, 81, "green", { 3.2f, 3.43f }, { 1.f, 1.f });
 
 	if (turboIndex >= 1.f)
-		App->renderer->Blit(turbo, 90, 760, &turboRect[(int)(turboIndex) - 1], 1.f, { 3.2f, 3.43f }, { 0.f, 1.f });
+		App->renderer->Blit(turbo, 90, 760, &turboRect[(int)(turboIndex)-1], 1.f, { 3.2f, 3.43f }, { 0.f, 1.f });
 
 	App->fonts->print(to_string((int)speed).c_str(), 150, 740, "speed", { 3.2f, 3.43f }, { 1.f, 1.f });
 	App->fonts->print(to_string(gear).c_str(), 920, 677, "green", { 3.2f, 3.43f }, { 1.f, 1.f });

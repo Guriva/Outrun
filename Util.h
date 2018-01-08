@@ -4,7 +4,7 @@
 
 float EaseIn(float a, float b, float percent)
 {
-	return (a + (b - a) * pow(percent,2));
+	return (a + (b - a) * pow(percent, 2));
 }
 
 float EaseInOut(float a, float b, float percent)

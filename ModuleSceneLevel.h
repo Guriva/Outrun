@@ -31,6 +31,8 @@ public:
 
 private:
 	float time, countdownTimer, gameoverTimer;
+	bool semaphorOne, semaphorTwo, semaphorThree;
+	unsigned int semaphorSignal1, semaphorSignal2;
 	Road* road;
 	clock_t tick_timer;
 	SceneLevelState actualState;

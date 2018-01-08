@@ -5,7 +5,6 @@
 #include "SDL.h"
 
 #include "SDL_image/include/SDL_image.h"
-#pragma comment( lib, "SDL_image/libx86/SDL2_image.lib" )
 
 using namespace std;
 

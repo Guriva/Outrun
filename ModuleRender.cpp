@@ -43,10 +43,6 @@ bool ModuleRender::Init()
 update_status ModuleRender::PreUpdate()
 {
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
-	if (renderer == nullptr)
-	{
-		printf("yo");
-	}
 	SDL_RenderClear(renderer);
 	return UPDATE_CONTINUE;
 }
@@ -123,19 +119,6 @@ bool ModuleRender::Blit(SDL_Texture* texture, int x, int y, SDL_Rect* section, f
 	rect.w = (int)(w * scale.x) * SCREEN_SIZE;
 	rect.h = (int)(h * scale.y) * SCREEN_SIZE;
 
-	if (texture == nullptr)
-	{
-		printf("yo");
-	}
-	if (renderer == nullptr)
-	{
-		printf("yo");
-	}
-	if (section == nullptr)
-	{
-		printf("yo");
-	}
-
 	if (SDL_RenderCopy(renderer, texture, section, &rect) != 0)
 	{
 		//LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
@@ -174,7 +157,7 @@ bool ModuleRender::DrawPoly4(short x1, short y1, short x2, short y2, short x3, s
 	int ret = 0;
 	short vx[4] = { x1 * SCREEN_SIZE, x2 * SCREEN_SIZE, x3 * SCREEN_SIZE, x4 * SCREEN_SIZE };
 	short vy[4] = { (y1 + SCREEN_Y_OFFSET) * SCREEN_SIZE, (y2 + SCREEN_Y_OFFSET) * SCREEN_SIZE, (y3 + SCREEN_Y_OFFSET) * SCREEN_SIZE, (y4 + SCREEN_Y_OFFSET) * SCREEN_SIZE };
-	
+
 	if (renderer != nullptr)
 		ret = filledPolygonRGBA(renderer, vx, vy, 4, c.r, c.g, c.b, c.a);
 

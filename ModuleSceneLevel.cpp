@@ -24,13 +24,16 @@ bool ModuleSceneLevel::Start()
 	actualState = COUNTDOWN;
 	countdownTimer = 5.f;
 	gameoverTimer = 5.f;
+	semaphorOne = semaphorTwo = semaphorThree = false;
 	tick_timer = clock();
 	App->player->Enable();
 	App->ui->Enable();
 	road->Start();
 	road->InitRoad();
-	const char* m = App->musicLevel;
-	App->audio->PlayMusic(App->musicLevel, 0.f);
+	if (App->musicLevel != "")
+		App->audio->PlayMusic(App->musicLevel, 0.f);
+	semaphorSignal1 = App->audio->LoadFx("Audio/semaphorOne.wav");
+	semaphorSignal2 = App->audio->LoadFx("Audio/semaphorTwo.wav");
 	return true;
 }
 
@@ -61,6 +64,22 @@ update_status ModuleSceneLevel::Update()
 			App->player->preparingAnim.speed = 0.1f;
 		if (countdownTimer < 2.0f)
 			road->ActivateAnims();
+
+		if (countdownTimer < 2.f && semaphorOne == false)
+		{
+			semaphorOne = true;
+			App->audio->PlayFx(semaphorSignal1);
+		}
+		if (countdownTimer < 1.f && semaphorTwo == false)
+		{
+			semaphorTwo = true;
+			App->audio->PlayFx(semaphorSignal1);
+		}
+		if (countdownTimer < 0.1f && semaphorThree == false)
+		{
+			semaphorThree = true;
+			App->audio->PlayFx(semaphorSignal2);
+		}
 
 		countdownTimer -= time;
 

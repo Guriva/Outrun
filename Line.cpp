@@ -59,7 +59,7 @@ void Line::RenderProps(SDL_Texture* text, int i)
 
 	float destW = (rectDest.w * p.scale * SCREEN_WIDTH / 2) * ((0.3f * (1.f / 170.f)) * ROAD_WIDTH);
 	float destH = (rectDest.h * p.scale * SCREEN_WIDTH / 2) * ((0.3f * (1.f / 170.f)) * ROAD_WIDTH);
-		
+
 	//If has to be clipped
 	if (clip < spriteY)
 	{
@@ -84,7 +84,7 @@ void Line::RenderCars(SDL_Texture* text, Car* car)
 		px = p21;
 	}
 
-	float perc = (float)(((int)(car->zPos)%(int)SEGMENT_LENGTH) / (float)SEGMENT_LENGTH);
+	float perc = (float)(((int)(car->zPos) % (int)SEGMENT_LENGTH) / (float)SEGMENT_LENGTH);
 	float scaleOffset = p.scale + (px.scale - p.scale)*perc;
 	float xOffset = p.xScreen + (px.xScreen - p.xScreen)*perc;
 	float yOffset = p.yScreen + (px.yScreen - p.yScreen)*perc;

@@ -103,8 +103,8 @@ bool ModuleSceneMain::Start()
 	background = App->textures->Load("Textures/Main/backgroundMain.png");
 	background2 = App->textures->Load("Textures/Main/background2Main.png");
 	letters = App->textures->Load("Textures/Main/flashLetters.png");
-	//audioCoin = App->audio->LoadFx("Audio/creditInsert.wav");
-	//audioWave = App->audio->LoadFx("Audio/waveSound.wav");
+	audioCoin = App->audio->LoadFx("Audio/creditInsert.wav");
+	audioWave = App->audio->LoadFx("Audio/waveSound.wav");
 	//App->audio->StopMusic(0.f);
 
 	//LOG("Main scene loaded correctly");
@@ -132,7 +132,7 @@ update_status ModuleSceneMain::Update()
 	if (App->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN && App->credit < 9)
 	{
 		++App->credit;
-		//App->audio->PlayFx(audioCoin);
+		App->audio->PlayFx(audioCoin);
 		//Make sound of credit
 	}
 	if (App->credit == 0)
@@ -151,7 +151,7 @@ update_status ModuleSceneMain::Update()
 			fxWavePlayed = true;
 			fxWavePlayed = App->audio->PlayFx(audioWave, 3);
 		}
-			
+
 		switch (music)
 		{
 		case 0:
@@ -192,7 +192,7 @@ update_status ModuleSceneMain::Update()
 			}
 			if (App->fade->isFading() == false)
 			{
-				//App->audio->StopFx();
+				App->audio->StopFx();
 				App->fade->FadeToBlack(App->scene_level, this, 0.f);
 			}
 		}

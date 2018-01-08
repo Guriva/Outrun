@@ -96,7 +96,7 @@ ModulePlayer::ModulePlayer(bool active) : Module(active)
 	endSequence.frames.push_back({ 1, 271, 95, 44 });
 	for (int i = 0; i < 25; ++i)
 		endSequence.frames.push_back({ 481, 142, 171, 46 });
-	
+
 
 	carSmokeL.frames.push_back({ 1, 1, 58, 17 });
 	carSmokeL.frames.push_back({ 60, 1, 58, 17 });
@@ -113,11 +113,11 @@ ModulePlayer::ModulePlayer(bool active) : Module(active)
 	carSandL.frames.push_back({ 1, 19, 68, 42 });
 	carSandL.frames.push_back({ 70, 19, 68, 42 });
 	carSandL.frames.push_back({ 139, 19, 68, 42 });
-	carSandL.frames.push_back({ 208, 19, 68, 42});
+	carSandL.frames.push_back({ 208, 19, 68, 42 });
 	carSandL.speed = 0.2f;
 
 	carSandR.frames.push_back({ 484, 19, 68, 42 });
-	carSandR.frames.push_back({ 415, 19, 68, 42});
+	carSandR.frames.push_back({ 415, 19, 68, 42 });
 	carSandR.frames.push_back({ 346, 19, 68, 42 });
 	carSandR.frames.push_back({ 277, 19, 68, 42 });
 	carSandR.speed = 0.2f;
@@ -294,8 +294,8 @@ ModulePlayer::~ModulePlayer()
 
 bool ModulePlayer::Init()
 {
-	//speedSound = App->audio->LoadFx("Audio/turboCar.wav");
-	//slideSound = App->audio->LoadFx("Audio/slide.wav");
+	speedSound = App->audio->LoadFx("Audio/turboCar.wav");
+	slideSound = App->audio->LoadFx("Audio/slide.wav");
 
 	return true;
 }
@@ -547,7 +547,7 @@ void ModulePlayer::UpdatePlayerSCol()
 
 void ModulePlayer::UpdatePlayerMCol()
 {
-	
+
 	if (speed > 0.f)
 	{
 		speed -= lowAccel * time;
@@ -612,7 +612,7 @@ void ModulePlayer::CheckWheels()
 	switch (wheelR)
 	{
 	case SMOKE:
-		App->renderer->Blit(carEffects, (int)(SCREEN_WIDTH / 2) + 30, (int)(SCREEN_HEIGHT / 2) + 380, &(carSmokeR.GetCurrentFrame()), 1.f, { 3.2f, 3.43f }, { 0.f, 1.f});
+		App->renderer->Blit(carEffects, (int)(SCREEN_WIDTH / 2) + 30, (int)(SCREEN_HEIGHT / 2) + 380, &(carSmokeR.GetCurrentFrame()), 1.f, { 3.2f, 3.43f }, { 0.f, 1.f });
 		break;
 	case SAND:
 		App->renderer->Blit(carEffects, (int)(SCREEN_WIDTH / 2) + 30, (int)(SCREEN_HEIGHT / 2) + 380, &(carSandR.GetCurrentFrame()), 1.f, { 3.2f, 3.43f }, { 0.f, 1.f });
@@ -646,7 +646,7 @@ void ModulePlayer::CheckWheels()
 			App->audio->StopFxChannel(1);
 		}
 	}
-		
+
 }
 
 void ModulePlayer::resetCounters()

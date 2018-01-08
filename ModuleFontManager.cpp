@@ -60,7 +60,7 @@ void ModuleFontManager::print(const char* text, const int posx, const int posy, 
 		int index = f.indexTable[text[i]];
 		rectFont.x = (f.w + 1)*index + 1;	//Each symbol is separated by one pixel
 		x = iniPosx + (int)(f.w*i*scale.x);
-		App->renderer->Blit(f.font, x, y, &rectFont, 1.0f, scale, { 0.f, 1.f});
+		App->renderer->Blit(f.font, x, y, &rectFont, 1.0f, scale, { 0.f, 1.f });
 		//SDL_BlitSurface(f.font, &rectFont, App->window->screen_surface, &rectWindow);
 	}
 }
