@@ -7,7 +7,7 @@ This game is a tribute to the arcade game Outrun. It is a small demo made in SDL
 
 * Project webpage: [https://nyghor.github.io/Outrun/](https://nyghor.github.io/Outrun/) 
 
-* Latest release (v0.15): [https://github.com/Nyghor/Outrun/releases/download/v0.15-Beta/Release.zip](https://github.com/Nyghor/Outrun/releases/download/v0.15-Beta/Release.zip)  
+* Latest release (v0.151): [https://github.com/Nyghor/Outrun/releases/download/v0.151-Beta/Release.zip](https://github.com/Nyghor/Outrun/releases/download/v0.151-Beta/Release.zip)  
 
 Made by: **Daniel Mateu Tudela**
 E-mail: **dmateutudela@gmail.com**
@@ -16,7 +16,7 @@ License: GNU GENERAL PUBLIC LICENSE
 
 ## Gameplay video
 
-**(Coming soon)**
+<iframe width="560" height="315" src="https://youtu.be/zZm8nOKnqJA" frameborder="0" allowfullscreen=""></iframe>
 
 ## Contents of the game
 
