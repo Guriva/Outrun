@@ -1,47 +1,60 @@
-# Super Hang On (Drive)
-This is my tribute to Super Hang On, released for Sega Mega Drive in 5 of december 1988.
+# Outrun Tribute - Rev B.
+This game is a tribute to the arcade game Outrun. It is a small demo made in SDL with the first stage of the original game.
 
 ## PROJECT INFORMATION
 
-Full project at github: [https://github.com/vandalo/SuperHangOn](https://github.com/vandalo/SuperHangOn) 
+Project code: [https://github.com/Nyghor/Outrun](https://github.com/Nyghor/Outrun) 
 
-Project webpage: [https://vandalo.github.io/SuperHangOn/](https://vandalo.github.io/SuperHangOn/) 
+Project webpage: [https://nyghor.github.io/Outrun/](https://nyghor.github.io/Outrun/) 
 
-Latest release (1.0): [https://github.com/vandalo/SuperHangOn/releases/download/v1.0/Super.Hang.On.zip](https://github.com/vandalo/SuperHangOn/releases/download/v1.0/Super.Hang.On.zip)  
+Latest release (v0.15): [https://github.com/Nyghor/Outrun/releases/download/v0.15-Beta/Release.zip](https://github.com/Nyghor/Outrun/releases/download/v0.15-Beta/Release.zip)  
 
-*Author*: Ferran Coma
-
-Contact: ferrancomarosell@gmail.com
+Made by: Daniel Mateu Tudela
+E-mail: dmateutudela@gmail.com
 
 License: GNU GENERAL PUBLIC LICENSE
 
 ## Gameplay video
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/vjaiAo2JBPI" frameborder="0" allowfullscreen=""></iframe>
-You can watch it directly on [youtube](https://www.youtube.com/watch?v=vjaiAo2JBPI).
+**(Coming soon)**
 
-Currently the game only features the race of africa, with all the assets and decoration and the bikes which run agains you. The game
-is ready to implement the other maps just creating the file with the road configuration.
+## Contents of the game
+
+The game includes the following features:
+
+· First stage of the game (Beach)
+· Original animations for the elements in-gmae and the car
+· 2 gear shift for the car
+· Checkpoints
+· Stage background switch
+· Highscores
+· Choose between the original 3 songs
+· Simulated physics and collisions similar to the original version
 
 ## Commands
 
-On the game you manage a motorbike on the track where you have to face other motorbikes and the time. You will have a number of seconds to get the next check point, once you get it, this time increase giving you the chance of getting the next one.
+In the main scene the controls are as follow:
 
-* **SPEED UP:** (Up key)
-* **BREAK:** (Down key)
-* **TURN LEFT:** (Left key)
-* **TURN RIGHT:** (Right key)
-* **TURBO:** (Space)
+· Insert coin (Key number 5)
+· Start (Space key)
+· Switch songs (Left/Right keys) (keep one of them pressed while pressing space to choose the songs in the sides)
 
-## How to finish the game:
+In-game controls:
 
-The game just have the track of Afirca from the arcade mode. When you arrive to the goal or your time ends, you'll be able to save
-your score if it's between the 8th best scores.
+· Switch gear (Space key)
+· Accelerate (Up key)
+· Break (Down key)
+· Turn left (Left key)
+· Turn right (Right key)
+
+## How to play
+
+Just as the original game, you have to get to the goal as fast as you can evading the cars and the environment elements and getting the checkpoint.
+If your final score is between the 7 best, even if you don't finish the race, you will be able to save it in the ladder.
 
 ## Acknowledgements
 
-
 * [http://www.extentofthejam.com/pseudo/]
 * [https://www.youtube.com/watch?v=N60lBZDEwJ8]
-* Super Hang On (MegaDrive)
+* Outrun (Arcade) Rev B. (MAME)
 
