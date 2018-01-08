@@ -22,7 +22,7 @@ Line::Line()
 Line::~Line()
 {}
 
-void Line::projection(PointLine &p, int cameraX, int cameraY, int cameraZ, float cameraD)
+void Line::projection(PointLine &p, int cameraX, int cameraY, int cameraZ, float cameraD) const
 {
 	//scale = (zWorld - cameraZ != 0 ? cameraD / (zWorld - cameraZ) : cameraD);
 	p.xCamera = p.xWorld - cameraX;
@@ -34,7 +34,7 @@ void Line::projection(PointLine &p, int cameraX, int cameraY, int cameraZ, float
 	p.wScreen = p.scale * ROAD_WIDTH * SCREEN_WIDTH / 2;
 }
 
-void Line::RenderProps(SDL_Texture* text, int i)
+void Line::RenderProps(SDL_Texture* text, int i) const
 {
 	PointLine p = p1;
 	if (sides[i])
@@ -74,7 +74,7 @@ void Line::RenderProps(SDL_Texture* text, int i)
 		App->renderer->Blit(text, (int)spriteX, (int)(spriteY + SCREEN_Y_OFFSET), &(rectDest), 1.f, { (destW / rectDest.w)*3.2f*lineProps[i]->scale, (destH / rectDest.h)*3.43f*lineProps[i]->scale }, pivot);
 }
 
-void Line::RenderCars(SDL_Texture* text, Car* car)
+void Line::RenderCars(SDL_Texture* text, const Car* car) const
 {
 	PointLine p = p1;
 	PointLine px = p2;

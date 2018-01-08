@@ -19,7 +19,6 @@ ModuleSceneLevel::~ModuleSceneLevel()
 // Load assets
 bool ModuleSceneLevel::Start()
 {
-	//LOG("Loading level scene");
 	road = new Road();
 	actualState = COUNTDOWN;
 	countdownTimer = 5.f;
@@ -40,9 +39,6 @@ bool ModuleSceneLevel::Start()
 // UnLoad assets
 bool ModuleSceneLevel::CleanUp()
 {
-	//LOG("Unloading level scene");
-	/*** TODO !!***/
-
 	App->player->Disable();
 	App->ui->Disable();
 	road->CleanUp();

@@ -33,7 +33,7 @@ private:
 	float time, countdownTimer, gameoverTimer;
 	bool semaphorOne, semaphorTwo, semaphorThree;
 	unsigned int semaphorSignal1, semaphorSignal2;
-	Road* road;
+	Road* road = nullptr;
 	clock_t tick_timer;
 	SceneLevelState actualState;
 };

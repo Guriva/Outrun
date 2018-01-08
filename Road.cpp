@@ -395,8 +395,6 @@ bool Road::Start()
 // Load assets
 bool Road::InitRoad()
 {
-	//LOG("Loading road");
-
 	//Load textures
 	background1 = App->textures->Load("Textures/Level/backgroundlvl1.png");
 	background2 = nullptr;
@@ -670,7 +668,6 @@ bool Road::InitRoad()
 // UnLoad assets
 bool Road::CleanUp()
 {
-	//LOG("Unloading level scene");
 	RELEASE(flagman);
 	RELEASE(man1);
 	RELEASE(man2);
@@ -897,7 +894,6 @@ void Road::UpdateRoad(float time)
 	//check for checkpoints
 	for (unsigned int i = 0; i < playerLine->lineProps.size(); ++i)
 	{
-		//If checkpoint not visited
 		if (playerLine->lineProps[i] == checkpoint && !(find(checkpointsSeen.begin(), checkpointsSeen.end(), playerLine->index) != checkpointsSeen.end()))
 		{
 			App->ui->checkpoint = true;
@@ -1402,18 +1398,21 @@ void Road::CheckPlayerCollision(const Line* playerLine)
 			{
 				collisionDir = playerX;
 				float speed = App->player->speed;
-				if (speed < 80) {
+				if (speed < 80)
+				{
 					App->player->current_animation = &(App->player->crash1);
 					App->player->playerState = SMALLCOLLISION;
 				}
 
-				else if (speed >= 80 && speed <= 100) {
+				else if (speed >= 80 && speed <= 100)
+				{
 					App->player->current_animation = &(App->player->crash2);
 					//Collision animation time to stop at 0.8 (1 turn)
 					App->player->lowAccel = (speed / 0.8f);
 					App->player->playerState = MEDIUMCOLLISION;
 				}
-				else if (speed > 100 && speed <= 150) {
+				else if (speed > 100 && speed <= 150)
+				{
 					App->player->current_animation = &(App->player->crash21);
 					//Collision animation time to stop at 1.6 (2 turns)
 					App->player->lowAccel = (speed / 1.6f);
@@ -1471,7 +1470,7 @@ void Road::CheckPlayerCollision(const Line* playerLine)
 	}
 }
 
-bool Road::Collides(float x1, int w1, float x2, float w2, float scale)
+bool Road::Collides(float x1, int w1, float x2, float w2, float scale) const
 {
 	//Player offsetX at 0.5
 	float min1 = x1 - (((float)w1*3.2f) / 2.f);

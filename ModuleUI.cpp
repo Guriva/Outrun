@@ -37,9 +37,7 @@ ModuleUI::ModuleUI(bool active) : Module(active)
 }
 
 ModuleUI::~ModuleUI()
-{
-
-}
+{}
 
 bool ModuleUI::Start()
 {

@@ -86,7 +86,7 @@ private:
 	void UpdateWheels();
 	void UpdateCars(float time);
 	void CheckPlayerCollision(const Line* playerLine);
-	bool Collides(float x1, int w1, float x2, float w2, float scale);
+	bool Collides(float x1, int w1, float x2, float w2, float scale) const;
 	void InterpolateBiomes();
 
 public:

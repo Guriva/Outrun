@@ -20,22 +20,16 @@ ModuleRender::~ModuleRender()
 // Called before render is available
 bool ModuleRender::Init()
 {
-	//LOG("Creating Renderer context");
 	bool ret = true;
 	Uint32 flags = 0;
 
 	if (VSYNC == true)
-	{
 		flags |= SDL_RENDERER_PRESENTVSYNC;
-	}
 
 	renderer = SDL_CreateRenderer(App->window->window, -1, flags);
 
 	if (renderer == nullptr)
-	{
-		//LOG("Renderer could not be created! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
-	}
 
 	return ret;
 }
@@ -50,21 +44,6 @@ update_status ModuleRender::PreUpdate()
 // Called every draw update
 update_status ModuleRender::Update()
 {
-	// debug camera
-	/*int speed = 1;
-
-	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-	App->renderer->camera.y += speed;
-
-	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-	App->renderer->camera.y -= speed;
-
-	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-	App->renderer->camera.x += speed;
-
-	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-	App->renderer->camera.x -= speed;*/
-
 	return UPDATE_CONTINUE;
 }
 
@@ -77,13 +56,9 @@ update_status ModuleRender::PostUpdate()
 // Called before quitting
 bool ModuleRender::CleanUp()
 {
-	//LOG("Destroying renderer");
-
 	//Destroy window
 	if (renderer != nullptr)
-	{
 		SDL_DestroyRenderer(renderer);
-	}
 
 	return true;
 }
@@ -120,10 +95,7 @@ bool ModuleRender::Blit(SDL_Texture* texture, int x, int y, SDL_Rect* section, f
 	rect.h = (int)(h * scale.y) * SCREEN_SIZE;
 
 	if (SDL_RenderCopy(renderer, texture, section, &rect) != 0)
-	{
-		//LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
 		ret = false;
-	}
 
 	return ret;
 }
@@ -145,15 +117,12 @@ bool ModuleRender::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uin
 	}
 
 	if (SDL_RenderFillRect(renderer, &rec) != 0)
-	{
-		//LOG("Cannot draw quad to screen. SDL_RenderFillRect error: %s", SDL_GetError());
 		ret = false;
-	}
 
 	return ret;
 }
 
-bool ModuleRender::DrawPoly4(short x1, short y1, short x2, short y2, short x3, short y3, short x4, short y4, SDL_Color c) {
+bool ModuleRender::DrawPoly4(short x1, short y1, short x2, short y2, short x3, short y3, short x4, short y4, const SDL_Color& c) {
 	int ret = 0;
 	short vx[4] = { x1 * SCREEN_SIZE, x2 * SCREEN_SIZE, x3 * SCREEN_SIZE, x4 * SCREEN_SIZE };
 	short vy[4] = { (y1 + SCREEN_Y_OFFSET) * SCREEN_SIZE, (y2 + SCREEN_Y_OFFSET) * SCREEN_SIZE, (y3 + SCREEN_Y_OFFSET) * SCREEN_SIZE, (y4 + SCREEN_Y_OFFSET) * SCREEN_SIZE };

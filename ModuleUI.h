@@ -6,8 +6,6 @@
 #include <ctime>
 #include <vector>
 
-using namespace std;
-
 struct SDL_Texture;
 
 enum UIState
@@ -29,9 +27,9 @@ public:
 	bool CleanUp();
 
 public:
-	SDL_Texture* layout;
-	SDL_Texture* turbo;
-	SDL_Texture* spritesUI;
+	SDL_Texture* layout = nullptr;
+	SDL_Texture* turbo = nullptr;
+	SDL_Texture* spritesUI = nullptr;
 	clock_t tick_timer;
 	int score, gear;
 	float speed, maxSpeed, turboIndex;

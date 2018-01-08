@@ -25,8 +25,8 @@ public:
 	ModuleFontManager(bool start_enabled = true);
 	~ModuleFontManager();
 
-	bool loadFont(const char* fontName, const char* path, const char* trad, const int w, const int h);
-	void print(const char* text, const int posx, const int posy, const char* fontName, fPoint scale = { 1, 1 }, fPoint pivot = { 0, 0 });
+	bool loadFont(const char* fontName, const char* path, const char* trad, int w, int h);
+	void print(const char* text, int posx, int posy, const char* fontName, fPoint scale = { 1, 1 }, fPoint pivot = { 0, 0 });
 	int getFontHeight(const char* fontName);
 	int getFontWidth(const char* fontName);
 	void closeFont(const char* fontName);

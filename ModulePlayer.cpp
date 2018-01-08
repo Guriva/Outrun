@@ -303,7 +303,6 @@ bool ModulePlayer::Init()
 // Load assets
 bool ModulePlayer::Start()
 {
-	//LOG("Loading player");
 	tick_timer = clock();
 	inclination = STRAIGHT;
 	direction = FRONT;
@@ -355,8 +354,6 @@ bool ModulePlayer::Start()
 // Unload assets
 bool ModulePlayer::CleanUp()
 {
-	//LOG("Unloading player");
-
 	App->textures->Unload(car);
 	App->textures->Unload(carEffects);
 

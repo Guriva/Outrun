@@ -15,7 +15,7 @@ ModuleFontManager::ModuleFontManager(bool start_enabled) : Module(start_enabled)
 ModuleFontManager::~ModuleFontManager()
 {}
 
-bool ModuleFontManager::loadFont(const char* fontName, const char* path, const char* trad, const int w, const int h)
+bool ModuleFontManager::loadFont(const char* fontName, const char* path, const char* trad, int w, int h)
 {
 	//Loading success flag
 	bool ret = true;
@@ -23,14 +23,13 @@ bool ModuleFontManager::loadFont(const char* fontName, const char* path, const c
 	f.font = App->textures->Load(path);
 
 	if (f.font == nullptr)
-	{
-		//LOG("Failed to create texture font");
 		ret = false;
-	}
-	else {
+	else
+	{
 		//Initialize index table for each character
 		map<char, int> indexTable;
-		for (int i = 0; trad[i] != '\0'; ++i) {
+		for (int i = 0; trad[i] != '\0'; ++i)
+		{
 			indexTable[trad[i]] = i;
 		}
 		f.indexTable = indexTable; f.w = w; f.h = h;
@@ -42,7 +41,7 @@ bool ModuleFontManager::loadFont(const char* fontName, const char* path, const c
 	return ret;
 }
 
-void ModuleFontManager::print(const char* text, const int posx, const int posy, const char* fontName, fPoint scale, fPoint pivot)
+void ModuleFontManager::print(const char* text, int posx, int posy, const char* fontName, fPoint scale, fPoint pivot)
 {
 	Font f = fontTable[fontName];
 
@@ -56,7 +55,8 @@ void ModuleFontManager::print(const char* text, const int posx, const int posy, 
 	int len = strlen(text);
 	int iniPosx = (int)(posx - len*f.w*scale.x*pivot.x);
 
-	for (int i = 0; text[i] != '\0'; ++i) {
+	for (int i = 0; text[i] != '\0'; ++i)
+	{
 		int index = f.indexTable[text[i]];
 		rectFont.x = (f.w + 1)*index + 1;	//Each symbol is separated by one pixel
 		x = iniPosx + (int)(f.w*i*scale.x);
@@ -84,9 +84,8 @@ void ModuleFontManager::closeFont(const char* fontName)
 
 bool ModuleFontManager::CleanUp()
 {
-	//LOG("Freeing fonts surfaces, clearing Font Table");
-
-	for (map<const char*, Font>::iterator it = fontTable.begin(); it != fontTable.end(); ++it) {
+	for (map<const char*, Font>::iterator it = fontTable.begin(); it != fontTable.end(); ++it)
+	{
 		SDL_DestroyTexture(it->second.font);
 		it->second.indexTable.clear();
 	}

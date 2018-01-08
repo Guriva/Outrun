@@ -21,8 +21,8 @@ public:
 	bool CleanUp();
 
 public:
-	SDL_Texture* layout;
-	SDL_Texture* spritesRoute;
+	SDL_Texture* layout = nullptr;
+	SDL_Texture* spritesRoute = nullptr;
 	float recordTimer, passTimer, time;
 	int pos, score, index;
 	float totalTime;

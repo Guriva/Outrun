@@ -85,8 +85,6 @@ bool ModuleSceneMain::Init()
 // Load assets
 bool ModuleSceneMain::Start()
 {
-	//LOG("Loading main scene");
-
 	countdown = 15.f;
 	music = 1;
 	fxWavePlayed = false;
@@ -105,9 +103,6 @@ bool ModuleSceneMain::Start()
 	letters = App->textures->Load("Textures/Main/flashLetters.png");
 	audioCoin = App->audio->LoadFx("Audio/creditInsert.wav");
 	audioWave = App->audio->LoadFx("Audio/waveSound.wav");
-	//App->audio->StopMusic(0.f);
-
-	//LOG("Main scene loaded correctly");
 
 	return true;
 }
@@ -115,8 +110,6 @@ bool ModuleSceneMain::Start()
 // UnLoad assets
 bool ModuleSceneMain::CleanUp()
 {
-	//LOG("Unloading main scene");
-
 	App->textures->Unload(logoTexture);
 	App->textures->Unload(radioTexture);
 	App->textures->Unload(background);
