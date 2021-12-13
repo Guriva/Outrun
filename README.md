@@ -3,11 +3,11 @@ This game is a tribute to the arcade game Outrun. It is a small demo made in SDL
 
 ## PROJECT INFORMATION
 
-* Project code: [https://github.com/Nyghor/Outrun](https://github.com/Nyghor/Outrun) 
+* Project code: [https://github.com/Guriva/Outrun](https://github.com/Nyghor/Outrun) 
 
-* Project webpage: [https://nyghor.github.io/Outrun/](https://nyghor.github.io/Outrun/) 
+* Project webpage: [https://guriva.github.io/Outrun/](https://nyghor.github.io/Outrun/) 
 
-* Latest release (v0.151): [https://github.com/Nyghor/Outrun/releases/download/v0.151-Beta/Release.zip](https://github.com/Nyghor/Outrun/releases/download/v0.151-Beta/Release.zip)  
+* Latest release (v0.152): [https://github.com/Guriva/Outrun/releases/download/v0.152-Beta/Release.zip](https://github.com/Guriva/Outrun/releases/download/v0.152-Beta/Release.zip)  
 
 Made by: **Daniel Mateu Tudela**
 E-mail: **dmateutudela@gmail.com**
