@@ -11,6 +11,8 @@
 #include "ModuleFontManager.h"
 #include "ModuleSceneHighscore.h"
 #include "ModuleUI.h"
+#include "SDL_timer.h"
+#include <chrono>
 
 using namespace std;
 
@@ -19,6 +21,7 @@ Application::Application()
 	credit = score = 0;
 	totalTime = 0.f;
 	musicLevel = "";
+	lastTime = 0;
 
 	// Order matters: they will init/start/pre/update/post in this order
 	modules.push_back(input = new ModuleInput());
@@ -69,17 +72,23 @@ update_status Application::Update()
 {
 	update_status ret = UPDATE_CONTINUE;
 
-	for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
-		if ((*it)->IsEnabled() == true)
-			ret = (*it)->PreUpdate();
+	int time = SDL_GetTicks();
 
-	for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
-		if ((*it)->IsEnabled() == true)
-			ret = (*it)->Update();
+	if (time - lastTime > 1000 / TICK_FPS)
+	{
+		lastTime = time - (time - lastTime - 1000 / TICK_FPS);
+		for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
+			if ((*it)->IsEnabled() == true)
+				ret = (*it)->PreUpdate();
 
-	for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
-		if ((*it)->IsEnabled() == true)
-			ret = (*it)->PostUpdate();
+		for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
+			if ((*it)->IsEnabled() == true)
+				ret = (*it)->Update();
+
+		for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
+			if ((*it)->IsEnabled() == true)
+				ret = (*it)->PostUpdate();
+	}
 
 	return ret;
 }

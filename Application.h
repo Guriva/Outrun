@@ -52,6 +52,9 @@ public:
 	float totalTime;
 	const char* musicLevel = nullptr;
 
+	//FPS Cap ---
+	int lastTime;
+
 private:
 	std::list<Module*> modules;
 };
