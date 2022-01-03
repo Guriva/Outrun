@@ -3,7 +3,7 @@ This game is a tribute to the arcade game Outrun. It is a small demo made in SDL
 
 ## PROJECT INFORMATION
 
-* Project code: [https://github.com/Guriva/Outrun](https://github.com/Nyghor/Outrun) 
+* Project code: [https://github.com/Guriva/Outrun](https://github.com/Guriva/Outrun) 
 
 * Project webpage: [https://guriva.github.io/Outrun/](https://guriva.github.io/Outrun/) 
 
